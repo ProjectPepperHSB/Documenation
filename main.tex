@@ -1,0 +1,160 @@
+%% ----------------------------------------------------------------
+%% M A I N - F I L E 
+%% ---------------------------------------------------------------- 
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{main} 
+\graphicspath{{Figures/}} 
+\usepackage[german]{babel} % ALLES SCHÖN DEUTSCH!
+
+% Include any extra LaTeX packages required
+\usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
+
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+
+\usepackage{url}
+\usepackage{natbib}
+
+% Floating images and tables
+\usepackage{float}
+
+% to comment out entire sections
+\usepackage{comment}
+
+\hypersetup{urlcolor=blue, colorlinks=true}
+
+% remove the unnecessary spacing before and after the headings/subheadings
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+\setlength{\parskip}{6pt}
+%\setlength{\parsep}{0pt}
+%\setlength{\headsep}{0pt}
+%\setlength{\topskip}{0pt}
+
+%% ----------------------------------------------------------------
+\begin{document}
+\frontmatter	  % Begin Roman style (i, ii, iii, iv...) page numbering
+
+% Set up the Title Page
+\title  {Bachrlorprojekt: Pepper}
+\session {2021}
+\advisor {Prof. Dr. Nadja Petram}
+\authors {
+	Benjamin Thomas Schwertfeger ~~~ 36036 \\
+	Kristian Kellermann ~~~ xxxxx \\
+	Jacob Menge ~~~ xxxxx }
+
+\addresses  {\deptname \\ \univname}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
+\date       {\today}
+\subject    {}
+\keywords   {}
+
+\maketitle
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+%% ----------------------------------------------------------------
+% Declaration Page required for the Thesis, your institution may give you a different text to place here
+\Declaration{
+	%\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+	Hiermit erklären wir, dass wir die vorliegende Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt haben.
+
+	Alle sinngemäß und wörtlich übernommenen Textstellen aus fremden Quellen wurden kenntlich gemacht.
+
+	\bigskip
+	\bigskip
+
+	Name:~~ \rule[0em]{15em}{.4pt}
+	Unterschrift:~~ \rule[0em]{10em}{.4pt} \\
+	Ort, Datum:~~ \rule[0em]{15em}{.4pt}
+	\\ \\ \\ \\
+	Name:~~ \rule[0em]{15em}{.4pt}
+	Unterschrift:~~ \rule[0em]{10em}{.4pt} \\
+	Ort, Datum:~~ \rule[0em]{15em}{.4pt}
+	\\ \\ \\ \\
+	Name:~~ \rule[0em]{15em}{.4pt}
+	Unterschrift:~~ \rule[0em]{10em}{.4pt} \\
+	Ort, Datum:~~ \rule[0em]{15em}{.4pt}
+	\\ \\ \\ \\
+}
+\clearpage
+
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+\setstretch{1.3}  % Return the line spacing back to 1.3
+%\pagestyle{empty}  % Page style needs to be empty for this page
+%\dedicatory{For/Dedicated to/To my\ldots}
+
+%% ----------------------------------------------------------------
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+%% ----------------------------------------------------------------
+\lhead{\emph{Inhalt}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+\lhead{\emph{Abbildungsverzeichnis}}  % Set the left side page header to "List if Figures"
+\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+% The Abstract Page
+
+\addtotoc{Abstrakt}  % Add the "Abstract" page entry to the Contents
+\input{abstract.tex}
+
+\clearpage  % Abstract ended, start a new page
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+\onehalfspacing
+
+\addtocontents{toc}{\vspace{2em}}
+
+\input{toc.tex}
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+%\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+%\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+%\input{./Chapters/AppendixA}	% Appendix Title
+
+%\input{./Chapters/AppendixB} % Appendix Title
+
+%\input{./Chapters/AppendixC} % Appendix Title
+
+%\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+%\backmatter
+
+%% ----------------------------------------------------------------
+\label{Literaturverzeichnis}
+\lhead{\emph{Literaturverzeichnis}}  % Change the left side page header to "References"
+
+\bibliographystyle{plainnat}  % Use "unsrtnat" BibTeX style for formatting the references
+
+\bibliography{references}  % The references information are stored in the file named "references.bib"
+
+\nocite{*}
+
+\end{document}
+%% ----------------------------------------------------------------

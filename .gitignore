@@ -1,0 +1,16 @@
+*.aux
+*.log
+*.out
+*.gz
+*.toc
+*.lof
+*.fls
+*.bbl
+*.sync
+*.swp
+*.tmp
+*.blg
+*.fdb_latextmk
+*temp*
+*.fdb_latexmk
+__latextindent*
