@@ -55,3 +55,58 @@ Wir werden in diesem Dokument neben der Implementierung auch auf das Herunterlad
 unserer Software eingehen, damit Studierende, die dieses Projekt weiterführen wollen, die Möglichkeit
 haben, mit einem etwas fortgeschrittenem Projekt zu starten. Darüber hinaus befindet sich in jedem Stammverzeichnis
 eine Readme, welche Anforderungen und erste Schritte aufzeigen, um einen schnellen Einstieg zu ermöglichen.
+
+\section{Persona}
+Damit wir Pepper mit allen möglichen Antworten auf alle möglichen Fragen vorbereiten können, müssen wir uns zuerst überlegen, welche Personengruppe mit Pepper sprechen wird. Auf dieser Basis können wir verschiedene Gesprächsthemen entwickeln, die für die Personengruppe interessant sein könnten.
+
+Da wir Pepper als Hochschul Assistenzen einsetzten wollen, haben wir es mit folgenden Personas zu tun:
+\begin{itemize}
+    \item Student
+    \item Dozent
+    \item Angestellter der Hochschule
+    \item Besucher (Zukünftige Studenten, Interessenten)
+\end{itemize}
+
+Hauptsächlich soll Pepper für Studenten und insbesondere für Erstsemestler eingesetzt werden, die zum Beispiel nicht wissen, wo sich ein bestimmter Raum oder ein Gebäude befindet oder wann und wo die nächste Vorlesung stattfindet. Hierbei soll es auch die Möglichkeit geben, den kompletten Stundenplan für jeden Studiengang und jedes (zur Zeit verfügbare) Semester anzeigen zu lassen, um auf jede Situation eine Antwort parat zu haben.
+
+Ein weiterer Faktor ist der Altersintervall mit dem Pepper zu tun haben wird. Ältere Studenten, die sich auch in einem höheren Semester befinden, sind Themen wie Raumfindung oder Stundenplan eher uninteressant. Dafür könnten Themen wie der Mensaplan oder Informationen über die Hochschule und über Pepper selber interessant sein. Außerdem wird Pepper in der Lage sein, mit dem User ein kurzes Smalltalk Gespräch zu führen. Somit ist Pepper auch für alle Altersgruppen interessant. Diese Themen könnten für alle weitere Personas ebenfalls interessant sein. Vor allem Personen, die technikaffin sind oder das Thema Roboter einfach spannend finden, werden Pepper ebenfalls verwenden, weswegen wir für diese Personengruppe passende Gesprächsthemen und lustige Animationen vorbereiten.
+
+Für Dozenten und Angestellte der Hochschule sind Themen wie der Stundenplan und die Raumfindung eher uninteressant und der Mensaplan wieder interessanter. Diese beiden Personas werden Pepper sehr wahrscheinlich am wenigsten verwenden. 
+
+Für Besucher sind Themen wie Informationen über Studiengänge und allgemein zur Hochschule eher interessanter als alle anderen Themen. 
+
+Um genau sagen zu können, welche Personengruppe sich mit Pepper unterhalten und über welche Themen sie sprechen, müssen wir Pepper zuerst sehr oft in der Praxis einsetzten und verschiedene Daten sammeln. Dazu werden wir im Punkt “Datensammlung” näher eingehen.
+
+
+\section{Datensammlung}
+Sobald alle Anwendungsfälle in Pepper integriert sind und er für den Praktischen Nutzen einsatzbereit ist, haben wir uns überlegt, verschiedene Daten zu sammeln um eine Art Feedback zu erhalten und diese graphisch darzustellen.
+
+Folgende Daten sollen gesammelt werden:
+\begin{itemize}
+    \item Distanz
+    \item Alter
+    \item Geschlecht
+    \item Emotion/Stimmung 
+    \item Mimic
+    \item Dialog Zeit
+    \item ...
+\end{itemize}
+
+Diese Daten sollen während des Gesprächs zwischen Pepper und dem User gesammelt werden und zu unserem Node Server gesendet werden. 
+Auf dem Node Server werden diese anschließend weiter verarbeitet und vorerst in einer MySQL Datenbank abgespeichert.
+
+Um die Daten sammeln zu können, bietet Softbanks praktischerweiße verschiedene KI orientierte Funktionen an, wie zum Beispiel die Gesichts,- oder Alterserkennung. 
+
+Diese Daten sollen dafür eingesetzt werden, um Pepper in Zukunft weiter zu optimieren und folgende Fragen zu beantworten:
+\begin{itemize}
+    \item War das Gespräch erfolgreich und konnte Pepper helfen?
+    \item Hatte der User freude bei der Benutzung des Roboters?
+    \item Hatte der User Schwierigkeiten, sich mit dem Pepper zu unterhalten oder verlief alles reibungslos? 
+    \item Welche Personengruppe hat mit Pepper am meisten gesprochen?
+    \item Wie lange verläuft ein Gespräch im Durchschnitt?
+    \item Gab es Fragen, die nicht beantwortet werden konnten?
+    \item Welcher Anwendungsfall wurde wie oft verwendet?
+    \item Gab es Systemfehler?
+    \item Was ist die optimale Ansprech Distanz zwischen User und Roboter?
+    \item Welches Semester und/oder Studiengang ist der User
+\end{itemize}

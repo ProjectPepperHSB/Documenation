@@ -1,12 +1,113 @@
-\chapter{Anwendungsfall - XXX}
-\label{sec:anwendungsfall-xxx}
-\lhead{Kapitel 5. \emph{Anwendungsfall - XXX}}
+\chapter{Anwendungsfall - Hochschule}
+\label{sec:anwendungsfall-hochschule}
+\lhead{Kapitel 4. \emph{Anwendungsfall - Hochschule}}
 
-\section{Allgemein}
-Wir haben im Kapitel <HIER KAPITEL EINFÜGEN> die Soft- und Hardwareanforderungen definiert und werden
-dies für diesen Anwendungsfall nicht noch einmal durchführen, da auch dieser Use-Case in der
-selben Applikation, integriert ist.
+\section{Die Vorüberlegungen}
+Nachdem wir uns darauf geeinigt haben, mindestens einen Anwendungsfall für den Roboter Pepper zu entwickeln,
+und sich dieser auf den Alltag an der Hochschule Bremerhaven beziehen soll, haben wir uns damit konfrontiert gesehen,
+uns Gedanken darüber zu machen, wie genau eine Interaktion zwischen einem Studenten oder einer Lehrkraft und dem Roboter
+stattfinden kann. Aufgrund der den aktuellen Beschlüssen der Regierung ist das Leben auf dem Campus fast zum Stillstand gekommen,
+wodurch sich für Pepper wenige Einsatzgebiete ergeben. Wir gehen jedoch davon aus, zu einer neuen Normalität zurück zu gekangen,
+und werden Pepper dahingehend vorbereiten.
 
-\section{Die Herkunft der Daten}
+Folgende Fragen sind für uns zentral:
+\begin{itemize}
+    \item Wie sieht der Alltag auf dem Campus aus?
+    \item Wann soll Pepper mit wem interagieren?
+    \item Welche Funktionalitäten wollen wir implementieren?
+    \item Wo setzen wir welche Werkzeuge ein?
+    \item Wo fangen wir an?
+\end{itemize}
 
-\section{Erläuterungen zum Quellcode}
+Wir sind dann ziemlich schnell darauf gekommen, dass wir eine klare Struktur benötigen,
+um unsere Aufgaben und Ziele klar zu definieren. Daraufhin ist folgende Skizze entstanden,
+welche grob die Hauptfunktionalitäten unseres Projektes festhält:
+\begin{center}
+    \textbf{HIER WIRKLICH EINE SKIZZE ANFERTIGEN}
+\end{center}
+
+% \begin{figure}[H]
+% \includegraphics[width=\textwidth]{}
+% \caption{Grundfunktionalitäten}
+% \label{fig:skizze}
+% \centering
+% \end{figure}
+
+
+In Abb. %\ref{fig:skizze}
+ist zu sehen, dass wir folgende Grundfunktionalitäten definiert haben:
+
+\begin{itemize}
+    \item Stundenplan
+    \item Raum- und Lageplan
+    \item Speisekarte der Mensa
+    \item Smalltalk
+\end{itemize}
+
+Zudem soll die Interaktion mit Pepper für alle möglich sein. Studierende und Lehrende sollen erfragen können,
+wo welche Vorlesung stattfindet, in der Kaffeteria oder Mensa soll sich Pepper mit Gästen unterhalten, Smalltalk führen oder
+Empfehlungen für bestimmte Speisen ausgeben. Darüber hinaus wollen wir Pepper das lückenlose Interagieren beibringen, damit er an
+besonderen Veranstaltungen, wie dem Tag der offenen Tür oder dem Tag der Informatik, Interessenten Informationen über die Hochschule,
+das Leben auf dem Campus, sowie allgemeine Empfehlungen für die Stadt Bremerhaven ausgeben kann.
+
+\section{Hard- und Softwarespezifikationen}
+Da Peppers Tablet auf Android basiert, liegt es auf der Hand, Android Studio als Entwicklungsumgebung zu benutzen. Der
+Einfachheit halber, ist nachfolgend eine Tabelle, welche die von uns für die Pepper Anwendung benutzte Software mit den
+entsprechenden Versionsnummern auflsitet.
+
+\begin{table}[H]
+    \caption{Hard- und Softwarespezifikationen}
+    \label{table}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|p{100pt}|p{120pt}|p{180pt}|}
+        \hline
+        Software / Tool & Version / Spezifikation     & Beschreibung                                                                     \\
+        \hline\hline
+        Android Studio  & Arctic Fox 2020.3.1 Patch 4 & IDE der IntelliJ Plattform                                                       \\
+        \hline
+        Gradle          & 7.0.3                       & Build Tool                                                                       \\
+        \hline
+        Android SDK     & 12                          & Android Framework                                                                \\
+        \hline
+        Pepper API      & v1.9  API 23                & Entwicklungstools für Pepper mit Emulator, Deploy und Debug Funktion             \\
+        \hline
+        Android API SDK & 31                          & Framework zum Verbinden und Installieren von Software auf Geräten mit Android OS \\
+        \hline
+        Java SDK        & 1.8                         & Basis der Programmiersprache Java und dessen Grundfunktionalitäten               \\
+        \hline
+        \multicolumn{3}{p{380pt}}{Mit abwichenden Versionen kann es zu Kompatibilitätsproblemen kommen.}
+    \end{tabular}
+    \label{tab1}
+\end{table}
+
+%Um unsere Software von zu Hause aus zu testen, nutzen wir den Build-In Emulator, welcher bei der installation
+%der Pepper API in Android Studio integriert wird. Hiermit ist es möglich die sprachliche Kommunikation zwischen
+%Pepper und dem Anwender, sowie die Aus- und Eingaben auf dem Tablet zu testen.
+
+Der Roboter Pepper selbst, ist XXX groß, wurde am XXX von XXX gekauft und ist seit XXX im Besitz der Hochschule
+und läuft derzeit mit der Version XXX.
+
+\section{Implementierung}
+
+
+% \begin{figure}[H]
+% \includegraphics[width=\textwidth]{bannerNmenu}
+% \caption{Banner und Menülesite im angemeldeten Zustand als Admin}
+% \label{fig:menu}
+% \centering
+% \end{figure}
+
+% In der Menüleiste werden je nach Anmeldestatus des Nutzers, andere Unterpunkte dargestellt. Nicht registrierte Nutzer haben keine Möglichkeit, ein Portfolio einzusehen oder auf unsere exklusive \grqq{}Gamble\grqq{} Seite zu gelangen. Des Weiteren beinhaltet die Menüleiste alle relevanten Links und Weiterleitungen unserer Website, sowie ein animiertes Widget von \href{https://de.tradingview.com/}{TradingView}, welches aktuelle Kursdaten zu ausgewählten Wertpapieren in Dauerschleife anzeigt. Das Logo unserer Website wurde von Leonhard T. Schwertfeger \cite{mygainlogo} erstellt und zur Verfügung gestellt.
+
+% Zu Anfang des Projektes haben wir auf der Startseite, um sie etwas lebhafter zu gestalten, mehrere Widgets von \href{https://de.tradingview.com/ }{TradingView} mittels JavaScript eingebunden, jedoch haben wir im Laufe der Zeit gemerkt, dass es gar nicht so schwierig ist, Kursdaten wie der Öffnungs- und Schlusskurs oder auch Tageshöchst- und Tiefstwerte abzubilden, wenn man die nötigen Datensätze besitzt. Die Herkunft der bei uns benutzten Daten besprechen wir in Kapitel \ref{sec:MyGain-Trade} - Trade.
+
+% Da wir unseren Kunden eine schnelle Einsicht in unser Angebot ermöglichen wollen, ist der iFrame so eingestellt, dass er standardmäßig die \code{home.php} Seite anzeigt, welche in zwei Bereiche eingeteilt ist. Drei Viertel der Seite nimmt eine tabellarische Übersicht aller bei uns handelbaren Assets ein. Diese beinhaltet alle relevanten Kursdaten wie \grqq{}Open\grqq{}, \grqq{}Close\grqq{}, \grqq{}High / Low\grqq{} und das Volumen des Assets. Diese Daten beziehen sich auf den Zeitraum von einen Tag. Zudem besteht die Möglichkeit der direkten Weiterleitung auf die Trade Seite, sofern eines der angebotenen Wertpapiere angeklickt wird.\\
+
+% \begin{figure}[H]
+% \includegraphics[width=\textwidth]{home}
+% \caption{MyGain - Home Seite}
+% \label{fig:homesite}
+% \centering
+% \end{figure}
+
+% (Abb. \ref{fig:homesite}) Im rechten Viertel der Seite haben wir eine kleine Begrüßungsformel stehen, um Besuchern wissen zu lassen, dass hier auch Menschen am arbeiten sind. Des weiteren wird man dort, sofern man eingeloggt ist, mit einem \grqq{}Moin \code{<username>}!\grqq{} empfangen, um unseren Kunden so nah wie möglich zu sein. Als kleines Gimmick haben wir einen Besucherzähler eingebaut, der die Anzahl der Seitenaufrufe unserer Index Seite zählt. \\

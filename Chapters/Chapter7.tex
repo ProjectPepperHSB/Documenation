@@ -1,0 +1,47 @@
+\chapter{Das Backend}
+\label{sec:das-backend}
+\lhead{Kapitel 6. \emph{Das Bbackend}}
+
+\section{Allgemein}
+In Kapitel \textbf{KAPITEL VERWEIS EINFÜGEN} und \textbf{KAPITEL VERWEIS EINFÜGEN} haben wir das Thema Backend Services
+des öfteren erwähnt, daher werden wir uns nun diesem Bereich widmen.
+
+Wir als Studenten haben durch das Studium, aber auch durch Nebenjobs und private Projekte Erfahrungen
+mit verschiedenen Programmierkonzepten sammeln können. Da wir bei der Entwicklung der Pepper Anwendung
+jedoch nur zwischen den Sprachen Kotlin und Java entscheiden konnten, haben wir zu Beginn unseres Projektes,
+das Gefühl gehabt, in unserer Entwicklung, was die Nutzung und Implementierung verschiedener
+Methoden angeht sehr eingeschränkt zu sein.
+
+Genau hier war es uns von Vorteil, Kenntnisse zu NodeJS und Javascript gesammelt zu haben, denn damit
+ist es uns möglich gewesen, einen Express Server mit Hilfe der Laufzeitumgebung NodeJS aufzusetzen,
+auf welchem wir vielfältige Möglichkeiten zur Implementierung von Komplexen Vorgängen haben.
+
+\section{Implementierung}
+Damit wir eine Anwendung erstellen können, auf die wir über eine URL von außen zugreifen können,
+brauchen wir natürlich einen Webserver. Da wir in der Hochschule verschiedene Server benutzen dürfen,
+haben wir uns mit Prof. Dr. Oliver Radfelder abgesprochen, welcher uns daraufhin einen
+gemeinsamen Benutzeraccount mit Namen \grqq{}hbv-kms\grqq{} auf dem Server Hopper
+angelegt hat.
+Für unseren gemeinsamen Account steht ein Dockercontainer zur Verfügung, auf welchem wir unsere
+Anwendung bereitstellen. Von außen ist unsere Anwendung dann über die URL
+\href{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http}{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http}
+erreichbar.
+
+\subsection{NodeJS, npm, Express}
+Unsere Webanwendung basiert auf NodeJS und JavaScript. NodeJS ist eine Laufzeitumgebung, welche JavaScript außerhalb des Browsers
+ausführen kann und somit wichtige Prozesse auf dem Server anstatt beim Client ausführen kann. NodeJS hat einen eigenen Paketmanager,
+npm (Node Package Manager), mit welchem sich vielfältige Libraries und Frameworks installieren und ausführen lassen.
+
+... wir nutzen das Modul Express, welches es uns ermöglicht, ohne großen Aufwand, eine vollig anpassbare Webanwendung zu erstellen.
+
+
+
+\subsection{Endpunkte}
+Endpunkte, auch Routes genannt, sind Schnittstellen, an denen man von außen zugreifen kann.
+Ein Beispiel für eine Route innerhalb der Anwendung ist: /docker-hbv-kms-http/timetable.
+Anzumerken ist, dass jede unserer Routes mit /docker-hbv-kms-http beginnt, da dies das
+der Stamm unseres Anwendungspfades innerhalb des Hochschulwebservices ist.
+
+\section{Installation}
+erst dies, dann dass und ananas
+ggf. muss das Ddeploy Skript angepasst werden
