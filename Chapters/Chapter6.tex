@@ -234,7 +234,7 @@ keine
 
 \subsubsection{Dashboard: Detailansicht}
 \label{sec:routes-dashboard-detail}
-\textbf{Beschreibung:} Dient der visuellen Übermittlung der Detailansicht einer Konversation. (vgl. Abb. \ref{fig:webappdetail})
+\textbf{Beschreibung:} Dient der visuellen Übermittlung der Detailansicht einer Konversation (vgl. Abb. \ref{fig:webappdetail}).
 Dies ist nur über den Browser erreichbar, sofern ein gültiges JSON Web Token im Cookie hinterlegt ist.
 
 \textbf{Methode:} GET
@@ -258,24 +258,22 @@ Dies ist nur über den Browser erreichbar, sofern ein gültiges JSON Web Token i
 
 \subsubsection{Dashboard: Datenabfrage}
 \label{sec:routes-dashboard-query}
-\textbf{Beschreibung:} Endpunkt, welcher das JSON Web Token überprüft und bei Erfolg den übermittelten
-Query-String ausführt. Die Antwort wird als JSON Objekt zurückgegeben. Diese Methode kann zum Beispiel im Admin Dashboard
-nach Eingabe eines Query Strings in der Suchleiste abgerufen werden.
+\textbf{Beschreibung:} Dieser Endpunkt dient der Abfrage von \textit{n} Datenreihen, welche auf dem Admin Dashboard
+dargestellt werden. Dies wird für die Tabelle, sowie für die dortigen Visualisierungen verwendet.
 
 \textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/dashboard/getData
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/getData
 
 \textbf{Parameter:}
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/getData}
+    \label{table:/docker-hbv-kms-http/api/v1/getData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
-        Param         & Typ    & Beschreibung                              \\
+        Param & Typ    & Beschreibung                        \\
         \hline
-        query\_string & String & MySQL Query String                        \\
-        n             & String & [optional] Anzahl der abzurufenden Zeilen \\
+        n     & String & Anzahl der abzurufenden Datenreihen \\
         \hline
     \end{tabular}
 \end{table}
@@ -328,36 +326,25 @@ Anschließend wird nach /docker-hbv-kms-http/ weiter geleitet. (vgl. Abschnitt \
 
 \subsection{API Endpunkte / Routes}
 \label{sec:api-routes}
+Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit ``api' in der URI hiterglegt. Anschließend
+ist die Versionsnummer des Endpunktes anzugeben. Bisher gibt es nur die Version 1.
 
-\subsubsection{Datenspeicherung}
-\label{sec:api-save-data}
-\textbf{Beschreibung:} Dieser Endpunkt kann über GET und POST angesprochen werden und dient der
-Speicherung von Daten. Diese Daten werden von Pepper oder externen Skripten an die Webanwendung gesendet,
-welche anschließend die Speicherung realisiert.
+\subsubsection{Speicherung von Emotionsdaten}
+\label{sec:api-saveEmotionData}
+\textbf{Beschreibung:} Dieser Endpunkt dient der Speicherung verschiedener Daten, welche sich im Verlauf einer
+Konversation mit Pepper ergeben.
 
-\textbf{Methode:} GET, POST
+\textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/dashboard/collector
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/saveEmotionData
 
-Der Parameter ``subject'' gibt an, welche Art von Daten gespeichert werden sollen.
-Folgende Strings sind valide Wete für den Parameter ``subject'' bei einer GET Anfrage:
-\begin{itemize}
-    \item emotion\_data
-    \item use\_case\_data
-    \item did\_not\_understand\_data
-\end{itemize}
-
-Der GET Endpunkt nimmt nur Key-Value Paare entgegen, hingegen nimmt der POST Endpunkt auch JSON Objekte an.
-
-\textbf{Parameter für GET mit subject = emotion\_data:}
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/collector2}
+    %\label{table:/docker-hbv-kms-http/api/v1/saveEmotionData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
         Param             & Typ            & Beschreibung                                            \\
         \hline
-        subject           & String         & Art des zu speichernden Sachverhaltes                   \\
         identifier        & String         & Identifikationsnummer der Konversation                  \\
         distance          & String / Float & [optional] Distanz zwischen Pepper und dem Sprecher     \\
         age               & String / Float & [optional] Alter des Sprechers                          \\
@@ -371,48 +358,70 @@ Der GET Endpunkt nimmt nur Key-Value Paare entgegen, hingegen nimmt der POST End
     \end{tabular}
 \end{table}
 
+\dotfill
 
-\textbf{Parameter für GET mit subject = use\_case\_data:}
+\subsubsection{Speicherung des verwendeten Anwendungsfalles}
+\label{sec:api-saveUseCaseData}
+\textbf{Beschreibung:} Realisierung der Speicherung der in einer Konversation verwendeten Anwendungsfälle.
+
+\textbf{Methode:} GET
+
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/saveUseCaseData
+
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/collector3}
+    \label{table:/docker-hbv-kms-http/api/v1/saveUseCaseData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
         Param      & Typ    & Beschreibung                           \\
         \hline
-        subject    & String & Art des zu speichernden Sachverhaltes  \\
         identifier & String & Identifikationsnummer der Konversation \\
         use\_case  & String & Name des Use-Cases                     \\
         \hline
     \end{tabular}
 \end{table}
 
-\textbf{Parameter für GET mit subject = did\_not\_understand\_data:}
+\dotfill
+
+\subsubsection{Speicherung von nicht verstandenen Phrasen}
+\label{sec:api-saveNotUnderstandPhrases}
+\textbf{Beschreibung:} Realisierung der Speicherung der von Pepper nicht verstandenen Wörter und Phrasen.
+
+\textbf{Methode:} GET
+
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases
+
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/collector4}
+    \label{table:/docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
         Param      & Typ    & Beschreibung                           \\
         \hline
-        subject    & String & Art des zu speichernden Sachverhaltes  \\
         identifier & String & Identifikationsnummer der Konversation \\
         phrase     & String & Nicht verstandene Phrase               \\
         \hline
     \end{tabular}
 \end{table}
 
-Für eine POST Anfrage ist nur ``conversation\_data'' ein gültiger Wert für den Parameter ``subject''.
+\dotfill
 
-\textbf{Parameter für POST mit subject = conversation\_data:}
+\subsubsection{Speicherung von zusätzlichen Daten}
+\label{sec:api-saveAttributeData}
+\textbf{Beschreibung:} Dieser Endpunkt ermöglicht die Speicherung von weiteren, variablen und nicht
+vordefinierten Informationen.
+
+\textbf{Methode:} POST
+
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/saveAttributeData
+
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/collector5}
+    \label{table:/docker-hbv-kms-http/api/v1/saveAttributeData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
         Param      & Typ           & Beschreibung                           \\
         \hline
-        subject    & String        & Art des zu speichernden Sachverhaltes  \\
         identifier & String        & Identifikationsnummer der Konversation \\
         data       & String / JSON & variable Daten der Konversation        \\
         \hline
@@ -431,19 +440,19 @@ Abfrage wird das Ergebnis des SQL-Statements als JSON zurückgeliefert.
 
 \textbf{Methode:} POST
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/sql
 
 \textbf{Parameter:}
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/api/v1}
+    \label{table:/docker-hbv-kms-http/api/v1/sql}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
-        Param      & Typ    & Beschreibung                                   \\
+        Param      & Typ    & Beschreibung               \\
         \hline
-        auth\_key  & String & API-Token                                      \\
-        subject    & String & Art der Abfrage (``test'' oder ``sql\_query'') \\
-        sql\_query & String & Auszuführender SQL Befehl                      \\
+        auth\_key  & String & API-Token                  \\
+        subject    & String & [optional] Art der Abfrage \\
+        sql\_query & String & Auszuführender SQL Befehl  \\
         \hline
     \end{tabular}
 \end{table}
@@ -456,11 +465,11 @@ Bei erfolgreicher Abfrage wird ein JSON Objekt, oder einen HTML String zurückge
 
 \textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/timetable
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/timetable
 
 \textbf{Parameter:}
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/timetable}
+    \label{table:/docker-hbv-kms-http/api/v1/timetable}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
@@ -481,13 +490,11 @@ Bei erfolgreicher Abfrage wird ein JSON Objekt, oder einen HTML String zurückge
 \textbf{Beschreibung:} Liefert den Mensaplan für die aktuelle Woche als JSON Objekt zurück.
 \textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/timetable
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/mensadata
 
 \textbf{Parameter:} keine
 
 \dotfill
-
-
 
 \subsubsection{Abfrage des Mensaplans als Bild}
 \label{sec:api-mensa-img}
@@ -495,7 +502,7 @@ Bei erfolgreicher Abfrage wird ein JSON Objekt, oder einen HTML String zurückge
 
 \textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/timetable/img
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/mensadata/img
 
 \textbf{Parameter:} keine
 
@@ -532,11 +539,11 @@ Kryptowährungs-Handelspaar zurückliefern.
 
 \textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/crypto
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/crypto
 
 \textbf{Parameter:}
 \begin{table}[H]
-    \label{table:/docker-hbv-kms-http/crypto}
+    \label{table:/docker-hbv-kms-http/api/v1/crypto}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \hline
@@ -555,7 +562,7 @@ Kryptowährungs-Handelspaar zurückliefern.
 
 \textbf{Methode:} GET
 
-\textbf{Endpunkt:} /docker-hbv-kms-http/ip
+\textbf{Endpunkt:} /docker-hbv-kms-http/api/v1/ip
 
 \textbf{Parameter:} keine
 
@@ -577,7 +584,7 @@ kann es zu abweichenden Beschreibungen und weiteren Status Codes kommen.
         200         & OK                                 \\
         401         & ungültige Parameter                \\
         404         & Datei oder Endpunkt nicht gefunden \\
-        500         & Interner Server Error              \\
+        500         & Interner Server Fehler             \\
         \hline
     \end{tabular}
 \end{table}
