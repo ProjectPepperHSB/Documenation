@@ -826,6 +826,17 @@ gehört auch das Passwort.
 
 \section{Möglichkeiten der Erweiterung}
 \lhead{\nodechapter \emph{Node - Express Webanwendung: mögl. der Erweiterung}}
+Da wir neben diesem Projekt auch für das KI Lab arbeiten und dort ab und zu gewisse Vorführungen der bisherigen Fährigkeiten von
+Pepper stattfinden, haben wir uns dazu entschieden, eine andere Variante des Dashboards zu implementieren. Dies ermöglicht die
+Echtzeitübertragung der von Pepper wahrgenommenen Informationen. Somit können wir mit Hilfe einer weiteren Webanwendung alle Informationen
+im Browser aufzeigen und zudem verschiedene Diagramme in Echtzeit aktualisieren. Dies bietet die Möglichkeit, den Interagierenden Personen
+aufzuzeigen, welche Daten in welchem Umfang von Pepper wahrgenommen werden. Da dies nur für die Echtzeitdarstellung gedacht ist,
+werden diese Daten nicht, wie in unserer zuvor dargelegten Webanwendung, gespeichert. Zu finden ist diese separate Anwendung
+unter \href{https://github.com/ProjectPepperHSB/WebsocketServer}{https://github.com/ProjectPepperHSB/WebsocketServer}
+
+Realisiert wurde dies ebenfalls mit Hilfe von Express, sowie dem Node Modul Socket.io, welches eine Websocketverbingung zwischen dem Browser (Clientside)
+und dem Server, bzw. dem Backend erzeugt, über welche dann die von Pepper an die Webanwendung gesendeten Informationen übermittelt werden.
+
 
 Es wäre denkbar, die Webanwendung weiter auszubauen, verschiedene Benutzerkonten mit unterschiedlichen Berechtigungen anzulegen und
 diesen nur beschäränkte Einsicht in die Daten zu gewähren. Auch die Steuerung der Pepper App über das Admin Dashboard wäre
