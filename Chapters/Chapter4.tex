@@ -31,9 +31,12 @@ Folgende Fragen sind für uns zentral:
 Wir sind dann ziemlich schnell darauf gekommen, dass wir eine klare Struktur benötigen,
 um unsere Aufgaben und Ziele klar zu definieren. Daraufhin ist folgende Skizze entstanden,
 welche grob die Hauptfunktionalitäten unseres Projektes festhält:
-\begin{center}
-    \textbf{HIER WIRKLICH EINE SKIZZE ANFERTIGEN}
-\end{center}
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{Figures/pepper-usecase-skizze.jpg}
+    \caption{Skizze: Konzeptplanng der Anwendungsfälle}
+    \label{fig:integration}
+    \centering
+\end{figure}
 
 % \begin{figure}[H]
 % \includegraphics[width=\textwidth]{}
@@ -51,13 +54,36 @@ ist zu sehen, dass wir folgende Grundfunktionalitäten definiert haben:
     \item Raum- und Lageplan
     \item Speisekarte der Mensa
     \item Smalltalk
+    \item Informationen über die Hochschule
 \end{itemize}
+
+Auf Grundlage der diese Grundfunktionalitäten haben wir damit begonnen die Anwendungsfälle weiter zu spezifizieren in dem wir diese in einem Anwendungsfall-Diagramm zusammen getragen haben. 
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{Figures/use-case-diagram.jpg}
+    \caption{Diagramm: Anwendungsfall-Diagramm}
+    \label{fig:integration}
+    \centering
+\end{figure}
+
+Wir haben hierbei die nutzbaren Funktionalitäten für die jeweiligen Akteure der Software voneinander getrennt und in Beziehung zueinander gesetzt. Die Anwendung haben wir in zwei verschiedene Grundsysteme voneinander getrennt. Pepper selbst bietet Funktionalitäten für die Akteure der linken Seite des Diagramms, dies können Studenten, Mitarbeiter, Dozenten oder Besucher der Hochschule sein. Rechts sind die serverseitigen Funktionalitäten der Anwendung darstellt, welche Beispielsweise durch uns Entwickler selbst oder einem zugeteiltem Admin des Systems zur verwendbar sind. Es wäre an dieser Stelle auch denkbar, dass hier an den Daten interessierte Personen der Hochschule, wie beispielsweise Werbeagenturen usw. Zugriff auch diese Funktionalitäten erhalten.
 
 Zudem soll die Interaktion mit Pepper für alle möglich sein. Studierende und Lehrende sollen erfragen können,
 wo welche Vorlesung stattfindet, in der Kaffeteria oder Mensa soll sich Pepper mit Gästen unterhalten, Smalltalk führen oder
 Empfehlungen für bestimmte Speisen ausgeben. Darüber hinaus wollen wir Pepper das lückenlose Interagieren beibringen, damit er an
 besonderen Veranstaltungen, wie dem Tag der offenen Tür oder dem Tag der Informatik, Interessenten Informationen über die Hochschule,
 das Leben auf dem Campus, sowie allgemeine Empfehlungen für die Stadt Bremerhaven ausgeben kann.\\
+
+Die geplante Struktur der Anwendung lässt sich mit der unten dargestellten Abbildung möglichst einfach verdeutlichen. 
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{Figures/anwendungarchitektur.png}
+    \caption{Diagramm: Architektur der Anwendung}
+    \label{fig:integration}
+    \centering
+\end{figure}
+
+Die Architektur ist in drei verschiedene Systeme unterteilt, welche in der mit den Pfeilen dargestellten Beziehung zueinander stehen. Hierbei ist der Bereich des Backend-Service ausschließlich dafür da, Daten zu sammeln oder zu generieren, welche dann an den Server gesendet werden. Der Server besteht im groben aus dem Node Server, dem Web Server sowie der Datenbank. Im Gegensatz zu dem Backend-Service steht Pepper mit Server stehen ständig in einem asynchronen Austausch miteinander.
 
 \section{Entwicklungsumgebungen für Pepper}
 
