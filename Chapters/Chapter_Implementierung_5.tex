@@ -1,0 +1,336 @@
+\newcommand{\chapterpepperapplication}{Kapitel 5. }
+
+\chapter{Implementierung der Pepper Applikation}
+\label{sec:Pepper_Applikation}
+\lhead{\chapterpepperapplication \emph{Pepper - Applikation}}
+
+
+Nachdem die Einrichtung von Android Studio und die Planung der Hochschul-Anwendungen für Pepper 
+abgeschlossen waren, ging es nun darum, Pepper auf unseren Anwendungsfällen zu programmieren. Der 
+erste Schritt war es, sich mit der Programmstruktur von Pepper vertraut zu machen. Da wir den 
+kompletten Code für die Touristik App der Masterstudenten als Referenz verwenden konnten, haben wir 
+uns schnell ein Bild von der Struktur machen können.
+
+\section{Das Grundgerüst}
+
+\ref{fig:FilesInAS} Sobald ein neues Projekt in Android Studio erstellt wird, wird in etwa folgende Ordner Struktur generiert.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=5cm]{Figures/AppChapter/4_1_1_2.JPG}
+    \caption{Grundgerüst Android Studio}
+    \label{fig:FilesInAS}
+    \centering
+\end{figure}
+
+\subsection{Assets}
+
+In dem ``assets'' Ordner können verschiedene Daten abgelegt werden, auf die im Code zu jeder Zeit zugegriffen werden kann. 
+Zum Beispiel können JSON Dateien abgelegt und im Code gelesen und verändert werden.
+
+\subsection{Java}
+In dem nächsten Ordner ``Java'' befinden sich alle unsere Java Klassen und somit der komplette Code der Pepper Anwendung. Sobald ein 
+neues Projekt in Android Studio erstellt wird, wird die MainActivity Klasse automatisch generiert. Diese Klasse ist auch das Herzstück 
+von Pepper, da hier der komplette Code gestartet, gesteuert und beendet wird. Hierzu werden wir im späteren Verlauf mehr erzählen.
+
+\subsection{Manifests}
+In dem Ordner ``manifests'' befindet sich die konfigurations Datei AndroidManifest.xml. In dieser Datei können verschiedene allgemeine 
+Einstellungen zu Pepper getroffen werden. Die wichtigsten Einstellungen sind die ``permissions''. Dies sind Berechtigung-Parameter, mit 
+denen bestimmte Komponenten von Pepper oder Verbindungen erlaubt werden können. Da wir im Code sehr oft Request an den Node-Server 
+geschickt haben oder Webseiten auf dem Tablet von Pepper angezeigt haben, mussten wir zuerst die Verbindung mit dem Internet in der 
+AndroidManifest erlauben. Auch das Zugreifen auf den Externen Speicher von Pepper kann in dieser Datei erlaubt und konfiguriert werden. 
+Des Weiteren können alle wichtigen Pfade zu weiteren Config Dateien und der MainActivity Klasse gesetzt werden.
+
+\subsection{Ressourcen}
+Der ``res'' Ordner steht für die Ressourcen der Anwendung. Diese sind wie folgt gegliedert:
+\begin{itemize}
+\item In dem ersten Unterordner ``Anim'' befinden sich die Animationen von Pepper. Er besitzt die Möglichkeit, jedes Gelenk zu bewegen, 
+um wie ein Mensch zu wirken. Die Pepper SDK besitzt eine eigene GUI, um Peppers Bewegungen zu konfigurieren und neue Animationen zu erstellen. 
+In dem Editor befindet sich bereits eine große Auswahl an vordefinierten Bewegungen. In unsere Applikation haben wir bis auf die vordefinierte 
+``idle Animation''  (Standardbewegung, wenn Pepper untätig ist) keine weiteren Animationen verwendet. 
+
+\item In dem ``drawable'' Ordner befinden sich alle Bilder, die auf dem Tablet angezeigt werden können.
+
+\item Der ``layout'' Ordner beinhaltet alle xml-Dateien, die für die Graphische Darstellung auf dem Tablet verwendet werden. Android 
+Studio bietet hier ebenfalls eine GUI mit verschiedenen Komponenten zur Auswahl und eine Echtzeit Darstellung des Layouts. 
+
+\item Im Ordner ``mipmap'' (MIP = multum in parvo = vieles im Kleinen) befinden sich vorberechnete und optimierte Bildfolgen, die die 
+Darstellungsqualität von Texturen verbessern, wenn diese kleiner als in der ursprünglichen Größe dargestellt werden. \ref{fig:MipMap}
+Dadurch, dass Texturen mithilfe der MipMaps verkleinert dargestellt werden, benötigt das Anzeigen von Bildern auf dem Tablet weniger Rechenzeit.
+\cite{MipMaps}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{Figures/AppChapter/4_1_2.png}
+    \caption{MipMapping}
+    \label{fig:MipMap}
+    \centering
+\end{figure}
+
+\item Der ``raw'' Ordner beinhaltet alle Topic Dateien der Anwendung und werden im Chatbot zur verbalen Interaktion mit dem User 
+verwendet. In den Topics können Gesprächsthemen vordefiniert und mit verschiedenen Funktionen verbunden werden. Die Syntax eines Topics ist 
+relativ simpel gehalten und selbsterklärend, sodass es uns nicht schwer fiel, viele verschiedene Gesprächsthemen für unsere Anwendung zu entwickeln. 
+
+\item Im ``values'' Ordner befinden sich xml-Dateien, die Werte für die verschiedenen Ressourcen bereitstellen. Dies sind zum Beispiel
+ Werte wie Farben, Stilen oder Dimensionen.
+
+\item Der ``xml'' Ordner wurde manuell erstellt und beinhaltet hauptsächlich weitere xml-Dateien, die für Konfigurationen verwendet 
+wurden. Hierauf werden wir im späteren Verlauf näher drauf eingehen. 
+\end{itemize}
+
+\subsection{Gradle}
+
+Im unteren Bereich befinden sich alle wichtigen Gradle Konfigurationsdateien. Gradle ist ein Build-Toolkit, um den Build-Prozess von Android Studio 
+zu automatisieren und zu verwalten. Sobald der Code ausgeführt wird, werden zuerst alle Gradle Einstellungen ermittelt, Bibliotheken und Frameworks 
+installiert und anschließend wird der Code kompiliert. Gradle erstellt anschließend eine APK (Android App Bundles), womit die Androidanwendung 
+erstellt und gestartet werden kann. 
+\cite{Gradle}
+In der ``build.gradle'' Datei können benutzerdefinierte Build-Konfigurationen definiert werden. Hier kann zum Beispiel die Versionen der Pepper 
+SDK verwaltet werden und außerdem können externe Frameworks, die nicht in der Standardbibliothek von Java enthalten sind, implementiert werden.
+
+\section{Programmcode}
+
+\subsection{MainActivity}
+
+Die MainActivity ist die Hauptklasse unserer Applikation, da hier alle Prozesse gesteuert werden. Die Klasse wird mit der 
+``RobotActivity'' Klasse erweitert, die mehrere Methoden bereitstellt, um das Verhalten von Pepper zu programmieren. 
+\ref{fig:AAL} Außerdem implementiert sie das ``RobotLifecycleCallbacks'' Interface, die bestimmte Lebenszyklus-Methoden voraussetzt 
+und bereitstellt.\\ 
+Diese können wie folgt zusammengefasst werden:
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{Figures/AppChapter/4_1_3.png}
+    \caption{Android Activity-Lifecycle}
+    \label{fig:AAL}
+    \centering
+\end{figure}
+
+Die ``Android Activity Lifecycle'' sind Methoden, die in Android Studio als Standard bereitgestellt werden. Mit der QISDK von 
+``RobotLifecycleCallbacks'' kommen die ``Robot Lifecycle'' Methoden hinzu, die speziell für Pepper ausgerichtet sind. 
+Alle diese Methoden werden automatisch aufgerufen, sobald Pepper einen bestimmten Punkt oder eine bestimmte Situation erreicht hat. 
+
+Die komplette Applikation läuft auf einem Hauptprozess, der ``UI Thread'' genannt wird. Die einzigen Ausnahmen, die nicht auf diesem 
+Thread laufen, sind die ``Robot Lifecycle'' Methoden und natürlich auch asynchrone Funktionen.
+
+Im Folgenden werden die wichtigsten ``Lifecycle-Methoden'' erläutern:
+
+\subsubsection{On Create} 
+
+Die ``onCreate()'' Methode ist der erste Einstiegspunkt, sobald die Pepper Anwendung gestartet wird. Sie wird auch nur einmalig 
+ausgeführt. Damit die Callbacks der RobotLifecycleCallbacks Implementation überhaupt funktioniert, ist der erste Schritt, das registrieren 
+der QISDK. Des Weiteren haben wir in der ``onCreate()'' Methode alle erforderlichen Initialisierungen durchgeführt, wie zum Beispiel 
+das Hinzufügen des Ressourcenordners oder die Spracheinstellung, die Pepper's Chatbot verwenden soll.
+Mit ``setContentView()'' können wir bestimmen, was auf Pepper’s Tablet angezeigt wird. Hier werden die XML-Dateien aus dem Layout 
+Ordner geladen und in der ContentView initialisiert. 
+
+\subsubsection{On Destroy} 
+
+Die ``onDestroy'' Methode wird ausgeführt, sobald die Anwendung beendet wird. Sie wird hauptsächlich dafür verwendet, um Ressourcen 
+wie Threads freizugeben. In unserer Anwendung müssen wir hier zusätzlich die QISDK unregistriert, damit keine weiteren ``Lifecycle'' 
+Aufrufe auftreten. 
+
+\subsubsection{Focus Gained} 
+
+Die ``onRobotFocusGained'' Methode ist ein Lifecycle exklusiv für Pepper. Diese wird aufgerufen, sobald Pepper eine Person im Fokus 
+hat. Pepper richtet anschließend sein Kopf zu dieser Person und hält stets Blickkontakt. Selbst wenn die Person sich bewegt, verfolgt Pepper 
+diese Person solange mit seinem Kopf, bis er den Fokus verliert. 
+In dieser Methode werden alle Komponenten initialisiert, die zur Interaktion mit dem User verwendet werden. Hierfür wird die Variable 
+``QiContext'' übergeben, die es erlaubt, bestimmte Aktionen durchzuführen, Ressourcen bereitzustellen und verschiedene Dienste 
+abzurufen. 
+Hauptsächlich wird hier der Chatbot mithilfe des ``QiContext'' bereitgestellt, sodass Pepper direkt mit dem User verbal interagieren 
+kann. Da der Chatbot stetig ausgeführt wird, während der User mit Pepper spricht, wird dieser asynchron ausgeführt, um den Prozess (Thread) 
+dieser Methode nicht zu unterbrechen. Zu dem Thema Chatbot werden wir im späteren Verlauf mehr erzählen. 
+
+\subsubsection{Focus Lost} 
+
+Sollte Pepper seinen Fokus zu dem User verlieren, wird die ``onRobotFocusLost'' Methode aufgerufen. Diese Methode wird hauptsächlich 
+dazu verwendet, um die initialisierten Komponenten aus der ``onRobotFocusGained'' Methode wieder zu beenden. 
+
+\cite{Robot_lifecycle}
+
+\newpage
+
+\subsection{Weitere Funktionen}
+
+\subsubsection{Fragments} 
+
+Beim Entwickeln der Applikation haben wir öfters die verschiedenen Pepper Projekte von Softbanks als Referenz verwendet. Diese bieten auf 
+GitHub zahlreiche Beispielprojekte an, wie bestimmte Strukturen oder Funktionen implementiert werden. 
+Eine Funktion, die wir als sehr hilfreich betrachtet haben, war das Aufteilen der Applikation in einzelne Fragmente. Dies haben wir uns aus 
+folgendem GitHub Repository abgeschaut:\\
+\url{https://github.com/softbankrobotics-labs/App-Template}
+
+Diese Fragmente besitzen ihre ganz eigenen Gesprächsthemen, Darstellungen und Funktionen. Der größte Vorteil an Fragmenten ist, dass die Topics 
+voneinander getrennt werden können. Sollte eine Anwendung zum Beispiel sehr viele Topics besitzen, ist die Gefahr groß, dass Pepper etwas falsch 
+versteht und eine Antwort zu einem anderen Gesprächsthema gibt.
+
+Zu Beginn der Implementierung haben wir unser Projekt in drei verschiedene Fragmente aufgeteilt. Das Hauptmenü ist das erste Fragment, wo 
+allgemeine Dinge gefragt werden können und mit Pepper Small Talk geführt werden kann \ref{fig:Mainmenu}. Auf seinem Tablet haben wir ein Hauptmenü erstellt, 
+wo per Knopfdruck das Fragment gewechselt werden kann. Der User hat hier aber auch die Möglichkeit, verbal das Fragment zu wechseln.
+Die anderen beiden Fragmente wurden anschließend getriggert, sobald danach gefragt oder der jeweilige Button gedrückt wurde. 
+Das zweite Fragment beinhaltete alles rund um das Thema Hochschule und Bremerhaven. Hier konnte Pepper über alles ausgefragt werden, was mit 
+diesen beiden Thema zutun hatte. In dem letzten Fragment waren unsere Anwendungsfälle implementiert. Sollte der User sich den Stunden- oder 
+Mensaplan anzeigen lassen wollen, so hätte er zuerst auf dieses Fragment wechseln müssen. 
+Letztendlich haben wir unsere finale Applikation nicht in Fragmente aufgeteilt, sodass zu jeder Zeit nach jedem Thema gefragt werden konnte, 
+ohne das Fragment wechseln zu müssen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{Figures/AppChapter/rx1.JPG}
+    \caption{Pepper Main Menu}
+    \label{fig:Mainmenu}
+    \centering
+\end{figure}
+
+Eine Applikation, die aus vielen umfangreiche Themen besteht, zieht den größten Nutzen aus der Fragmentfunktion. Themen, die sich stark voneinander 
+unterscheiden, werden somit voneinander getrennt gehalten und es spart somit auch an Ressourcen.
+
+\subsubsection{Chatbot / Topic} 
+
+Wie bereits erwähnt, wird der Chatbot in der ``onRobotFocusGained'' Methode aufgerufen. Sobald Pepper eine Person fokussiert, wird der 
+Chatbot als asynchrone Instanz bereitgestellt. Bei der Initialisierung stellen wir zuerst die Sprache, die Pepper beim Sprechen verwenden soll, 
+auf Deutsch und geben anschließend alle Topic Dateien an, die Pepper verwenden soll. In unserer Applikation verwenden wir hauptsächlich die Topics 
+``background.top'' und ``concepts.top''. Das ``concepts'' Topic dient als Erweiterung für das ``background'' 
+Topic, da hier mehrere Wörter zu einem Wort zugeordnet werden können.
+\begin{lstlisting}
+concept:(hallo)[hey hallo moin na "guten Tag"]
+\end{lstlisting}
+Diese können anschließend in dem background Topic wie folgt verwendet werden:
+\begin{lstlisting}
+u:(~hallo {Pepper}) 	Hey, schoen dich zu sehen
+\end{lstlisting}
+Nun kann Pepper mehrere Variationen von dem Wort ``hallo'' verstehen.
+
+In den Topics gibt es viele weitere hilfreiche Funktionen, die es zum Beispiel ermöglichen, die aktuelle Uhrzeit oder das Datum als Antwort 
+mitzugeben. 
+
+\begin{lstlisting}
+u:(~welche-uhrzeit) ^currentTime
+u:(~datum) Heute ist der ^currentDate
+\end{lstlisting}
+
+Es ist ebenfalls möglich, dass Peppers eine zufällige Antwort zu einer bestimmten Frage gibt. Diese kann wie folgt definiert werden:
+
+\begin{lstlisting}
+    u:([Erzaehl Sag] {mir} {ein} Witz) ^rand[
+        "Kommt ein Pferd in die Bar. Fragt der Barkeeper, Hey warum 
+        so ein langes Gesicht"
+        "Wenn Chuck Norris einen Windows Update macht, akzeptiert 
+        Microsoft seine Bedingungen."
+        "129 Prozent der Leute uebertreiben voellig"
+    ]
+\end{lstlisting}
+
+Pepper sucht sich hier eine zufällige Antwort raus und erwidert diese auf die Frage ``Erzähl mir einen Witz''. 
+
+Der größte Vorteil an den Topics ist das Aufrufen einer Methode zu einer bestimmten Frage. 
+Hierbei können einzelne Wörter, die Pepper in der Frage erkannt hat, als Variable mitgeben werden aber auch das übergeben einer Variable von 
+der Methode zur Antwort ist möglich.
+
+\begin{lstlisting}
+    u:({was} {gibt{s}} {es} {zu} essen {am} _[~week]) $day=$1 
+    ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt 
+    es entweder $qiVariableMensa.
+\end{lstlisting}
+
+Mit \string^execute() wird der Methodenaufruf gestartet. Die Methode, die aufgerufen wird, befindet sich in der Klasse ``VariableExecutor''. 
+In dieser Klasse befindet sich eine ``runWith'' Methode, die automatisch ausgeführt wird, wenn die \string^execute() Funktion in dem Topic 
+erreicht wurde.
+Die einzelnen Argumente in dieser Funktion sind String Parameter, die wir der Methode ``runWith'' mitgeben. Das Argument 
+``qiVariableMensa'' wird dazu verwendet, um mittels ``switch case'' Befehlen unterscheiden können, welche Frage getriggert wurde. 
+Alle weiteren Argumente dienen als weitere String Parameter, die wir der Methode übergeben wollen. Sobald die Methode erreicht wurde, gibt es 
+die Möglichkeit, die mitgegeben Parameter umzuschreiben und der Antwort in dem Topic wieder zurückzugeben. 
+getCurrentChatBot().setQiVariable(variableName, ``Ich bin jetzt die neue qiVariable'');
+
+\subsubsection{Webview}
+
+Die Webview ist eine nützliche Funktion von Android Studio, die es erlaubt, ganze Webseiten auf dem Tablet von Pepper abzubilden. Man könnte sie ungefähr mit den IFrames von HTML vergleichen. In Android Studio funktioniert die Implementierung ungefähr genau so wie die ``setContentView()'' Funktion, da sie ebenfalls auf dem Ui-Thread ausgeführt werden muss. Doch davor müssen noch ein paar wichtige Einstellungen vorgenommen werden, bis diese Funktion implementieren kann. 
+Als Erstes muss die Verbindung mit dem Internet in der ``AndroidManifest.xml'' erlaubt werden. Wie bereits erwähnt, müssen dafür ``permissions`` geschrieben werden. 
+\begin{lstlisting}
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission
+.ACCESS_NETWORK_STATE" />
+\end{lstlisting}
+
+Nachdem wir den Internetzugriff in unserer Applikation erlaubt haben, ist der nächste Schritt das Erstellen einer Konfigurationsdatei, um die Netzwerksicherheit zu gewähren.
+Mit dem Befehl: <base-config cleartextTrafficPermitted="true" /> stellen wir sicher, dass nur Webseiten mit ``https'' aufgerufen werden dürfen. 
+Sollte der WebViewer über einen Klartext-Netzwerkverkehr, wie z.B HTTP kommunizieren, könnte dies das Risiko des Abhörens und der Manipulation von Inhalten erhöhen. Standardmäßig ist diese Option auf false gesetzt. 
+\cite{webview}
+
+Als Nächstes muss das Layout erstellt werden und eine WebView muss als Komponente mit einer eindeutigen Id hinzugefügt werden. Diese Id kann im 
+Code mithilfe der Funktion ``findViewById()'' rausgesucht und mit einem WebView Objekt initialisiert werden. Wenn die Webseite, die wir 
+auf dem Tablet widerspiegeln wollen, Javascript verwendet, müssen wir diese zusätzlich in den Einstellungen der WebView, mittels 
+``webSettings.setJavaScriptEnabled(true);'', erlauben. Mit ``web.loadUrl(‘https:...’)'' kann anschließend unsere URL von der 
+Webseite, die wir verwenden wollen, in die WebView geladen werden. 
+
+
+Nun würde sich normalerweise der Standardbrowser des Tablets öffnen, sollte der User in der Webview eine Weiterleitung zu einer anderen Webseite 
+öffnen. Um dies zu verhindern, muss die WebViewClient verändert werden, sodass ein weiterer Webview geöffnet wird, falls dieser Fall eintrifft. 
+Dies kann wie folgt implementiert werden: 
+
+\begin{lstlisting}
+web.setVebViewClient(new Callback())
+try{
+    ma.runOnUiThread(() -> {
+        ma.setContentView(R.layout.webtest);
+
+        WebView web = (WebView) ma.findViewById(R.id.webView);
+        WebSettings webSettings = web.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        web.setWebViewClient(new Callback());
+        web.loadUrl(url);
+    });
+}catch (Exception e){
+    e.printStackTrace();
+}
+
+private class Callback extends WebViewClient {
+    @Override
+    public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event){
+        return false;
+    }
+}
+\end{lstlisting}
+Wir hatten längere Zeit das Problem, dass der Webviewer nicht auf dem Emulator funktioniert hat. Sobald dieser im Code erreicht wurde, kam eine 
+Fehlermeldung, dass die GPU zu leistungsschwach wäre, um diese Aktion durchzuführen. In der älteren Version von Android Studio hat der Webviewer 
+jedoch noch funktioniert. 
+Mit der jetzigen Version ist es zurzeit nicht möglich, die Webview auf dem Emulator auszuführen und muss deshalb auf einen richtigen Pepper 
+getestet werden.
+
+\subsubsection{HumanAwareness}
+
+Damit Pepper weiß, wann er einen User fokussieren soll, gibt es die Möglichkeit, auf die ``humanAwareness'' Funktion zuzugreifen. 
+Diese ist mit den Kameras und Distanzsensoren von Pepper verbunden. Die Kameras von Pepper befinden sich in seinen beiden Augen und sind mit 
+einer Gesichtserkennung ausgestattet. Die ``humanAwareness'' Funktion bietet nun eine Vielzahl an Einstellungsmöglichkeiten, wann eine 
+Person von Pepper erkannt wird und wann nicht. Es kann zum Beispiel eingestellt werden, ab welcher Distanz eine Person erst erkannt werden soll. 
+Ist die Distanz sehr niedrig eingestellt, wird Pepper nur nach Personen suchen, die sich in seinem nahen Umfeld befinden. Auch die Distanz, 
+ab wann er den Fokus verlieren soll, kann eingestellt werden. 
+Sollte Pepper einen User fokussiert haben, ignoriert er alle weiteren Personen in seinem Umfeld. Mit der ``humanAwareness'' können auch 
+Gruppen von Menschen erkannt werden und Pepper kann zuordnen, ob es sich um eine Familie handelt oder ein Freundeskreis. Sollte zum Beispiel eine 
+Gruppe aus jungen und älteren Menschen vor Pepper stehen, ordnet Pepper sie zu einer Familie zu.
+
+\subsubsection{Personenerkennung}
+
+Peppers Kamera besitzt verschiedene KI Anwendungen, um bestimmte Eigenschaften des Users ermitteln zu können. Dies dient dafür, verschiedene 
+Daten über den User zu sammeln, um daraus zum Beispiel das Nutzerverhalten zu analysieren.
+
+Folgende Daten können über den User gesammelt werden:
+\begin{itemize}
+\item Alter
+\item Geschlecht
+\item Emotionen
+\end{itemize}
+
+Diese Eigenschaften sind von Softbanks fest vorgegeben und können nicht erweitert werden. Pepper kann anhand der Emotionen erkennen, ob der User 
+glücklich, neutral, genervt oder traurig ist.
+
+\subsubsection{No Interaction Timer}
+
+Nachdem Pepper bereits mehrere Interaktionsmöglichkeiten und Screens auf seinem Tablet besaß, hatten wir das Problem, dass wir nicht mehr von 
+irgendeinem Screen zum Hauptmenü wechseln konnten. Wenn ein User sich zum Beispiel den Mensaplan auf dem Tablet anzeigen lässt, wäre er nicht 
+mehr in das Hauptmenü zurückgekommen. 
+
+Aus diesem Grund haben wir Pepper beigebracht, ins Hauptmenü zu wechseln, sobald der User ``Zurück'' sagt. Nun konnte zu jeder Zeit 
+während des Gesprächs in das Hauptmenü gewechselt werden. Sollte der User jedoch das Gespräch mit Pepper verlassen, während er sich nicht im 
+Hauptmenü befindet, so würde der nächste User den Screen sehen, der zuletzt verwendet wurde. 
+Um dieses Problem zu lösen, haben wir eine Klasse geschrieben, die den Screen automatisch zurücksetzt.
+Sollte über eine vordefinierte Zeit keine Interaktion mit Pepper stattgefunden haben, so wird automatisch zum Hauptmenü gewechselt.
