@@ -1,36 +1,37 @@
 \newcommand{\chapterpepperusecase}{Kapitel 6. }
 
 \chapter{Implementierung der Anwendungsfälle}
-\label{sec:Pepper_Anwendungsfälle}
-\lhead{\chapterpepperusecase \emph{Pepper - Anwendungsfälle}}
+\label{sec:Pepper_Anwendungsfaelle}
+\lhead{\chapterpepperusecase \emph{Implementierung der Anwendungsfälle}}
 
-Im Folgenden werden wir auf die Implementierung unserer Anwendungsfälle eingehen. Hierbei gehen wir zuerst auf die Planung und anschließend auf die Bereitstellung der Daten in unserem Server und in externe Scripts ein. Anschließend erläutern wir die Implementation und Weiterverarbeitung der einzelnen Anwendungsfälle in Android Studio.
+Im Folgenden werden wir auf die Implementierung unserer Anwendungsfälle eingehen. Hierbei gehen wir zuerst auf die Planung und anschließend auf die Bereitstellung der Daten in unserem Server und in externe Scripts ein. Anschließend erläutern wir die Implementation und Weiterverarbeitung der einzelnen Anwendungsfälle in Android Studio.\\
 
 \section{Mensa}
 
-Der Anwendungsfall für die Mensa ist in zwei Teile aufgeteilt. Der erste Teil ist das Anzeigen des Mensaplans auf dem Tablet von Pepper. Sollte der User explizit nach dem Mensaplan fragen, soll Pepper eine Übersicht des Mensaplans der aktuellen Woche anzeigen. 
-Der zweite Teil ist das verbale Beschreiben des Mensaangebots. Hierbei soll Pepper für jeden Wochentag erzählen können, welche Angebote in der Mensa zurzeit zur Verfügung stehen. Die Mensa der Hochschule Bremerhaven bietet jeden Wochentag immer zwei Angebote an. Das zweite Angebot ist dabei immer vegetarisch. Pepper muss dementsprechend in der Lage sein, beide Angebote beschreiben zu können. 
+Der Anwendungsfall für die Mensa ist in zwei Teile aufgeteilt. Der erste Teil ist das Anzeigen des Mensaplans auf dem Tablet von Pepper. Sollte der Anwender explizit nach dem Mensaplan fragen, muss Pepper in der Lage sein, eine Übersicht des Mensaplans der aktuellen Woche anzuzeigen. 
+Der zweite Teil ist das verbale Beschreiben der Mensaangebote. Hierbei soll Pepper für jeden Wochentag erzählen können, welche Angebote in der Mensa zurzeit zur Verfügung stehen. Die Mensa der Hochschule Bremerhaven bietet jeden Wochentag immer zwei Angebote an. Das zweite Angebot ist dabei immer vegetarisch. Pepper muss dementsprechend in der Lage sein, beide Angebote beschreiben zu können. 
 
-Um die verschiedenen Daten über die Mensa Angebote abrufen zu können, verwenden wir unseren Server, der diese Daten bereitstellt. Der Server bekommt diese Daten aus einem externen Python Script.
+Um die verschiedenen Daten über die Mensa Angebote abrufen zu können, verwenden wir unseren Server, der diese Daten bereitstellt. Der Server bekommt diese Daten aus einem externen Python Script.\\
 
 \subsection{Script um Mensadaten aufzurufen}
+\label{sec:pyMensa}
 
-Um die Daten auf dem Server anzeigen zu lassen, wird ein Python script verwendet, dass sich diese Daten aus der offiziellen Hochschule Bremerhaven Mensa Webseite zieht. 
+Um die Daten auf dem Server anzeigen zu lassen, wird ein Python Script verwendet, dass sich diese Daten aus der offiziellen Hochschule Bremerhaven Mensa Webseite zieht. 
 
 Webseite: \url{https://www.stw-bremen.de/de/cafeteria/bremerhaven}
 
-Auf dieser Webseite befinden sich die aktuellen Angebote für die nächsten fünf Tage in einer Tabelle und den aktuellen- sowie nächsten Wochenplan als PDF-Format. Mit dem Python Script werden die einzelnen Daten aus der Webseite gezogen und als JSON String umgewandelt. Das ziehen der Daten aus der Webseite wird mithilfe des Framework ``BeautifulSoup'' durchgeführt, dass erlaubt, XML- und HTML-Dokumente zu ``parsen''.
+Auf dieser Webseite befinden sich die aktuellen Angebote für die nächsten fünf Tage in einer Tabelle und den aktuellen- sowie nächsten Wochenplan im PDF-Format. Mit dem Script werden die einzelnen Daten aus der Webseite gelesen und als JSON gespeichert. Das Lesen der Daten aus der Webseite wird mit Hilfe des Frameworks \verb|BeautifulSoup| durchgeführt. Dieses Framework erlaubt es, XML- und HTML-Dokumente zu \verb|parsen|.\\
 
 \begin{lstlisting}
 menulist = soup.select("tbody")
 
-menu = {}
-day = ["Montag","Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
-offer1 = []
-offer2 = []
+menu, offer1, offer2 = {}, [], []
+day: [str] = [
+    "Montag","Dienstag", "Mittwoch", "Donnerstag", "Freitag"
+    ]
 \end{lstlisting}
 
-Die Mensa Angebote befinden sich auf der Webseite in einer Tabelle, weswegen wir auf alle ``tbody''-Elemente mit der Funktion ``soup.select'' zugreifen. Diese werden als Array in die Variable ``menulist'' initialisiert. Anschließend werden die Variablen deklariert, aus denen später der JSON string entstehen soll. 
+Die Mensa Angebote befinden sich auf der Webseite in einer Tabelle, weshalb wir auf alle \verb|tbody|-Elemente mit der Funktion \verb|soup.select| zugreifen. Diese werden als Array in die Variable \verb|menulist| initialisiert. Anschließend werden die Variablen deklariert, aus denen später der JSON string entstehen soll. \\
 
 \begin{lstlisting}
 for i in range(10):
@@ -38,34 +39,30 @@ for i in range(10):
     ("</td><td",2)[0]
     tmp = tmp.replace("\n","").replace("\r","").replace("a1","")
     .replace("amp;","")
-    tmp = re.sub('<sup>.*?</sup>', '', tmp)
-    if(i%2==0):
-        offer1.append(tmp)
-    else:
-        offer2.append(tmp)
-    menu["day"] = day
-    menu["offer1"] = offer1
-    menu["offer2"] = offer2
+    tmp = re.sub('<sup>.*?</sup>', |, tmp)
+    if(i%2==0): offer1.append(tmp)
+    else: offer2.append(tmp)
+    menu["day"], menu["offer1"], menu["offer2"] = day, offer1, offer2
 
 with open(folder_location+"mensadata.json", "w+") as f:
     json.dump(menu, f, ensure_ascii=False)
 \end{lstlisting}
 
-Da sich die Daten in den ``tbody''-Elementen schwer lesen lassen, werden diese mit mehreren ``split'' und ``replace'' Funktionen in lesbare Mensa Angebote umgeformt und in den einzelnen Variablen eingefügt. Die If-Bedingung wird verwendet, um das erste- und zweite Angebot voneinander zu trennen. Anschließend wird das ``menu'' Objekt mit den keys ``day'', ``offer1'' und ``offer2'' und den values der jeweiligen Arrays initialisiert.
-Zum Schluss wird das ``menu'' Objekt in JSON mit der ``json.dump'' Funktion umgewandelt.
+Da sich die Daten in den \verb|tbody|-Elementen schwer lesen lassen, werden diese mit mehreren \verb|split| und \verb|replace| Funktionen in lesbare Mensa Angebote umgeformt und in den einzelnen Variablen eingefügt. Die If-Bedingung wird verwendet, um das erste- und zweite Angebot voneinander zu trennen. Anschließend wird das \verb|menu| Objekt mit den keys \verb|day|, \verb|offer1| und \verb|offer2| und den Values der jeweiligen Arrays initialisiert.
+Zum Schluss wird das \verb|menu| Objekt in JSON mit der \verb|json.dump| Funktion umgewandelt.
 
-Um den aktuellen Wochenplan im Script herunterzuladen und weiterzuverarbeiten, wird die Programmbibliothek Poppler vorausgesetzt. Poppler wird in Unix-ähnlichen Betriebssystemen dazu verwendet, PDF-Dateien anzuzeigen.
+Um den aktuellen Wochenplan im Script herunterzuladen und weiterzuverarbeiten, wird die Programmbibliothek Poppler vorausgesetzt. Poppler wird in Unix-ähnlichen Betriebssystemen dazu verwendet, PDF-Dateien anzuzeigen.\\
 
 \begin{lstlisting}
 response = requests.get(url)
 soup= BeautifulSoup(response.text, "html.parser")
 menucard = ((str(soup.select("a[href$='/print']")[0])
 .rsplit(' target',1)[0]).split("href=",1)[1])
-.replace('"','')
+.replace('"',|)
 urllib.request.urlretrieve(menucard, folder_location+"Mensaplan.pdf")
 \end{lstlisting}
 
-Mit den ersten beiden Zeilen Code wird der komplette HTML-Inhalt der Webseite in die Variable soup initialisiert. Da wir die URL des aktuellen Wochenplans benötigen, muss dieser aus dem HTML Code gezogen werden. Der Standort dieser URL ist im HTML Code fest verankert, weswegen wir mithilfe von soup.select, die URL herausfiltern und mit mehreren ``split'' und ``replace'' Funktionen zu einer gültigen URL umformen können. Dieser Zwischenschritt ist nötig, da sich die URL jede Woche ändert. Anschließend wird die URL aufgerufen und als ``Mensaplan.pdf'' abgespeichert.
+Mit den ersten beiden Zeilen des Codes wird der komplette HTML-Inhalt der Webseite in die Variable \verb|soup| initialisiert. Da wir die URL des aktuellen Wochenplans benötigen, muss dieser aus dem HTML Code gelesen werden. Der Standort dieser URL ist im HTML Code fest verankert, weswegen wir mit Hilfe von \verb|soup.select|, die URL herausfiltern und mit mehreren \verb|split| und \verb|replace| Funktionen zu einer gültigen URL umformen können. Dieser Zwischenschritt ist nötig, da sich die URL jede Woche ändert. Anschließend wird die URL aufgerufen und als \verb|Mensaplan.pdf| abgespeichert.\\
 
 \begin{lstlisting}
 img = convert_from_path(folder_location+"Mensaplan.pdf", 500)[0]
@@ -79,14 +76,14 @@ mergeImgs([cropped_img, cropped_img2])
 .save(folder_location+'images/mensaplan.png', 'JPEG')
 \end{lstlisting}
 
-Anschließend wird mit der Funktion ``convert\_from\_path'' das PDF in ein Bildformat konvertiert und in die Variable ``img'' installiert. Hierfür wird das Framework ``pdf2image'' verwendet, das vorab mit ``pip'' installiert werden muss. 
+Im nächsten Schritt wird mit der Funktion \verb|convert_from_path| das PDF in ein Bildformat konvertiert und in die Variable \verb|img| installiert. Hierfür wird das Framework \verb|pdf2image| verwendet, das vorab mit \verb|pip| installiert werden muss. 
 
-Nun ist das Bild jedoch im Hochformat und kann sehr schlecht auf dem Tablet von Pepper angezeigt werden. \ref{fig:Mensaplan} Somit haben wir das Bild in zwei Teile geschnitten und im Querformat zusammengefügt. Um das Bild zu schneiden, haben wir das Framework PIL verwendet. Nun kann genau angegeben werden, wie das Bild geschnitten werden soll. In der Variable ``area'' haben wir jeweils immer vordefiniert, wie weit das Bild in welcher Richtung ausgeschnitten werden soll. Die Reihenfolge der Richtungen lautet wie folgt: 
-(Rechts Oben Links Unten) (0, 200, 4134, 2800)
+Nun ist das Bild jedoch im Hochformat und kann sehr schlecht auf dem Tablet von Pepper angezeigt werden. (vgl. Abb. \ref{fig:Mensaplan}) Somit haben wir das Bild in zwei Teile geschnitten und im Querformat zusammengefügt. Um das Bild zu schneiden, haben wir das Framework \verb|PIL| verwendet. Nun kann genau angegeben werden, wie das Bild geschnitten werden soll. In der Variable \verb|area| haben wir jeweils immer vordefiniert, wie weit das Bild in welcher Richtung ausgeschnitten werden soll. Die Reihenfolge der Richtungen lautet wie folgt: 
+(rechts oben links unten) (0, 200, 4134, 2800)
 
 Zuerst haben wir den oberen Teil des Mensaplans ausgeschnitten, der die einzelnen Angebote enthält und anschließend die Legende, die sich im unteren Bereich der PDF befindet. 
 
-Nun müssen beide Bilder zusammengefügt werden. Dies wurde in der Methode ``mergeImgs'' durchgeführt.
+Nun müssen beide Bilder zusammengefügt werden. Dies wurde in der Methode \verb|mergeImgs| durchgeführt.\\
 
 
 \begin{lstlisting}
@@ -111,7 +108,7 @@ def mergeImgs(imgs):
 \end{lstlisting}
 
 In dieser Funktion wird zuerst die Breite und Höhe des neu zusammengefügten Bildes ermittelt. Sollten die beiden Bilder eine unterschiedliche Breite besitzen, wird das breiteste Bild verkleinert. Dies geschieht in der For-Schleife, wo jedes einzelne Bild überprüft wird. 
-Anschließend wir ein neues ``img\_merge'' Objekt erzeugt, das mit der minimalsten Breite und addierten Höhe der beiden Bilder initialisiert wird. Zum Schluss werden die beiden Bilder in das Objekt eingefügt und heruntergeladen.
+Anschließend wir ein neues \verb|img_merge| Objekt erzeugt, das mit der minimalsten Breite und addierten Höhe der beiden Bilder initialisiert wird. Zum Schluss werden die beiden Bilder in das Objekt eingefügt und heruntergeladen.
 
 \begin{figure}[H]
     \centering
@@ -123,21 +120,18 @@ Anschließend wir ein neues ``img\_merge'' Objekt erzeugt, das mit der minimalst
 
 \subsection{Weiterleitung zum NodeJS Server}
 
-\ref{fig:cron} Das Script befindet sich auf dem Hopper und wird mit crontab jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.
+Das Script (vgl. \ref{sec:pyMensa}) befindet sich auf dem Hopper und wird mit \verb|crontab| jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.\\
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=13cm]{Figures/AppChapter/mensa_4.JPG}
-    \caption{getMensaPlan - Crontab}
-    \label{fig:cron}
-    \centering
-\end{figure}
+\begin{lstlisting}
+    # m h dom mon dow command
+    0 0 * * 1 /usr/bin/python3 ~/getMensaPlan.py
+\end{lstlisting}
 
-Das erzeugte JSON Objekt und das zugeschnittene Bild des Mensaplans werden anschließend in den public static Ordner vom Node Server eingefügt.
+Das erzeugte JSON Objekt und das zugeschnittene Bild des Mensaplans werden anschließend in den \verb|static| Ordner vom Node Server eingefügt.
 
 \subsection{Bereitstellen der Mensadaten auf dem Server}
 
-Mit dem folgenden Code werden die Daten aus den jeweiligen “/static” Ordnern an die Webseite gesendet:
+Mit dem folgenden Code werden die Daten aus den jeweiligen “/static” Ordnern an die Webseite gesendet:\\
 
 \begin{lstlisting}
 router.get('/docker-hbv-kms-http/api/v1/mensadata', (req, res) => {
@@ -156,9 +150,9 @@ router.get('/docker-hbv-kms-http/api/v1/mensadata/img', (req, res) => {
 });    
 \end{lstlisting}
 
-\ref{fig:mensaapi} In folgendem Pfad befindet sich nun unser JSON Objekt, mit allen Mensaangeboten der aktuellen Woche.\\
+(vgl. Abb. \ref{fig:mensaapi}) In folgendem Pfad befindet sich nun unser JSON Objekt, mit allen Mensaangeboten der aktuellen Woche.\\
 \url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata}
-
+\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=13cm]{Figures/AppChapter/mensa_5.JPG}
@@ -168,20 +162,25 @@ router.get('/docker-hbv-kms-http/api/v1/mensadata/img', (req, res) => {
 \end{figure}
 
 Der aktuelle Wochenplan ist in png-Format unter folgendem Link erreichbar:\\
-\url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img}
+\url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img}\\
 
 
 \subsection{Anzeigen der Mensadaten in Android Studio}
 
-Wie bereits erwähnt, soll Pepper mithilfe von Sprache in der Lage sein, den Mensaplan auf sein Tablet anzuzeigen und Informationen 
+Wie bereits erwähnt, soll Pepper mit Hilfe von Sprache in der Lage sein, den Mensaplan auf sein Tablet anzuzeigen und Informationen 
 über die verschiedenen Angebote jedes Wochentags zu geben. Um sich den Mensaplan anzeigen zu lassen, haben wir zuerst ein neues 
 Gesprächsthema in unserem Haupt-Topic erstellt. 
-
+\\
 \begin{lstlisting}
 u:(["Ich hab{e} hunger" "Zeig {mir} {den} Mensaplan"] ) 
 ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine 
 Uebersicht ueber den Mensaplan
+\end{lstlisting}
 
+Sobald der Anwender nach dem Mensaplan fragt, wird die \verb|runWith| Methode mit den Parametern \verb|qiVariableMensa| 
+und \verb|Plan| in der \verb|VariableExecutor| Klasse aufgerufen.\\
+
+\begin{lstlisting}
 case("qiVariableMensa"):
 String day = params.get(1);
 if(day.equals("Plan")){
@@ -189,20 +188,17 @@ if(day.equals("Plan")){
 }
 \end{lstlisting}
 
-Sobald der User nach dem Mensaplan fragt, wird die ``runWith'' Methode mit den Parametern ``qiVariableMensa'' 
-und ''Plan'' in der ``VariableExecutor'' Klasse aufgerufen. In dieser Methode wird anschließend nach dem switch 
-case ``qiVariableMensa'' gesucht. Da wir einen zweiten Mensaanwendungsfall besitzen, müssen wir diese beiden Fälle 
-voneinander unterscheiden können. Aus diesem Grund wurde ein weiterer String Parameter mit dem Namen ``Plan'' mitgegeben, 
+In dieser Methode wird anschließend nach dem switch 
+case \verb|qiVariableMensa| gesucht. Da wir einen zweiten Mensaanwendungsfall besitzen, müssen wir diese beiden Fälle 
+voneinander unterscheiden können. Aus diesem Grund wurde ein weiterer String Parameter mit dem Namen \verb|Plan| mitgegeben, 
 um über einer If-Bedingung diese beiden Fälle zu trennen. 
-Nun gibt es mehrere Möglichkeiten, das Bild aus dem Server zu nehmen und auf dem Tablet von Pepper anzeigen zu lassen. Die 
-einfachste Methode wäre über den WebViewer. Hierfür hätten wir lediglich die URL benötigt, um die Webseite mit dem Bild auf dem 
-Tablet anzeigen zu lassen. Die Bildgröße des Mensaplans besaß jedoch eine viel zu große Auflösung (3200 x 4134 px), sodass nur ein 
-Teil des Bildes auf dem Tablet angezeigt werden konnte.
-Auf dem Node Server oder in Android Studio könnte die Auflösung theoretisch manuell umgestellt werden können, jedoch haben wir uns 
-für einen anderen Weg entschieden. 
+Nun gibt es mehrere Möglichkeiten, das Bild auf dem Tablet von Pepper anzeigen zu lassen. Die 
+einfachste Methode wäre über den Webviewer. Hierfür hätten wir lediglich die URL benötigt, um die Webseite mit dem Bild auf dem 
+Tablet anzeigen zu lassen. Die Bildgröße des Mensaplans besaß jedoch eine viel zu große Auflösung (3200 x 4134 px), sodass nur ein Teil des Bildes auf dem Tablet angezeigt werden konnte.
+Auf dem Node Server oder in Android Studio könnte die Auflösung theoretisch manuell umgestellt werden, was wir jedoch vermeiden wollen. 
 
-Wir haben uns anschließend dazu entschieden, das Bild in Android Studio als Bitmap vom Node Server herunterzuladen. Eine Bitmap 
-ist eine Zahlenmatrix von einem Bild, wo jeder Pixel die jeweiligen Farbinformationen enthält.
+Wir haben uns anschließend für eine andere Lösung entschieden, wo das Bild in Android Studio als Bitmap vom Node Server heruntergeladen wird. Eine Bitmap 
+ist eine Zahlenmatrix von einem Bild, wo jeder Pixel die jeweiligen Farbinformationen enthält.\\
 
 
 \begin{lstlisting}
@@ -219,10 +215,10 @@ ma.runOnUiThread(() -> {
 \end{lstlisting}
 
 In diesem Code wird das Bild in einen InputStream initialisiert. Ein InputStream ist eine Folge von Bytes, womit sich Daten lesen 
-lassen können. Der InputStream wird mithilfe der ``BitmapFactory.decodeStream'' Funktion in eine Bitmap umgewandelt. 
+lassen können. Der InputStream wird mithilfe der \verb|BitmapFactory.decodeStream| Funktion in eine Bitmap umgewandelt. 
 Anschließend kann eine Imageview mittels der Id mit der Bitmap initialisiert werden. 
 
-Nun kann Pepper auf die Frage ``Zeig mir den Mensaplan'' ein Bild von dem aktuellen Mensaplan auf sein Tablet zeigen. 
+Nun kann Pepper auf die Frage ``Zeig mir den Mensaplan'' ein Bild von dem aktuellen Mensaplan auf sein Tablet zeigen. \\
 
 \begin{figure}[H]
     \centering
@@ -232,7 +228,7 @@ Nun kann Pepper auf die Frage ``Zeig mir den Mensaplan'' ein Bild von dem aktuel
     \centering
 \end{figure}
 
-Als Nächstes wird ein weiteres Gesprächsthema erstellt, dass Pepper erlaubt, auch verbal Informationen über die Mensa Angebote zu geben.
+Als Nächstes wird ein weiteres Gesprächsthema erstellt, dass Pepper erlaubt, auch verbal Informationen über die Mensa Angebote zu geben.\\
 
 \begin{lstlisting}
 concept:(week) [Montag Dienstag Mittwoch Donnerstag 
@@ -247,13 +243,13 @@ u:({was} {gibt{s}} {es} {am} _[~week] {zu} essen) $day=$1
 es entweder $qiVariableMensa
 \end{lstlisting}
 
-Hier wird die Variable ``\$day'' mit dem Wochentag in  ``\_[~week]'' initialisiert, dass in der Frage genannt wurde. Wenn der User 
-zum Beispiel fragt: ``Was gibt es am Mittwoch zu essen'', wird Mittwoch in die Variable ``\$day'' initialisiert. In dem Konzept 
-wurden nicht nur Wochentage, sonder auch Wörter wie Heute, Morgen und Übermorgen hinzugefügt. Somit kann der User auch fragen, was es zum Beispiel 
+Hier wird die Variable \verb|day| mit dem Wochentag in  \verb|_[~week]| initialisiert, dass in der Frage genannt wurde. Wenn der Anwender 
+zum Beispiel fragt: ``Was gibt es am Mittwoch zu essen'', wird Mittwoch in die Variable \verb|day| initialisiert. In dem Konzept 
+wurden nicht nur Wochentage, sonder auch Wörter wie Heute, Morgen und Übermorgen hinzugefügt. Somit kann der Anwender auch fragen, was es zum Beispiel 
 morgen zu essen gibt. 
-Anschließend wird wieder die ``runWith'' Methode aufgerufen mit den Parameter ``qiVariableMensa'' und dem Wochentag, der genannt wurde.
-In der VariableExecutor Klasse wird nun die Antwort vorbereitet, die Pepper zu der Frage geben soll. Hierfür wird die ``getOffer'' Methode in 
-der HelperCollection Klasse aufgerufen.
+Anschließend wird wieder die \verb|runWith| Methode aufgerufen mit den Parameter \verb|qiVariableMensa| und dem Wochentag, der genannt wurde.
+In der VariableExecutor Klasse wird nun die Antwort vorbereitet, die Pepper zu der Frage geben soll. Hierfür wird die \verb|getOffer| Methode in 
+der HelperCollection Klasse aufgerufen.\\
 
 \begin{lstlisting}
 HttpURLConnection con = getConnection("https://informatik.
@@ -275,9 +271,9 @@ tmp = myResponse.getString("offer2");
 String [] offer2 = tmp.split("\",\"", -1); 
 \end{lstlisting}
 
-Zuerst werden die Daten aus dem Server aufgerufen und mithilfe des BufferedReader in das StringBuffer Objekt response initialisiert. 
-Anschließend wird ein JSON Objekt aus dem response erstellt. Für uns war es leichter, die Daten in einem Array zu speichern, weswegen 
-wir zwei String Arrays mit den jeweiligen Mensa Angeboten initialisiert haben.
+Zuerst werden die Daten aus dem Server aufgerufen und mithilfe des \verb|BufferedReader| in das \verb|StringBuffer| Objekt \verb|response| initialisiert. 
+Anschließend wird ein JSON Objekt aus dem \verb|response| erstellt. Für uns war es leichter, die Daten in einem Array zu speichern, weshalb 
+wir zwei Arrays mit den jeweiligen Mensa Angeboten initialisiert haben.\\
 
 \begin{lstlisting}
 Calendar calendar = Calendar.getInstance();
@@ -287,7 +283,7 @@ int curday = calendar.get(Calendar.DAY_OF_WEEK) - 2;
 Nun wird mit der Calendar Bibliothek von Java, der aktuelle Wochentag ermittelt und als Zahl in curday gespeichert. 
 Wäre der aktuelle Wochentag ein Montag, so würde curday mit einer 0 initialisiert. Sollte es ein Mittwoch sein, dann wäre curday eine 
 2 usw. 
-Somit können wir die ``offer1'' und ``offer2'' Arrays mit dem genauen Index des aktuellen Wochentags ermitteln.
+Somit können wir die Arrays \verb|offer1| und \verb|offer2| mit dem genauen Index des aktuellen Wochentags ermitteln.\\
 
 \begin{lstlisting}
 String [] daylist = {"Montag","Dienstag","Mittwoch","Donnerstag",
@@ -296,7 +292,7 @@ String [] spcdays = {"Heute", "Morgen", "Uebermorgen"};
 String answer = "";
 
 for(int i = 0; i < spcdays.length; ++i){
-if(day.equals(spcdays[i])){
+    if(day.equals(spcdays[i])){
         if((curday + i) > 5){
             answer ="Am Wochenende ist die Mensa leider geschlossen";
             break;
@@ -310,10 +306,10 @@ if(day.equals(spcdays[i])){
 }    
 \end{lstlisting}
 
-Mit dieser For-Schleife wird überprüft, ob der User das Angebot für Heute, Morgen oder Übermorgen wissen möchte. Außerdem wird 
-überprüft, ob der User mit der Frage Morgen oder Übermorgen den Freitag überschreitet. Sollte der Wochentag zum Beispiel ein Freitag 
-sein und der User würde fragen, was es morgen zu essen gibt, dann wird Pepper antworten, dass die Mensa am Wochenende geschlossen 
-ist. Sollte der Tag in der Woche sein, so wird die Antwort in der Variable ``answer'' mit den beiden Angeboten initialisiert. 
+In der For-Schleife wird das Array \verb|spcdays| iteriert und mit \verb|if(day.equals(spcdays[i]))| wird anschließend überprüft, ob der Anwender das Angebot für Heute, Morgen oder Übermorgen wissen möchte. Außerdem wird 
+überprüft, ob der Anwender mit der Frage Morgen oder Übermorgen den Freitag überschreitet. Sollte der Wochentag zum Beispiel ein Freitag 
+sein und der Anwender würde fragen, was es morgen in der Mensa zu essen gibt, dann wird Pepper antworten, dass die Mensa am Wochenende geschlossen 
+ist. Sollte der Tag in der Woche sein, so wird die Antwort in der Variable \verb|answer| mit den beiden Angeboten initialisiert. \\
 
 \begin{lstlisting}
 for(int i = 0; i < daylist.length; ++i){
@@ -327,16 +323,16 @@ for(int i = 0; i < daylist.length; ++i){
 }
 \end{lstlisting}
 
-Diese For-Schleife überprüft, ob der User das Mensaangebot für einen bestimmten Wochentag wissen will. Dementsprechend wird dann die 
-Antwort initialisiert.
+Diese For-Schleife überprüft, ob der Anwender das Mensaangebot für einen bestimmten Wochentag wissen will. Dementsprechend wird dann die 
+Antwort initialisiert.\\
 
 \begin{lstlisting}
 String offer = HelperCollection.getOffer(day);
 ma.getCurrentChatBot().setQiVariable(variableName, offer);    
 \end{lstlisting}
 
-Nachdem nun alle Antworten vorbereitet wurden, wird die Variable “\$qiVariableMensa” mit der Antwort initialisiert und in den Topic 
-zurückgegeben. 
+Nachdem nun alle Antworten vorbereitet wurden, wird die Variable “qiVariableMensa” mit der Antwort initialisiert und in den Topic 
+zurückgegeben. \\
 
 \begin{figure}[H]
     \centering
@@ -356,7 +352,7 @@ Der zweite Anwendungsfall ist das Anzeigen des Stundenplans für jeden Studienga
 \subsection{Anzeigen des Stundenplans in Android Studio}
 
 Nachdem die Stundenplandaten im Server bereitgestellt wurden, war der nächste Schritt das Anzeigen des Stundenplans in Android Studio. 
-Hierfür wurde ein neues Gesprächsthema in dem Haupt-Topic erstellt.
+Hierfür wurde ein neues Gesprächsthema in dem Haupt-Topic erstellt.\\
 
 \begin{lstlisting}
 u:({so} zeig{e} {er} {mir} {den} Stundenplan {fuer} {den} Studiengang 
@@ -366,9 +362,9 @@ $course=$1 $semester=$2 Alles klar ^execute(VariableExecutor,
 timetable_course_semester, $course, $semester)
 \end{lstlisting}
 
-Damit der User den Stundenplan einsehen kann, erwartet Pepper zwei Wörter. Der User muss in seiner Frage den Studiengang und das Semester 
-nennen. Erst dann wird der Methodenaufruf gestartet. Somit werden die drei Parameter ``timetable\_course\_semester'', 
-``\$course'' und ``\$semester'' mitgegeben.
+Damit der Anwender den Stundenplan einsehen kann, erwartet Pepper zwei Wörter. Der Anwender muss in seiner Frage den Studiengang und das Semester 
+nennen. Erst dann wird der Methodenaufruf gestartet. Somit werden die drei Parameter \verb|timetable_course_semester|, 
+\verb|course| und \verb|semester| mitgegeben.\\
 
 \begin{lstlisting}
 final String timetableurl = "https://informatik.hs-bremerhaven.de/
@@ -388,12 +384,12 @@ ma.runOnUiThread(() -> {
 \end{lstlisting}
 
 Auf dem Node Server erwartet die API, die wir für den Stundenplan erstellt haben, bestimmte Parameter zu dem Studiengang und dem Semester. 
-Hierfür können wir unsere Parameter, die in der Frage ermittelt wurden, in die Variable ``timetableurl'' einsetzen und erhalten 
-die URL zu dem richtigen Stundenplan. Dieser kann anschließend mithilfe des Webviewers auf dem Tablet von Pepper angezeigt werden. 
+Hierfür können wir unsere Parameter, die in der Frage ermittelt wurden, in die Variable \verb|timetableurl| einsetzen und erhalten 
+die URL zu dem richtigen Stundenplan. Dieser kann anschließend mit Hilfe des Webviewers auf dem Tablet von Pepper angezeigt werden. 
 
 \section{Routenfinder}
 
-Der dritte und letzte Anwendungsfall ist die Navigationshilfe in der Hochschule Bremerhaven. Sollte der User einen bestimmten Raum oder ein 
+Der dritte und letzte Anwendungsfall ist die Navigationshilfe in der Hochschule Bremerhaven. Sollte der Anwender einen bestimmten Raum oder ein 
 Gebäude suchen, soll Pepper auf seinem Tablet eine genaue Wegbeschreibung geben können. 
 \\\\
 ...
@@ -405,10 +401,10 @@ Gebäude suchen, soll Pepper auf seinem Tablet eine genaue Wegbeschreibung geben
 \subsection{Anzeigen des Gebäudeplans und des Raumfinders in Android Studio}
 
 Da wir die einzelnen Videodateien auf dem Hopper abgelegt haben, brauchen wir für diesen Anwendungsfall die Kommunikation mit dem Node Server nicht. 
-Die JSON Datei, die mit dem Python Script erzeugt wurde, haben wir in den Assets Ordner in Android Studio abgelegt, um sie später im Code verwenden zu können. 
+Die JSON Datei, die mit dem Python Script erzeugt wurde, haben wir in den /Assets Ordner in Android Studio abgelegt, um sie später im Code verwenden zu können. 
 
 Wie bei allen anderen Anwendungsfällen auch, ist der erste Schritt das Erstellen der einzelnen Gesprächsthemen. 
-Zuerst werden wir den Fall abdecken, wenn sich der User den Gebäudeplan anzeigen lassen will.
+Zuerst werden wir den Fall abdecken, wenn sich der Anwender den Gebäudeplan anzeigen lassen will.\\
 
 \begin{lstlisting}
 u:([zeig gib] {mir} {bitte} {den} [Gebaeudeplan Campusplan Gelaende])
@@ -430,9 +426,9 @@ if(nav.equals("Plan")) {
 }
 \end{lstlisting}
 
-\ref{fig:gplan} Sobald der User nach dem Gebäudeplan fragt, wird ein vordefiniertes XML-Layout mit einem Bild von dem 
+(vgl. Abb. \ref{fig:gplan}) Sobald der Anwender nach dem Gebäudeplan fragt, wird ein vordefiniertes XML-Layout mit einem Bild von dem 
 Gebäudeplan auf dem Tablet angezeigt. Das Bild wurde vorher heruntergeladen und in den Ordner 
-``drawable'' gelegt.
+\verb|drawable| gelegt.\\
 
 \begin{figure}[H]
     \centering
@@ -443,7 +439,7 @@ Gebäudeplan auf dem Tablet angezeigt. Das Bild wurde vorher heruntergeladen und
 \end{figure}
 
 Als Nächstes haben wir das Abrufen der Videodateien zu den einzelnen Räumen der Hochschule in Android 
-Studio implementiert.
+Studio implementiert.\\
 
 \begin{lstlisting}
 concept:(rooms) [C006 C007 ... Z5150 Z5160 ]
@@ -453,12 +449,12 @@ Raum _~rooms {befindet}"])
     $room=$1 Sofort ^execute(VariableExecutor, qiVariableNav, $room)
 \end{lstlisting}
 
-Pepper muss in der Lage sein, alle Räume in der Hochschule zu kennen, um genau herausfiltern zu können, welchen Raum der User sucht.
-Das Konzept ``rooms'' beinhaltet alle Räume der Hochschule und wird somit in der Frage im Topic verwendet. Sollte der User 
+Pepper muss in der Lage sein, alle Räume in der Hochschule zu kennen, um genau herausfiltern zu können, welchen Raum der Anwender sucht.
+Das Concept \verb|rooms| beinhaltet alle Räume der Hochschule und wird somit in der Frage im Topic verwendet. Sollte der Anwender 
 nach einen Raum fragen, den es nicht gibt, wird Pepper die Frage erst gar nicht verstehen und nicht antworten. 
 
-Sollte Pepper den Raum kennen, wird ein Methodenaufruf mit den Parametern ``qiVariableNav'' und der Raumnummer 
-(``\$room'') durchgeführt.
+Sollte Pepper den Raum kennen, wird ein Methodenaufruf mit den Parametern \verb|qiVariableNav| und der Raumnummer 
+(\verb|room|) durchgeführt.\\
 
 \begin{lstlisting}
 u:(Zeig mir {bitte} einen _~handicapped Weg [zu in] {dem} 
@@ -467,8 +463,8 @@ Raum _~rooms)
     qiVariableNav, $room, $handicap)
 \end{lstlisting}
 
-Wenn der User explizit nach einem barrierefreien Weg zu einem Raum fragt, wird der gleiche Methodenaufruf mit dem zusätzlichen 
-Parameter ``\$handicap'' durchgeführt.
+Wenn der Anwender explizit nach einem barrierefreien Weg zu einem Raum fragt, wird der gleiche Methodenaufruf mit dem zusätzlichen 
+Parameter \verb|handicap| durchgeführt.\\
 
 \begin{lstlisting}
 String room = nav;
@@ -477,11 +473,11 @@ if(params.size() == 3) handicapped = "M0001";
 \end{lstlisting}
 
 
-In der VariableExecutor Klasse wird als Erstes überprüft, ob der User nach einem barrierefreien Weg zu dem gewünschten Raum 
-gefragt hat oder nicht. Mit einer If-Bedingung wird die Länge der Parameter überprüft, die in der Methode mitgegeben wurde. 
-Wie bereits erwähnt, wird ein zusätzlicher Parameter ``\$handicap'' zusammen mit den Parametern ``qiVariableNav'' 
-und ``\$room'' mitgegeben, wenn nach dem barrierefreien Weg gefragt wurde. Somit muss nur die Parameterlänge verglichen 
-werden, um entscheiden zu können, welcher Weg angezeigt werden soll.
+In der \verb|VariableExecutor| Klasse wird als Erstes überprüft, ob der Anwender nach einem barrierefreien Weg zu dem gewünschten Raum 
+gefragt hat oder nicht. Mit der If-Bedingung wird die Länge der Parameter überprüft, die in der Methode mitgegeben wurde. 
+Wie bereits erwähnt, wird ein zusätzlicher Parameter \verb|handicap| zusammen mit den Parametern \verb|qiVariableNav| 
+und \verb|room| mitgegeben, wenn nach dem barrierefreien Weg gefragt wurde. Somit muss nur die Parameterlänge verglichen 
+werden, um entscheiden zu können, welcher Weg angezeigt werden soll.\\
 
 \begin{lstlisting}
 BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -496,11 +492,11 @@ String path = ((Map)((Map)(jsonJavaRootObject.get(room)))
     .get(handicapped)).get("video_path").toString();
 \end{lstlisting}
 
-Mit der ``getAssets().open("route\_metadata.json")'' Funktion, kann die JSON Datei, die sich in dem ``assets'' 
-Ordner befindet, geöffnet und mit dem BufferedReader ausgelesen werden. Als Nächstes wird mithilfe des Gson Frameworks, 
-ein Map Objekt erzeugt, dass alle Informationen der JSON Datei bereitstellt. In der Variable ``path'', wird der Wert 
-``video\_path'' mithilfe der genauen Raumnummer herausgesucht. Hier wird auch die Abfrage mitgegeben, ob der Weg 
-Barrierefrei sein soll oder nicht.
+Mit der \verb|getAssets().open("route_metadata.json")| Funktion, kann die JSON Datei, die sich in dem \verb|/assets| 
+Ordner befindet, geöffnet und mit dem \verb|BufferedReader| ausgelesen werden. Als Nächstes wird mit Hilfe des \verb|Gson| Frameworks, 
+ein Map Objekt erzeugt, dass alle Informationen der JSON Datei bereitstellt. In der Variable \verb|path|, wird der Wert 
+\verb|video_path| mit Hilfe der genauen Raumnummer herausgefiltert. Hier wird auch die Abfrage mitgegeben, ob der Weg 
+Barrierefrei sein soll oder nicht.\\
 
 
 \begin{lstlisting}
@@ -517,7 +513,7 @@ try{
 }
 \end{lstlisting}
 
-\ref{fig:Routenfinder} Nachdem der genau Pfad zum Video ermittelt wurde, kann nun die URL zu dem Video erstellt und mit dem Webviewer angezeigt werden.
+(vgl. Abb. \ref{fig:Routenfinder}) Nachdem der genau Pfad zum Video ermittelt wurde, kann nun die URL zu dem Video erstellt und mit dem Webviewer angezeigt werden.\\
 
 \begin{figure}[H]
     \centering
@@ -527,8 +523,8 @@ try{
     \centering
 \end{figure}
 
-\ref{fig:RoutenfinderDia} Zusätzlich zu dem Video soll Pepper dem User mit zusätzlichen Details antworten. Er gibt an, in welchem Gebäude sich der gesuchte Raum befindet, 
-wie weit dieser von seinem Standpunkt entfernt ist und wie viel Zeit benötigt wird, um diesen Raum zu erreichen.
+(vgl. Abb. \ref{fig:RoutenfinderDia}) Zusätzlich zu dem Video soll Pepper dem Anwender mit zusätzlichen Details antworten. Er gibt an, in welchem Gebäude sich der gesuchte Raum befindet, 
+wie weit dieser von seinem Standpunkt entfernt ist und wie viel Zeit benötigt wird, um diesen Raum zu erreichen.\\
 
 \begin{figure}[H]
     \centering
@@ -537,5 +533,4 @@ wie weit dieser von seinem Standpunkt entfernt ist und wie viel Zeit benötigt w
     \label{fig:RoutenfinderDia}
     \centering
 \end{figure}
-
 

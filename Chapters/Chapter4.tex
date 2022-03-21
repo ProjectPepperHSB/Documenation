@@ -57,21 +57,21 @@ Zudem soll die Interaktion mit Pepper für alle möglich sein. Studierende und L
 wo welche Vorlesung stattfindet, in der Kaffeteria oder Mensa soll sich Pepper mit Gästen unterhalten, Smalltalk führen oder
 Empfehlungen für bestimmte Speisen ausgeben. Darüber hinaus wollen wir Pepper das lückenlose Interagieren beibringen, damit er an
 besonderen Veranstaltungen, wie dem Tag der offenen Tür oder dem Tag der Informatik, Interessenten Informationen über die Hochschule,
-das Leben auf dem Campus, sowie allgemeine Empfehlungen für die Stadt Bremerhaven ausgeben kann.
+das Leben auf dem Campus, sowie allgemeine Empfehlungen für die Stadt Bremerhaven ausgeben kann.\\
 
 \section{Entwicklungsumgebungen für Pepper}
 
 Um das Verhalten von Pepper zu programmieren, kann entweder die Entwicklungsumgebung Android Studio oder Choregraphe verwendet werden. 
 Im Folgenden werden kurz auf die einzelnen Softwares eingehen und erklären, wieso wir uns für Android Studio entschieden haben. 
-Anschließend gehen wir noch auf eine weitere Entwicklungsumgebung ein, die aber nicht mehr von Softbanks unterstützt wird.
+Anschließend gehen wir noch auf eine weitere Entwicklungsumgebung ein, die aber nicht mehr von Softbanks unterstützt wird.\\
 
 \subsection{Choregraphe}
 
 Mit der Choregraphe Entwicklungsumgebung können komplexe Verhaltensmuster in Pepper integriert werden, ohne eine Zeile Code zu schreiben. 
 Zusätzlich kann das Verhalten aber auch mit der Programmiersprache Python gesteuert werden. Der Choregraphe besitzt mehrer Editoren, 
 mit denen sich zum Beispiel Animationen erstellen lassen können oder Gesprächsfunktionen einbinden lassen. Die Software besitzt ebenfalls 
-einen Emulator mit einem virtuellen Roboter, wo die Applikation getestet werden kann.
-\cite{Choregraphe}
+einen Emulator mit einem virtuellen Roboter, wo die Applikation getestet werden kann.\\
+(Quelle: \cite{Choregraphe})\\
 
 \subsection{Android Studio}
 
@@ -82,31 +82,31 @@ Applikation kann zwischen diesen beiden Programmiersprachen ausgewählt werden.
 
 Die Software besitzt ihren eigenen SDK Manager, worüber die Pepper SDK heruntergeladen werden kann, um eine Entwicklungsumgebung für Pepper 
 zu schaffen. Mit diesen Entwicklungspaketen kommen viele verschiedene Methoden und Funktionen hinzu, worüber sich das Verhalten von Pepper 
-steuern und programmieren lässt. Zusätzlich dazu bietet das Pepper SDK einen Emulator an, wo die Applikation auf einem virtuellen Pepper 
+steuern und programmieren lässt. Zusätzlich bietet das Pepper SDK einen Emulator an, wo die Applikation auf einem virtuellen Pepper 
 getestet werden kann und einen weiteren Editor, mit denen Animationen erstellt werden können. Das Tablet von Pepper kann komplett mit den 
 Funktionen und Editoren von Android Studio editiert werden. 
 
 Sowohl Android Studio als auch Choregraphe können bestimmte Komponenten von Pepper nicht ansteuern oder verändern. Hierzu gehört zum 
 Beispiel die Kamera von Pepper, da die einzelnen Funktionen wie die Bilderkennung fest verankert sind. Es kann lediglich nur auf die Daten 
 zugegriffen werden, die Pepper selber mit seinen Kameras erzeugt.
-\cite{Android_Studio}
+(Quelle: \cite{Android_Studio})\\
 
 \subsection{ROS}
 
-Es gab vor ein paar Jahren auch die Möglichkeit, Pepper mit ROS zu entwickeln. 
+Es gab vor ein paar Jahren die Möglichkeit, Pepper mit ROS zu entwickeln. 
 ROS heißt übersetzt \glqq Robot Operating System \glqq{} und ist somit ein Betriebssystem, das speziell für die Steuerung und Programmierung 
 von Robotern entwickelt wurde. Anders als bei Android Studio oder Choregraphe, besitzt man hier jegliche Freiheiten, den Roboter so zu 
 programmieren, wie man will. Zum Beispiel hätten wir mit ROS die Möglichkeit gehabt, auf die Kamera oder Sensoren von Pepper zuzugreifen. 
 Dies hätte den Vorteil gehabt, dass wir unsere eigene Bild, oder Spracherkennungs-KI für Pepper entwickeln könnten. Softbanks hat sich 
 jedoch ab einer früheren Version dazu entschieden, die Kompatibilität und Anbindung mit ROS zu stoppen. Wäre ROS für uns eine Option 
-gewesen, hätten wir uns definitiv dafür entschieden. 
+gewesen, hätten wir uns definitiv dafür entschieden. \\
 
 \section{Entscheidung}
 
 Wir haben uns dazu entschieden, Android Studio als Entwicklungsumgebung zu verwenden, da wir mit der Pepper SDK eine Vielzahl an 
 Möglichkeiten besitzen, Pepper für jede Situation anzupassen. Außerdem wurde es uns auch von den Masterstudenten empfohlen und wir konnten 
 deren Applikation als Referenz verwenden. Für unsere Applikation haben wir uns entschieden, Java statt Kotlin als Programmiersprache zu 
-verwenden, da wir damit die meisten Erfahrungen gemacht haben. 
+verwenden, da wir damit die meisten Erfahrungen gemacht haben.\\ 
 
 \section{Hard- und Softwarespezifikationen}
 %Da Peppers Tablet auf Android basiert, liegt es auf der Hand, Android Studio als Entwicklungsumgebung zu benutzen. Der
@@ -136,7 +136,7 @@ entsprechenden Versionsnummern auflsitet.
         \multicolumn{3}{p{380pt}}{Mit abwichenden Versionen kann es zu Kompatibilitätsproblemen kommen.}
     \end{tabular}
     \label{tab1}
-\end{table}
+\end{table} 
 
 %Um unsere Software von zu Hause aus zu testen, nutzen wir den Build-In Emulator, welcher bei der installation
 %der Pepper API in Android Studio integriert wird. Hiermit ist es möglich die sprachliche Kommunikation zwischen
