@@ -1,23 +1,12 @@
 
 \newcommand{\chapterpepperapp}{Kapitel 4. }
-\chapter{Die Pepper App für die Hochschule}
+\chapter{Konzept: Pepper App für die Hochschule}
 \label{sec:anwendungsfall-hochschule}
-\lhead{\chapterpepperapp \emph{Anwendungsfall - Hochschule}}
-
-\begin{center}
-    \textbf{HIER ERKLÄREN, DASS WIR VON ROS NICHTS WUSSTEN UND DIES MIT UNSEREM PEPPER NICHT
-        MÖGLICH IST - ABER AUFPASSEN, DASS DIES NICHT MIT DEM ERSTEN ABSATZ IM NODE KAPITEL
-        IN KONFLIKT TRITT}
-\end{center}
-
+\lhead{\chapterpepperapp \emph{Konzeptionierung: Pepper App für die Hochschule}}
 
 \section{Die Vorüberlegungen}
-Nachdem wir uns darauf geeinigt haben, mindestens einen Anwendungsfall für den Roboter Pepper zu entwickeln,
-und sich dieser auf den Alltag an der Hochschule Bremerhaven beziehen soll, haben wir uns damit konfrontiert gesehen,
-uns Gedanken darüber zu machen, wie genau eine Interaktion zwischen einem Studenten oder einer Lehrkraft und dem Roboter
-stattfinden kann. Aufgrund der den aktuellen Beschlüssen der Regierung ist das Leben auf dem Campus fast zum Stillstand gekommen,
-wodurch sich für Pepper wenige Einsatzgebiete ergeben. Wir gehen jedoch davon aus, zu einer neuen Normalität zurück zu gekangen,
-und werden Pepper dahingehend vorbereiten.
+Nachdem wir uns darauf geeinigt haben, einen Anwendungsfall für den Roboter Pepper zu entwickeln, und sich dieser auf den Alltag an der Hochschule Bremerhaven beziehen soll, haben wir uns damit konfrontiert gesehen, uns Gedanken darüber zu machen, wie genau eine Interaktion zwischen einem Studenten oder einer Lehrkraft und dem Roboter
+stattfinden kann. Aufgrund der den aktuellen Beschlüssen der Regierung ist das Leben auf dem Campus fast zum Stillstand gekommen, wodurch sich für Pepper wenig Einsatzgebiete ergeben. Wir gehen jedoch davon aus, zu einer neuen Normalität zurück zu gelangen, und werden Pepper dahingehend vorbereiten.
 
 Folgende Fragen sind für uns zentral:
 \begin{itemize}
@@ -38,25 +27,18 @@ welche grob die Hauptfunktionalitäten unseres Projektes festhält:
     \centering
 \end{figure}
 
-% \begin{figure}[H]
-% \includegraphics[width=\textwidth]{}
-% \caption{Grundfunktionalitäten}
-% \label{fig:skizze}
-% \centering
-% \end{figure}
 
+% Nachfolgend sind unsere vordefinierten Grundfunktionalitäten zu aufgelistet.
 
-Nachfolgend sind unsere vordefinierten Grundfunktionalitäten zu aufgelistet.
+% \begin{itemize}
+%     \item Stundenplan
+%     \item Raum- und Lageplan
+%     \item Speisekarte der Mensa
+%     \item Smalltalk
+%     \item Informationen über die Hochschule
+% \end{itemize}
 
-\begin{itemize}
-    \item Stundenplan
-    \item Raum- und Lageplan
-    \item Speisekarte der Mensa
-    \item Smalltalk
-    \item Informationen über die Hochschule
-\end{itemize}
-
-Auf Grundlage der diese Grundfunktionalitäten haben wir damit begonnen die Anwendungsfälle weiter zu spezifizieren in dem wir diese in einem Anwendungsfall-Diagramm zusammen getragen haben. 
+Auf Grundlage der diese Grundfunktionalitäten haben wir damit begonnen die Anwendungsfälle weiter zu spezifizieren in dem wir diese in einem Anwendungsfall-Diagramm zusammen getragen haben. \\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/use-case-diagram.jpg}
@@ -70,10 +52,10 @@ Wir haben hierbei die nutzbaren Funktionalitäten für die jeweiligen Akteure de
 Zudem soll die Interaktion mit Pepper für alle möglich sein. Studierende und Lehrende sollen erfragen können,
 wo welche Vorlesung stattfindet, in der Kaffeteria oder Mensa soll sich Pepper mit Gästen unterhalten, Smalltalk führen oder
 Empfehlungen für bestimmte Speisen ausgeben. Darüber hinaus wollen wir Pepper das lückenlose Interagieren beibringen, damit er an
-besonderen Veranstaltungen, wie dem Tag der offenen Tür oder dem Tag der Informatik, Interessenten Informationen über die Hochschule,
-das Leben auf dem Campus, sowie allgemeine Empfehlungen für die Stadt Bremerhaven ausgeben kann.\\
+besonderen Veranstaltungen, wie dem Tag der offenen Tür oder dem Tag der Informatik, Besuchern Informationen über die Hochschule,
+das Leben auf dem Campus, sowie allgemeine Empfehlungen für die Stadt Bremerhaven ausgeben kann.
 
-Die geplante Struktur der Anwendung lässt sich mit der unten dargestellten Abbildung möglichst einfach verdeutlichen. 
+Die geplante Struktur der Anwendung lässt sich mit der unten dargestellten Abbildung möglichst einfach verdeutlichen.\\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/anwendungarchitektur.png}
@@ -82,62 +64,38 @@ Die geplante Struktur der Anwendung lässt sich mit der unten dargestellten Abbi
     \centering
 \end{figure}
 
-Die Architektur ist in drei verschiedene Systeme unterteilt, welche in der mit den Pfeilen dargestellten Beziehung zueinander stehen. Hierbei ist der Bereich des Backend-Service ausschließlich dafür da, Daten zu sammeln oder zu generieren, welche dann an den Server gesendet werden. Der Server besteht im groben aus dem Node Server, dem Web Server sowie der Datenbank. Im Gegensatz zu dem Backend-Service steht Pepper mit Server stehen ständig in einem asynchronen Austausch miteinander.
+Die Architektur ist in drei verschiedene Systeme unterteilt, welche in der mit den Pfeilen dargestellten Beziehung zueinander stehen. Hierbei ist der Bereich des Backend-Service ausschließlich dafür da, Daten zu sammeln oder zu generieren, welche dann an den Server gesendet werden. Der Server besteht im groben aus dem Node Server, dem Web Server sowie der Datenbank. Im Gegensatz zu dem Backend-Service steht Pepper mit Server stehen ständig in einem asynchronen Austausch miteinander.\\
 
 \section{Entwicklungsumgebungen für Pepper}
 
-Um das Verhalten von Pepper zu programmieren, kann entweder die Entwicklungsumgebung Android Studio oder Choregraphe verwendet werden. 
-Im Folgenden werden kurz auf die einzelnen Softwares eingehen und erklären, wieso wir uns für Android Studio entschieden haben. 
-Anschließend gehen wir noch auf eine weitere Entwicklungsumgebung ein, die aber nicht mehr von Softbanks unterstützt wird.\\
+Um das Verhalten von Pepper zu programmieren, kann entweder die Entwicklungsumgebung Android Studio oder Choregraphe verwendet werden. Im Folgenden werden kurz auf die einzelnen Softwares eingehen und erklären, wieso wir uns für Android Studio entschieden haben. Anschließend gehen wir noch auf eine weitere Entwicklungsumgebung ein, die aber nicht mehr von Softbanks unterstützt wird.\\
 
 \subsection{Choregraphe}
 
-Mit der Choregraphe Entwicklungsumgebung können komplexe Verhaltensmuster in Pepper integriert werden, ohne eine Zeile Code zu schreiben. 
-Zusätzlich kann das Verhalten aber auch mit der Programmiersprache Python gesteuert werden. Der Choregraphe besitzt mehrer Editoren, 
-mit denen sich zum Beispiel Animationen erstellen lassen können oder Gesprächsfunktionen einbinden lassen. Die Software besitzt ebenfalls 
-einen Emulator mit einem virtuellen Roboter, wo die Applikation getestet werden kann.\\
-(Quelle: \cite{Choregraphe})\\
+Mit der Choregraphe Entwicklungsumgebung können komplexe Verhaltensmuster in Pepper integriert werden, ohne eine Zeile Code zu schreiben.
+Zusätzlich kann das Verhalten aber auch mit der Programmiersprache Python gesteuert werden. Der Choregraphe besitzt mehrer Editoren, mit denen sich zum Beispiel Animationen erstellen lassen können oder Gesprächsfunktionen einbinden lassen. Die Software besitzt ebenfalls einen Emulator mit einem virtuellen Roboter, wo die Applikation getestet werden kann (mehr online: \cite{Choregraphe}).\\
 
 \subsection{Android Studio}
 
-Mit Android Studio können Applikationen für Googles quelloffenes mobiles Betriebssystem entwickelt werden. Sie wurde so konzipiert, dass 
-auch Nicht-Programmierer damit arbeiten können, da sie Editoren anbietet, die das Erstellen von Layouts oder Themes vereinfacht. 
-Die Software basiert auf IntelliJ IDEA 14 und verwendet somit die Programmiersprachen Java und Kotlin. Beim Erstellen einer neuen 
-Applikation kann zwischen diesen beiden Programmiersprachen ausgewählt werden.
+Mit Android Studio können Applikationen für Googles Open-Source Betriebssystem ``Andriod'' entwickelt werden. Sie ist so konzipiert, dass auch Nicht-Programmierer damit arbeiten können, da sie Editoren anbietet, die das Erstellen von Layouts oder Themes vereinfacht. Die Software basiert auf IntelliJ IDEA 14 und bietet die Programmiersprachen Java und Kotlin. Beim Erstellen einer neuen Applikation kann zwischen diesen beiden Programmiersprachen ausgewählt werden.
 
-Die Software besitzt ihren eigenen SDK Manager, worüber die Pepper SDK heruntergeladen werden kann, um eine Entwicklungsumgebung für Pepper 
-zu schaffen. Mit diesen Entwicklungspaketen kommen viele verschiedene Methoden und Funktionen hinzu, worüber sich das Verhalten von Pepper 
-steuern und programmieren lässt. Zusätzlich bietet das Pepper SDK einen Emulator an, wo die Applikation auf einem virtuellen Pepper 
-getestet werden kann und einen weiteren Editor, mit denen Animationen erstellt werden können. Das Tablet von Pepper kann komplett mit den 
-Funktionen und Editoren von Android Studio editiert werden. 
+Die Software besitzt ihren eigenen SDK Manager, worüber die Pepper SDK heruntergeladen werden kann, um eine Entwicklungsumgebung für Pepper zu schaffen. Mit diesen Entwicklungspaketen kommen viele verschiedene Methoden und Funktionen hinzu, worüber sich das Verhalten von Pepper steuern und programmieren lässt. Zusätzlich bietet das Pepper SDK einen Emulator an, wo die Applikation auf einem virtuellen Pepper getestet werden kann und einen weiteren Editor, mit denen Animationen erstellt werden können. Das Tablet von Pepper kann komplett mit den Funktionen und Editoren von Android Studio editiert werden.
 
-Sowohl Android Studio als auch Choregraphe können bestimmte Komponenten von Pepper nicht ansteuern oder verändern. Hierzu gehört zum 
-Beispiel die Kamera von Pepper, da die einzelnen Funktionen wie die Bilderkennung fest verankert sind. Es kann lediglich nur auf die Daten 
-zugegriffen werden, die Pepper selber mit seinen Kameras erzeugt.
+Sowohl Android Studio als auch Choregraphe können bestimmte Komponenten von Pepper nicht ansteuern oder verändern. Hierzu gehört zum Beispiel die Kamera von Pepper, da die einzelnen Funktionen wie die Bilderkennung fest verankert sind. Es kann lediglich nur auf die Daten zugegriffen werden, die Pepper selber mit seinen Kameras erzeugt.
 (Quelle: \cite{Android_Studio})\\
 
 \subsection{ROS}
 
-Es gab vor ein paar Jahren die Möglichkeit, Pepper mit ROS zu entwickeln. 
-ROS heißt übersetzt \glqq Robot Operating System \glqq{} und ist somit ein Betriebssystem, das speziell für die Steuerung und Programmierung 
-von Robotern entwickelt wurde. Anders als bei Android Studio oder Choregraphe, besitzt man hier jegliche Freiheiten, den Roboter so zu 
-programmieren, wie man will. Zum Beispiel hätten wir mit ROS die Möglichkeit gehabt, auf die Kamera oder Sensoren von Pepper zuzugreifen. 
-Dies hätte den Vorteil gehabt, dass wir unsere eigene Bild, oder Spracherkennungs-KI für Pepper entwickeln könnten. Softbanks hat sich 
-jedoch ab einer früheren Version dazu entschieden, die Kompatibilität und Anbindung mit ROS zu stoppen. Wäre ROS für uns eine Option 
-gewesen, hätten wir uns definitiv dafür entschieden. \\
+Es gab vor beginn unseres Projektes die Möglichkeit, Pepper mit ROS (\textbf{R}obot \textbf{O}perating \textbf{S}ystem) zu entwickeln. ROS ist ein Betriebssystem, das speziell für die Steuerung und Programmierung von Robotern entwickelt wurde. Anders als bei Android Studio oder Choregraphe, besitzt man hier jegliche Freiheiten, den Roboter so zu programmieren, wie man möchte. Zum Beispiel hätten wir mit ROS die Möglichkeit gehabt, auf die Kamera oder Sensoren von Pepper zuzugreifen.
+Dies hätte den Vorteil gehabt, dass wir unsere eigene Bild, oder Spracherkennungsalgorithmen für Pepper entwickeln könnten. Softbanks hat sich
+jedoch ab einer früheren Version dazu entschieden, die Kompatibilität und Anbindung mit ROS zu stoppen. Hätten wir die Möglichkeit gehabt, ROS zu verwenden, hätten wir uns definitiv dafür entschieden. \\
 
-\section{Entscheidung}
+\section{Entwicklugnsumgebung}
 
-Wir haben uns dazu entschieden, Android Studio als Entwicklungsumgebung zu verwenden, da wir mit der Pepper SDK eine Vielzahl an 
-Möglichkeiten besitzen, Pepper für jede Situation anzupassen. Außerdem wurde es uns auch von den Masterstudenten empfohlen und wir konnten 
-deren Applikation als Referenz verwenden. Für unsere Applikation haben wir uns entschieden, Java statt Kotlin als Programmiersprache zu 
-verwenden, da wir damit die meisten Erfahrungen gemacht haben.\\ 
+Wir haben uns dazu entschieden, Android Studio als Entwicklungsumgebung zu verwenden, da wir mit der Pepper SDK eine Vielzahl an Möglichkeiten besitzen, Pepper für jede Situation anzupassen. Außerdem wurde es uns auch von den Masterstudenten empfohlen und wir konnten deren Applikation als Referenz verwenden. Für unsere Applikation verwenden wir Java statt Kotlin, da wir in Java schon einige Konzepte in früheren Projekten umgesetzt haben.\\
 
 \section{Hard- und Softwarespezifikationen}
-%Da Peppers Tablet auf Android basiert, liegt es auf der Hand, Android Studio als Entwicklungsumgebung zu benutzen. Der
-Einfachheit halber, ist nachfolgend eine Tabelle, welche die von uns für die Pepper Anwendung benutzte Software mit den
-entsprechenden Versionsnummern auflsitet.
-
+Nachfolgend ist eine Tabelle, welche noch einmal systematisch unsere verwendeten Softwares aufzeigt.
 \begin{table}[H]
     \caption{Hard- und Softwarespezifikationen}
     \label{table}
@@ -161,36 +119,7 @@ entsprechenden Versionsnummern auflsitet.
         \multicolumn{3}{p{380pt}}{Mit abwichenden Versionen kann es zu Kompatibilitätsproblemen kommen.}
     \end{tabular}
     \label{tab1}
-\end{table} 
+\end{table}
 
-%Um unsere Software von zu Hause aus zu testen, nutzen wir den Build-In Emulator, welcher bei der installation
-%der Pepper API in Android Studio integriert wird. Hiermit ist es möglich die sprachliche Kommunikation zwischen
-%Pepper und dem Anwender, sowie die Aus- und Eingaben auf dem Tablet zu testen.
-
-Der Roboter Pepper selbst, ist XXX groß, wurde am XXX von XXX gekauft und ist seit XXX im Besitz der Hochschule
-und läuft derzeit mit der Version XXX.
-
-%\section{Implementierung}
-
-%\textbf{hier muss auch erwähnt werden, dass pepper selbst das alter, stimmung und geschlecht erkennt}
-% \begin{figure}[H]
-% \includegraphics[width=\textwidth]{bannerNmenu}
-% \caption{Banner und Menülesite im angemeldeten Zustand als Admin}
-% \label{fig:menu}
-% \centering
-% \end{figure}
-
-% In der Menüleiste werden je nach Anmeldestatus des Nutzers, andere Unterpunkte dargestellt. Nicht registrierte Nutzer haben keine Möglichkeit, ein Portfolio einzusehen oder auf unsere exklusive \grqq{}Gamble\grqq{} Seite zu gelangen. Des Weiteren beinhaltet die Menüleiste alle relevanten Links und Weiterleitungen unserer Website, sowie ein animiertes Widget von \href{https://de.tradingview.com/}{TradingView}, welches aktuelle Kursdaten zu ausgewählten Wertpapieren in Dauerschleife anzeigt. Das Logo unserer Website wurde von Leonhard T. Schwertfeger \cite{mygainlogo} erstellt und zur Verfügung gestellt.
-
-% Zu Anfang des Projektes haben wir auf der Startseite, um sie etwas lebhafter zu gestalten, mehrere Widgets von \href{https://de.tradingview.com/ }{TradingView} mittels JavaScript eingebunden, jedoch haben wir im Laufe der Zeit gemerkt, dass es gar nicht so schwierig ist, Kursdaten wie der Öffnungs- und Schlusskurs oder auch Tageshöchst- und Tiefstwerte abzubilden, wenn man die nötigen Datensätze besitzt. Die Herkunft der bei uns benutzten Daten besprechen wir in Kapitel \ref{sec:MyGain-Trade} - Trade.
-
-% Da wir unseren Kunden eine schnelle Einsicht in unser Angebot ermöglichen wollen, ist der iFrame so eingestellt, dass er standardmäßig die \code{home.php} Seite anzeigt, welche in zwei Bereiche eingeteilt ist. Drei Viertel der Seite nimmt eine tabellarische Übersicht aller bei uns handelbaren Assets ein. Diese beinhaltet alle relevanten Kursdaten wie \grqq{}Open\grqq{}, \grqq{}Close\grqq{}, \grqq{}High / Low\grqq{} und das Volumen des Assets. Diese Daten beziehen sich auf den Zeitraum von einen Tag. Zudem besteht die Möglichkeit der direkten Weiterleitung auf die Trade Seite, sofern eines der angebotenen Wertpapiere angeklickt wird.\\
-
-% \begin{figure}[H]
-% \includegraphics[width=\textwidth]{home}
-% \caption{MyGain - Home Seite}
-% \label{fig:homesite}
-% \centering
-% \end{figure}
-
-% (Abb. \ref{fig:homesite}) Im rechten Viertel der Seite haben wir eine kleine Begrüßungsformel stehen, um Besuchern wissen zu lassen, dass hier auch Menschen am arbeiten sind. Des weiteren wird man dort, sofern man eingeloggt ist, mit einem \grqq{}Moin \code{<username>}!\grqq{} empfangen, um unseren Kunden so nah wie möglich zu sein. Als kleines Gimmick haben wir einen Besucherzähler eingebaut, der die Anzahl der Seitenaufrufe unserer Index Seite zählt. \\
+% Der Roboter Pepper selbst, ist XXX groß, wurde am XXX von XXX gekauft und ist seit XXX im Besitz der Hochschule
+% und läuft derzeit mit der Version XXX.

@@ -1,271 +1,536 @@
-\newcommand{\scripts}{Kapitel 6.}
+\newcommand{\chapterpepperusecase}{Kapitel 6. }
 
-\chapter{Skripte und Erweiterungen}
-\label{chapter:scripts}
-\lhead{\scripts \emph{Skripte und Erweiterungen}}
+\chapter{Implementierung: Anwendungsfälle}
+\label{sec:Pepper_Anwendungsfaelle}
+\lhead{\chapterpepperusecase \emph{Implementierung der Anwendungsfälle}}
 
-\section{Allgemein}
-Neben der Anwendung für den Roboter Pepper und der Webanwendung haben wir weitere Skripte,
-hauptsächlich in Python, geschrieben. Diese sind in einem separaten Repository unter
-\href{https://github.com/ProjectPepperHSB/Backend-Services}{https://github.com/ProjectPepperHSB/Backend-Services}
-zu finden. In diesem Repositry befindet sich, wie in jedem anderen unserer Projekte auch, eine README.md, welche
-einen Einstieg in die Installation und Anwendung der einzelnen Skripte ermöglicht.
+Im Folgenden werden wir auf die Implementierung unserer Anwendungsfälle eingehen. Hierbei gehen wir zuerst auf die Planung und anschließend auf die Bereitstellung der Daten in unserem Server und in externe Scripts ein. Anschließend erläutern wir die Implementation und Weiterverarbeitung der einzelnen Anwendungsfälle in Android Studio.\\
 
-Es sind mehrere Verzeichnisse angelegt, welche separate Schwerpunkte beinhalten, auf welche wir in den folgenden
-Abschnitten genauer eingehen wedern. Auch diese bieten eigene README.md Dateien, welche die Installation, sowie den Zweck aufzeigen.
+\section{Mensa}
 
-In jedem dieser kleineren Module befindet sich eine \verb|install.sh|, sowie eine \verb|reguirements.txt| Datei, welche
-zusammen ausgeführt werden, um die für das Skript benötigten Packages zu installieren, sofern diese noch nicht vorhanden sind.
+Der Anwendungsfall für die Mensa ist in zwei Teile aufgeteilt. Der erste Teil ist das Anzeigen des Mensaplans auf dem Tablet von Pepper. Sollte der Anwender explizit nach dem Mensaplan fragen, muss Pepper in der Lage sein, eine Übersicht des Mensaplans der aktuellen Woche anzuzeigen. 
+Der zweite Teil ist das verbale Beschreiben der Mensaangebote. Hierbei soll Pepper für jeden Wochentag erzählen können, welche Angebote in der Mensa zurzeit zur Verfügung stehen. Die Mensa der Hochschule Bremerhaven bietet jeden Wochentag immer zwei Angebote an. Das zweite Angebot ist dabei immer vegetarisch. Pepper muss dementsprechend in der Lage sein, beide Angebote beschreiben zu können. 
 
-Es befindet sich auch ein Verzeichnis mit Namen ``analysis'' in diesem Repository, jedoch gehen wir
-darauf im Kapiel \ref{chapter:big-data} genauer ein.
+Um die verschiedenen Daten über die Mensa Angebote abrufen zu können, verwenden wir unseren Server, der diese Daten bereitstellt. Der Server bekommt diese Daten aus einem externen Python Script.\\
 
-\section{Skripte zur Generierung von Dummy Konversationen}
-\label{sec:dummy-data}
-Aufgrund der andauernden Einschränkungen der Regierung, ist es uns nicht möglich, Pepper an der Hochschule im vollem Umfang
-auszutesten. Somit können wir Pepper und seine Interaktionen nicht an einer großen Menge an Studierenden und Interessierten austesten.
-Da wir jedoch den Schwerpunkt Big Data mit in unserem Projekt einfließen lassen wollen und unsere Webanwendung, welche wir im Kapitel \ref{chapter:webapp}
-besprochen haben genau für das Sammeln und zur Verfügung stellen von Daten ausgelegt haben, war es für uns ganz klar, dass
-wir uns selbst Daten generieren müsssen.
+\subsection{Script um Mensadaten aufzurufen}
+\label{sec:pyMensa}
 
-Hierfür wurde ein Skript mit dem Namen \verb|create-dummy-data.py| geschrieben, welches über die Kommandozeile ausgeführt werden kann
-und mehrere Parameter übergeben bekommt.
+Um die Daten auf dem Server anzeigen zu lassen, wird ein Python Script verwendet, dass sich diese Daten aus der offiziellen Hochschule Bremerhaven Mensa Webseite zieht. 
+
+Webseite: \url{https://www.stw-bremen.de/de/cafeteria/bremerhaven}
+
+Auf dieser Webseite befinden sich die aktuellen Angebote für die nächsten fünf Tage in einer Tabelle und den aktuellen- sowie nächsten Wochenplan im PDF-Format. Mit dem Script werden die einzelnen Daten aus der Webseite gelesen und als JSON gespeichert. Das Lesen der Daten aus der Webseite wird mit Hilfe des Frameworks \verb|BeautifulSoup| durchgeführt. Dieses Framework erlaubt es, XML- und HTML-Dokumente zu \verb|parsen|.\\
 
 \begin{lstlisting}
-    ~$ python3 create-dummy-data.py -n 1000 --prod
+menulist = soup.select("tbody")
+
+menu, offer1, offer2 = {}, [], []
+day: [str] = [
+    "Montag","Dienstag", "Mittwoch", "Donnerstag", "Freitag"
+    ]
 \end{lstlisting}
 
-Das Flag \verb|n| gibt die Anzahl der zu generierenden Konversationen an. Das zweite Flag \verb|--prod| ist optioanl und
-sorgt dafür, dass die Daten, welche innerhalb des Skriptes generiert werden, an die URL der
-laufenden Webanwendung auf dem Hochschulserver gesendet werden. Ohne diesen Flag, werden die Datenreihen an den Localhost geschickt.
-Sollte dies nicht einwandfrei laufen, so ist die Webanwendung höchstwahrscheinlich nicht aktiv.
+Die Mensa Angebote befinden sich auf der Webseite in einer Tabelle, weshalb wir auf alle \verb|tbody|-Elemente mit der Funktion \verb|soup.select| zugreifen. Diese werden als Array in die Variable \verb|menulist| initialisiert. Anschließend werden die Variablen deklariert, aus denen später der JSON string entstehen soll. \\
 
-Da die \verb|requests| Library in Python nur synchrone Prozesse unterstützt und dies bei 1000 Anfragen etwas Zeit in Anspruch nimmt,
-haben wir dies mit der Library Joblib parallelisiert, sodass 6 Prozesse gleichzeitg die Generierung der Daten, sowie das Übermitteln
-an die Webanwendung übernehmen. Aufgurnd der Beschränkungen des Hochschulservers Hopper ist es nicht möglich, noch mehr
-gleichzeitige Anfragen zu schicken. Dies ist eine Sicherheitsmaßnahme zur Abwendung von DOS Attacken.
+\begin{lstlisting}
+for i in range(10):
+    tmp = (str(menulist[i]).split('description">',1)[1]).rsplit
+    ("</td><td",2)[0]
+    tmp = tmp.replace("\n","").replace("\r","").replace("a1","")
+    .replace("amp;","")
+    tmp = re.sub('<sup>.*?</sup>', |, tmp)
+    if(i%2==0): offer1.append(tmp)
+    else: offer2.append(tmp)
+    menu["day"], menu["offer1"], menu["offer2"] = day, offer1, offer2
+
+with open(folder_location+"mensadata.json", "w+") as f:
+    json.dump(menu, f, ensure_ascii=False)
+\end{lstlisting}
+
+Da sich die Daten in den \verb|tbody|-Elementen schwer lesen lassen, werden diese mit mehreren \verb|split| und \verb|replace| Funktionen in lesbare Mensa Angebote umgeformt und in den einzelnen Variablen eingefügt. Die If-Bedingung wird verwendet, um das erste- und zweite Angebot voneinander zu trennen. Anschließend wird das \verb|menu| Objekt mit den keys \verb|day|, \verb|offer1| und \verb|offer2| und den Values der jeweiligen Arrays initialisiert.
+Zum Schluss wird das \verb|menu| Objekt in JSON mit der \verb|json.dump| Funktion umgewandelt.
+
+Um den aktuellen Wochenplan im Script herunterzuladen und weiterzuverarbeiten, wird die Programmbibliothek Poppler vorausgesetzt. Poppler wird in Unix-ähnlichen Betriebssystemen dazu verwendet, PDF-Dateien anzuzeigen.\\
+
+\begin{lstlisting}
+response = requests.get(url)
+soup= BeautifulSoup(response.text, "html.parser")
+menucard = ((str(soup.select("a[href$='/print']")[0])
+.rsplit(' target',1)[0]).split("href=",1)[1])
+.replace('"',|)
+urllib.request.urlretrieve(menucard, folder_location+"Mensaplan.pdf")
+\end{lstlisting}
+
+Mit den ersten beiden Zeilen des Codes wird der komplette HTML-Inhalt der Webseite in die Variable \verb|soup| initialisiert. Da wir die URL des aktuellen Wochenplans benötigen, muss dieser aus dem HTML Code gelesen werden. Der Standort dieser URL ist im HTML Code fest verankert, weswegen wir mit Hilfe von \verb|soup.select|, die URL herausfiltern und mit mehreren \verb|split| und \verb|replace| Funktionen zu einer gültigen URL umformen können. Dieser Zwischenschritt ist nötig, da sich die URL jede Woche ändert. Anschließend wird die URL aufgerufen und als \verb|Mensaplan.pdf| abgespeichert.\\
+
+\begin{lstlisting}
+img = convert_from_path(folder_location+"Mensaplan.pdf", 500)[0]
+
+area = (0, 200, 4134, 2800) # R T L B
+cropped_img = img.crop(area)
+
+area = (0, 5200, 4134, 5800)
+cropped_img2 = img.crop(area)
+mergeImgs([cropped_img, cropped_img2])
+.save(folder_location+'images/mensaplan.png', 'JPEG')
+\end{lstlisting}
+
+Im nächsten Schritt wird mit der Funktion \verb|convert_from_path| das PDF in ein Bildformat konvertiert und in die Variable \verb|img| installiert. Hierfür wird das Framework \verb|pdf2image| verwendet, das vorab mit \verb|pip| installiert werden muss. 
+
+Nun ist das Bild jedoch im Hochformat und kann sehr schlecht auf dem Tablet von Pepper angezeigt werden. (vgl. Abb. \ref{fig:Mensaplan}) Somit haben wir das Bild in zwei Teile geschnitten und im Querformat zusammengefügt. Um das Bild zu schneiden, haben wir das Framework \verb|PIL| verwendet. Nun kann genau angegeben werden, wie das Bild geschnitten werden soll. In der Variable \verb|area| haben wir jeweils immer vordefiniert, wie weit das Bild in welcher Richtung ausgeschnitten werden soll. Die Reihenfolge der Richtungen lautet wie folgt: 
+(rechts oben links unten) (0, 200, 4134, 2800)
+
+Zuerst haben wir den oberen Teil des Mensaplans ausgeschnitten, der die einzelnen Angebote enthält und anschließend die Legende, die sich im unteren Bereich der PDF befindet. 
+
+Nun müssen beide Bilder zusammengefügt werden. Dies wurde in der Methode \verb|mergeImgs| durchgeführt.\\
 
 
-\section{Skripte für die Bereitstellung des Mensaplans}
+\begin{lstlisting}
+def mergeImgs(imgs):
+    min_img_width = min(i.width for i in imgs)
+    
+    total_height = 0
+    for i, img in enumerate(imgs):
+    
+    if(img.width > min_img_width):
+        imgs[i] = img.resize((min_img_width, int(img.height / 
+        img.width * min_img_width)), Image.ANTIALIAS)
+    total_height += imgs[i].height
+    
+    img_merge = Image.new(imgs[0].mode, (min_img_width, total_height))
+    y = 0
+    for img in imgs:
+        img_merge.paste(img, (0, y))
+    
+        y += img.height
+    return img_merge
+\end{lstlisting}
 
-\newpage
-\section{Skripte für die Bereitstellung des 3D-Navigators}
-
-Der Campus unserer Hochschule ist ziemlich weitläufig und unübersichtlich. Dazu kommt, dass mit der Zeit einige Gebäude von der Hochschule als Lernräume angemietet wurden, welche nicht direkt als solche zu erkennen sind. Aufgrund dessen erweist es sich, vor allem für Studenten der ersten Semester, sowie Besucher der Hochschule als äußerst schwierig sich auf dem Campus zu orientieren.
-\subsection{Anforderungen}
- Die Benutzer des Roboters sollen die Möglichkeit haben ihn nach einem Raum oder Ort zu fragen und Pepper ihnen daraufhin eine genaue Wegbeschreibung als Antwort geben kann. Dabei ist es von Vorteil, dem Nutzer eine visuelle Beschreibung zu bieten, da die nicht nur einfacher zu verstehen ist, sondern auch mögliche Sprachbarrieren ausschließt. Dafür soll das Tablett von Pepper als visuelle Kommunikation für die Wegbeschreibung dienen. Per Sprache soll Pepper zudem eine geschätzte Dauer des Weges, sowie die Entfernung zu dem gesuchten Ort geben. Außerdem ist es wichtig, dass Pepper auch in der Lage ist barrierefreie Wege für den Benutzer zu beschreiben, da unsere Hochschule weitestgehend auch barrierefrei passierbar ist und körperlich beeinträchtigte Menschen nicht von einem solchen System nicht ausgeschlossen werden sollten.
-\subsection{Vorhandene Ressourcen}
-Bei der Suche im Web sind die ersten Ergebnisse für eine Orientierungshilfe oder einem Campusplan, die von der Hochschule Bremerhaven unter der offiziellen Internetseite hs-bremerhaven.de bereitgestellten Geländepläne. Diese bestehen aus einem 2-Dimensionalen Campusplan, wie in (Abb. 1) zu sehen, sowie einen 3-dimensionalen Campusplan (Abb 2).
+In dieser Funktion wird zuerst die Breite und Höhe des neu zusammengefügten Bildes ermittelt. Sollten die beiden Bilder eine unterschiedliche Breite besitzen, wird das breiteste Bild verkleinert. Dies geschieht in der For-Schleife, wo jedes einzelne Bild überprüft wird. 
+Anschließend wir ein neues \verb|img_merge| Objekt erzeugt, das mit der minimalsten Breite und addierten Höhe der beiden Bilder initialisiert wird. Zum Schluss werden die beiden Bilder in das Objekt eingefügt und heruntergeladen.
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/campusplan_bsp.jpg}
-    \caption{Beispiel: Zur Verfügung stehende Campuspläne}
-    \label{fig:integration}
+    \centering
+    \includegraphics[width=15cm]{Figures/AppChapter/mensa_3.png}
+    \caption{Mensaplan - cropped}
+    \label{fig:Mensaplan}
     \centering
 \end{figure}
 
-Zudem wird auch vom AStA Bremerhaven ein Campusplan bereitgestellt.
+\subsection{Weiterleitung zum NodeJS Server}
 
+Das Script (vgl. \ref{sec:pyMensa}) befindet sich auf dem Hopper und wird mit \verb|crontab| jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.\\
+
+\begin{lstlisting}
+    # m h dom mon dow command
+    0 0 * * 1 /usr/bin/python3 ~/getMensaPlan.py
+\end{lstlisting}
+
+Das erzeugte JSON Objekt und das zugeschnittene Bild des Mensaplans werden anschließend in den \verb|static| Ordner vom Node Server eingefügt.
+
+\subsection{Bereitstellen der Mensadaten auf dem Server}
+
+Mit dem folgenden Code werden die Daten aus den jeweiligen “/static” Ordnern an die Webseite gesendet:\\
+
+\begin{lstlisting}
+router.get('/docker-hbv-kms-http/api/v1/mensadata', (req, res) => {
+    const filePath = `${__dirname}/../static/data/mensadata.json`;
+    const jsonData = JSON.parse(fs.readFileSync(filePath, 'latin1'));
+    res.send(jsonData);
+});
+
+router.get('/docker-hbv-kms-http/api/v1/mensadata/img', (req, res) => {
+    const filePath = `${__dirname}/../static/images/mensaplan.png`;
+    const img = fs.readFileSync(filePath);
+    res.writeHead(200, {
+        'Content-Type': 'image/png'
+    });
+    res.end(img, 'binary');
+});    
+\end{lstlisting}
+
+(vgl. Abb. \ref{fig:mensaapi}) In folgendem Pfad befindet sich nun unser JSON Objekt, mit allen Mensaangeboten der aktuellen Woche.\\
+\url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata}
+\\
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/asta_campusplan.jpg}
-    \caption{Beispiel: AStA Campusplan}
-    \label{fig:integration}
+    \centering
+    \includegraphics[width=13cm]{Figures/AppChapter/mensa_5.JPG}
+    \caption{Mensadaten - API}
+    \label{fig:mensaapi}
     \centering
 \end{figure}
 
-Alle diese Karten haben gemeinsam, dass sie einem zwar einen Überblick über das Campusgelände bieten, wodurch eine nach einem bestimmten Raum suchende Person zwar in der Lage wäre das passende Haus zu finden, allerdings ist es dort angekommen immer noch notwendig den richtigen Raum, mit der entsprechenden Nummer zu finden. Ein weiteres Problem dieser Gebäudepläne ist auch, dass es zwar anhand des Buchstaben vor der zu suchenden Raumnummer möglich ist, das richtige Gebäude zu finden, jedoch nicht, das Haus zu finden, in dem sich beispielsweise die Mensa oder die Bücherei befindet, ohne weitere Recherche zu ermitteln. Da wir vorhaben, dass Pepper den Weg zu einem bestimmten Ort oder Raum genau beschreiben soll, wäre es mit einem solchen Campusplan ein ziemlich großer Aufwand visuelle Markierungen in Form von Linien in die Pläne abbilden zu lassen. Außerdem wäre damit immer noch das Problem der genauen Route innerhalb eines Gebäudes, vor allem für barrierefreie nicht vollständig gelöst. Zudem müssten wir die sprachlich ausgegebenen Informationen zu den Wegrouten selbst erzeugen, was einen sehr großen Aufwand darstellen würde.
+Der aktuelle Wochenplan ist in png-Format unter folgendem Link erreichbar:\\
+\url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img}\\
 
-Aufgrund dieser genannten Gründe eignet sich also ein solcher Gebäudeplan relativ schlecht für unser Vorhaben, Pepper sinnvoll und effizient für die 3D-Navigation auf dem Campusgelände zu nutzen. Wir haben uns deswegen für eine von 3D-Berlin zur Verfügung gestelltes schlüsselfreies API-System entschieden. Diese API wurde von Prof. Dr.-Ing. Peter Ritzenhoff 2014 im Auftrag der Hochschule Bremerhaven von der 3d-berlin vr solutions GmbH erstellt. Sie besteht aus einem in 3D visualisierten Modell der Hochschule Bremerhaven, in welchem die Räume anhand der Gebäudepläne Maß getreu nach animiert wurden.
+
+\subsection{Anzeigen der Mensadaten in Android Studio}
+
+Wie bereits erwähnt, soll Pepper mit Hilfe von Sprache in der Lage sein, den Mensaplan auf sein Tablet anzuzeigen und Informationen 
+über die verschiedenen Angebote jedes Wochentags zu geben. Um sich den Mensaplan anzeigen zu lassen, haben wir zuerst ein neues 
+Gesprächsthema in unserem Haupt-Topic erstellt. 
+\\
+\begin{lstlisting}
+u:(["Ich hab{e} hunger" "Zeig {mir} {den} Mensaplan"] ) 
+^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine 
+Uebersicht ueber den Mensaplan
+\end{lstlisting}
+
+Sobald der Anwender nach dem Mensaplan fragt, wird die \verb|runWith| Methode mit den Parametern \verb|qiVariableMensa|
+und \verb|Plan| in der \verb|VariableExecutor| Klasse aufgerufen.\\
+
+\begin{lstlisting}
+case("qiVariableMensa"):
+String day = params.get(1);
+if(day.equals("Plan")){
+    ...
+}
+\end{lstlisting}
+
+In dieser Methode wird anschließend nach dem switch 
+case \verb|qiVariableMensa| gesucht. Da wir einen zweiten Mensaanwendungsfall besitzen, müssen wir diese beiden Fälle 
+voneinander unterscheiden können. Aus diesem Grund wurde ein weiterer String Parameter mit dem Namen \verb|Plan| mitgegeben, 
+um über einer If-Bedingung diese beiden Fälle zu trennen. 
+Nun gibt es mehrere Möglichkeiten, das Bild auf dem Tablet von Pepper anzeigen zu lassen. Die 
+einfachste Methode wäre über den Webviewer. Hierfür hätten wir lediglich die URL benötigt, um die Webseite mit dem Bild auf dem 
+Tablet anzeigen zu lassen. Die Bildgröße des Mensaplans besaß jedoch eine viel zu große Auflösung (3200 x 4134 px), sodass nur ein Teil des Bildes auf dem Tablet angezeigt werden konnte.
+Auf dem Node Server oder in Android Studio könnte die Auflösung theoretisch manuell umgestellt werden, was wir jedoch vermeiden wollen. 
+
+Wir haben uns anschließend für eine andere Lösung entschieden, wo das Bild in Android Studio als Bitmap vom Node Server heruntergeladen wird. Eine Bitmap 
+ist eine Zahlenmatrix von einem Bild, wo jeder Pixel die jeweiligen Farbinformationen enthält.\\
+
+
+\begin{lstlisting}
+String url_str = "https://informatik.hs-bremerhaven.de/
+docker-hbv-kms-http/api/v1/mensadata/img";
+InputStream srt = new URL(url_str).openStream();
+final Bitmap bitmap = BitmapFactory.decodeStream(srt);
+    
+ma.runOnUiThread(() -> {
+    ma.setContentView(R.layout.mensa_layout);
+    ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa);
+    imageView.setImageBitmap(bitmap);
+});
+\end{lstlisting}
+
+In diesem Code wird das Bild in einen InputStream initialisiert. Ein InputStream ist eine Folge von Bytes, womit sich Daten lesen 
+lassen können. Der InputStream wird mithilfe der \verb|BitmapFactory.decodeStream| Funktion in eine Bitmap umgewandelt. 
+Anschließend kann eine Imageview mittels der Id mit der Bitmap initialisiert werden. 
+
+Nun kann Pepper auf die Frage ``Zeig mir den Mensaplan'' ein Bild von dem aktuellen Mensaplan auf sein Tablet zeigen. \\
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/3d-berlin_bsp.jpg}
-    \caption{Beispiel: 3d-Berlin 3D-Navigators-API}
-    \label{fig:integration}
     \centering
-\end{figure}
-\vspace{-2.5mm}
-Dieses API-System wurde genau für solch einen Anwendungsfall wie wir ihn erstellen wollen entwickelt. Für gewöhnlich werden diese wie von 3d-Berlin entwickelten 3D-Navigation in großen Gebäudekomplexen und Kaufhäusern verwendet, um sie dann auf digitalen Endgeräten wie Smartphones oder Digitalterminals für Besucher zur Orientierung zu Verfügung zustellen (Abb. 5).\vspace{-2.5mm}
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/terminal_bsp.jpg}
-    \caption{Beispiel: Terminal für Kaufhäuser}
-    \label{fig:integration}
-    \centering
-\end{figure}
-
-Die Implementierung und produktive Verwendung eines solchen 3D-Navigators stellt also eine innovative Anwendung dar. Wir verfügen mit dieser API über die Möglichkeit einen Start,- und Endpunkt als Request an die API zu übergeben und daraufhin per HTTP ein passendes Video mit dem genauen Ablauf der Route zurückgesendet zu bekommen. Ein weiterer Vorteil ist, dass die wir die Distanz in Meter, sowie die geschätzte Dauer für eine Route zwischen zwei Räumen abfragen können, wodurch wir diese Informationen von pepper verbal ausgeben können, während das Tablet ein Video für die Wegbeschreibung abspielt. Anschließend zeigt jedes von der API generierte Video einen QR-code mit einem Link zu dem entsprechenden Video. Dieser QR-Code lässt sich von einem Benutzer mithilfe eines Smartphones einscannen, wodurch sich die Route auch nach Antreten des Weges problemlos nachvollziehen lässt. Außerdem ist die API in der Lage ein Video mit der Wegbeschreibung für einen barrierefreien Weg zu erstellen, womit die Nützlichkeit des 3D-Navigators noch mehr Anwendungsbereiche abdeckt.
-
-\subsection{Entwicklung und Implementierung des 3D-Navigators}
-
-Wir haben uns dazu entschieden, die Daten des 3D-Navigators auf einem eigenen Server bereitzustellen. Dies bietet den Vorteil, dass wir nicht unabhängig von der Verfügbarkeit der 3d-berlin API sind. Zudem sind wir so in der Lage, die Struktur der benötigten Daten selbst zu definieren, um sie möglichst effizient von Pepper abrufen zu lassen. Zunächst haben wir das Vorgehen für die Erstellung des Navigators geplant, wobei wir es für sinnvoll erachten, das Vorgehen in 5 verschiedene Schritte aufzuteilen. Die Abbildung zeigt die chronologische Vorgehensweise bei der Entwicklung, sowie die primär verwendete Programmiersprache, so wie weitere benötigte Technologien, um das Ziel des jeweiligen Schrittes zu erreichen.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/Implementierungdes3DNavigators.jpg}
-    \caption{Vorgehen: Entwicklung des 3D-Navigators}
-    \label{fig:integration}
-    \centering
-\end{figure}
-
-\subsubsection{Planung der Videodaten-Struktur}
-
-Die Strukturierung der Videos soll so erfolgen, dass es bei der fertigen Implementierung für die Kommunikation zwischen Pepper und dem Server möglichst unproblematisch, sowie effizient ist, das passende Video zu der benötigten Anfrage abzurufen. Außerdem ist es aufgrund der speziellen Sonderzeichen innerhalb einiger Raumnamen nicht möglich, die Namen der Räume direkt innerhalb der Deklaration der Videodateien zu verwenden. Die Struktur der Dateinamen besteht deswegen aus drei notwendigen Informationen, diese sind dabei der Übersicht halber mit einem „-“ Zeichen voneinander getrennt und bilden immer einen nur einmalig vorkommenden Namen zur Wiedererkennung des jeweiligen Videos. In der ersten Sektion befindet sich die ID für den Startpunkt der Route und in der zweiten die des zu erreichenden Endpunktes. Die Definition dieser IDs sind dieselben ID-Namen, wie sie die API von 3D-Berlin verwendet hat. Das hat den Vorteil, dass wir im Nachhinein besser nachvollziehen können, aus welchen Request das entsprechende Video ursprünglich stammt. Zudem wäre es zeitlich redundant eine neue ID Nummerierung hierzu anzulegen. Der dritte Abschnitt des Videonamen beschreibt, ob es sich um ein Video mit einem Barrierefreien Weg oder um einen gewöhnlichen Weg handelt. Dabei steht die Bezeichnung „M0000“ für den gewöhnlichen Weg und „M0001“ für einen Weg unter Berücksichtigung der Barrierefreiheit. Somit gibt es für jedes Video also zwei verschiedene Varianten. Die untere Abbildung soll eine Abstrahierung dieser Datenstruktur verdeutlichen.\vspace{-2.5mm}
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/Videostruktur_Raumfinder.png}
-    \caption{Datenstruktur: Wegrouten Videos}
-    \label{fig:integration}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-Bei dem Format der Videos haben wir uns für MP4-Format entschieden. Diese Videodateien verfügen über eine gute Browserkompatibilität und haben trotz einer verhältnismäßig geringen Speichergröße trotzdem eine möglichst hohe Bildqualität. [1] Da wir bei jeder Anfrage an eine Wegbeschreibung das entsprechende Video per http auf von dem Server an den Roboter senden, eignet sich dieses Format also gut, da wir so eine entsprechend geringe Verzögerung beim Übertragen und Anzeigen der Videodatei erreichen. Wir haben uns deswegen für eine Bildbreite von 306px und eine Bildhöhe von 544px entschieden, wodurch wir eine durchschnittliche Größe von 1.5 MB pro MP4-Datei kommen. Insgesamt soll Pepper in der Lage sein ca. 500 verschiedene Wegbeschreibung zu abzubilden, wodurch sich ein Datensatz von ca. 1.000 MP4-Videos mit insgesamt 845 MB Kapazität ergibt.
-
-\subsubsection{Sammeln der Videodaten}
-
-Zunächst haben wir uns einen Überblick darüber verschafft, welche Daten wir mithilfe der 3d-Berlin API erhalten können. Als geeignetes Werkzeug für das automatisierte Arbeiten mit Requests haben wir uns für die Programmiersprache Python entschieden. Python bietet uns die Möglichkeit schnell und zielorientiert ein brauchbares Skript zu schreiben, um die benötigten Daten nicht nur auszulesen, sondern auch zu formatieren und sie später direkt in unsere gewünschte Datenstruktur einzubinden. Das Pythonskript “createvideodata.py” ist Teil unseres Backend-Service und dient dazu, die erforderlichen Requests für den Download der Videos zu konstruieren. Anschließend werden diese ausgeführt und mit dem richtigen Dateinamen zu versehen. Ein paar relevante Ausschnitte des Skripts möchten wir im Folgenden erläutern.
-Um genau zu wissen, welche Wegrouten wir erzeugen können, rufen wir zunächst eine Liste der Video-IDs ab. Wir bekommen diese in Form einer JSON-Datei als Response zurück und initialisieren die Variable “videos” mit ihr.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code01.jpg}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-Wir definieren außerdem eine variable “directory”, in welcher wir den Defaultwert für das Verzeichnis angeben, in das die Videos später gespeichert werden sollen. Die projekt-id “project” initialisieren wir, um später mögliche Änderungen für weitere Projekte vornehmen zu können. Die hier gewählte ID “100011” ist die des Projektes der Hochschule Bremerhaven. Zusätzlich initialisieren wir die Domain zu der API von 3d-Berlin in der variable “url”.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code02.jpg}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-Den wohl relevantesten Teil des Skripts stellt die folgende for-Schleife dar. Hier iterieren wir über die in der zuvor eingelesenen JSON-Datei angegebene Liste der Räume, zu welchen es Informationen in Form einer Wegbeschreibung gibt. Wir leiten daraus ab, dass wir zu jedem dieser Einträge auch ein Video von der API anfordern können. Dazu lesen wir bei jedem Eintrag eines Videos die dazugehörige ID des Endpunktes der Route, sowie den mit dieser ID verknüpften Namen des Raumes ein und speichern sie jeweils in einer Variable zwischen. Danach übergeben wir die zu der Wegroute entsprechenden Informationen an unsere zuvor definierte Funktion zum Erstellen des Requests. Wir rufen dabei diese Funktion jeweils einmal für den normalen weg und für den Barrierefreien weg auf.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code03.jpg}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-Ist ein Request erfolgreich ausgeführt wurden, so speichern wir die erhaltene MP4-Datei zwischen und schreiben sie in das vorab gewählte Verzeichnis für die Videos.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code04.jpg}
-    \centering
-\end{figure}\vspace{-4.5mm}
-
-Als letztes haben wir das Skript mit Hilfe des “PySimpleGUI”  Frameworks noch um eine Grafische Oberfläche erweitert. Mit diese sind wir in der Lage nachhaltig das Verzeichnis zum speichern der Videos über den windows-explorer auszuwählen. Zudem haben wir einen Ladebalken implementiert, welcher den Fortschritt des Downloads anzeigt. Abbildung 10 zeigt die von uns erstellte grafische Anwendung und den Output des Skripts:
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/create_videodata_pic.png}
-    \caption{Screenshot: Grafische Oberfläche des Download-Skripts}
-    \label{fig:integration}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-Ist das Skript durchgelaufen haben wir die Videos erfolgreich in die geplante Struktur und mit der korrekten Deklaration der Dateinamen in ein Verzeichnis gespeichert. 
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/videos.png}
-    \caption{Screenshot: Ausschnitt der durch das Skript erstellten Videos}
-    \label{fig:integration}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-\subsubsection{Planung der Datenstruktur für die Routeninformationen}
-
-Die Strukturierung der Metainformationen soll so gestaltet werden, dass es für Pepper und den Server möglichst einfach ist, das passende Video zu der erfolgten Anfrage abzurufen. Die Metainformationen über die Wegbeschreibungen zu einem Raum setzen sich aus folgenden Attributen zusammen:\vspace{5mm}
-
-\begin{tabular}{| l | p{9.45cm} | c| } \hline 
-\multicolumn{3}{|c|}{\textbf{Attribute einer Wegroute}}\\ \hline\hline
-Beschreibung & Kommentar & Datentyp \\
-\hline
-Art des Weges & \small Es gibt zu jeder Wegbeschreibung zwei verschiedene Arten, das Ziel 
-zu erreichen. Dabei bilden wir jeweils einen barrierefreien und einen gewöhnlichen 
-bzw. schnell zu erreichenden Weg an. Obwohl es nur zwei verschiedene Zustände für die Art eines Videos gibt, haben uns hierbei bewusst für einen String und nicht für einen booleschen Wert entschieden. Der Grund dafür ist, dass sich bei der Erstellung des Skriptes () gezeigt hat, dass wir so keine Datentypen bei der Strukturierung eines Requests umwandeln müssen. Außerdem haben wir so die Möglichkeit über genügend Agilität zu verfügen, sollten wir dieses Skript zukünftig für ein Projekt werden wollen, welches mehr als zwei Modi verwendet. & String\\[0.5ex]
-\hline
-Videopfad &  \small Dieser Parameter stellt die direkte Verknüpfung zu der entsprechenden Daten mit der dazugehörigen Rauminformation dar. So können wir möglichst präzise das passende Video mit der richtigen Wegbeschreibung ermitteln.
-& String\\
-\hline
-Ort &   \small Der Ort ist eine kurze Beschreibung, in welchem Haus und welcher Etage sich der Raum befindet. Eine solche Ortsbeschreibung wäre zum Beispiel “Haus C Erdgeschoss”. Mit dieser Umschreibung kann Pepper dem Benutzer noch eine zusätzliche Information für eine verbale Interaktion bieten. & String\\
-\hline
-Distanz & \small Bei der Distanz geben wir die Entfernung, ausgehend vom Startpunkt der Wegbeschreibung bis zum Ziel an. Wir verwenden dabei Meter als Einheit und runden diese für eine bessere Verständlichkeit auf ganze Meter auf. & Integer\\
-\hline
-Dauer & \small Die Dauer geben wir in Minuten an. Sie beschreibt die benötigte Zeit vom Startpunkt bis zum Ziel, ausgehend von der durchschnittlichen Schrittgeschwindigkeit. & Integer\\
-\hline
-\end{tabular} \vspace{5mm}
-
-Als Nächstes haben wir damit angefangen, die zur Verfügung stehenden Eigenschaften der Wegrouten sinnvoll miteinander zu verknüpfen und in Relation untereinander zu betrachten. Dabei sei vorausgesetzt, dass die Informationen immer zu genau einem Video gehören und dabei möglichst pragmatisch zu finden sein sollen. Außerdem gibt es zu jedem Raum genau zwei verschiedene Wegbeschreibungen, da wir zwischen dem Normalen und dem Barrierefreien Weg unterscheiden. Dies hat zur Folge, dass zu jeder Wegroute zwei verschiedene Eigenschaften zur Verfügung stellen muss, welche sich jedoch die gleiche Art und Struktur der Datentypen teilen. Diese Beziehungen der Daten zueinander haben wir der Übersicht halber in einem Entity-Relationship-Modell  charakterisiert.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/EntityrelationshipdiagrammRaumfinder.jpg}
-    \caption{Diagramm: ER-Modell der Wegrouten Informationen}
-    \label{fig:integration}
+    \includegraphics[width=6cm]{Figures/AppChapter/rx2.JPG}
+    \caption{Mensaplan auf Hopper}
+    \label{fig:mensaplanPepper}
     \centering
 \end{figure}
 
-Mithilfe dieses Datenmodells sind wir dazu übergegangen, ein passendes Datenformat für unseren Anwendungsfall zu wählen. Wir haben uns dabei für die JavaScript Object Notation entschieden, da sie uns den Vorteil bietet möglichst einfach und lesbar unsere Datenstruktur abzubilden. Außerdem verfügen wir so über ein Datenformat, welches eine hohe Programmiersprachen-Unabhängigkeit bietet. Dies erweist sich für unsere Architektur als äußerst vorteilhaft, da wir zwischen unseren Anwendungen und Entwicklungsabläufen verschiedene Programmiersprachen verwenden. Die endgültig geplante Datenstruktur der JSON-Datei haben wir unten in der Abbildung unten abstrahiert dargestellt.
+Als Nächstes wird ein weiteres Gesprächsthema erstellt, dass Pepper erlaubt, auch verbal Informationen über die Mensa Angebote zu geben.\\
+
+\begin{lstlisting}
+concept:(week) [Montag Dienstag Mittwoch Donnerstag 
+Freitag Heute Morgen Uebermorgen]
+
+u:({was} {gibt{s}} {es} {zu} essen {am} _[~week]) $day=$1 
+^execute(VariableExecutor, qiVariableMensa, $day) $day gibt 
+es entweder $qiVariableMensa
+
+u:({was} {gibt{s}} {es} {am} _[~week] {zu} essen) $day=$1 
+^execute(VariableExecutor, qiVariableMensa, $day) $day gibt 
+es entweder $qiVariableMensa
+\end{lstlisting}
+
+Hier wird die Variable \verb|day| mit dem Wochentag in  \verb|_[~week]| initialisiert, dass in der Frage genannt wurde. Wenn der Anwender 
+zum Beispiel fragt: ``Was gibt es am Mittwoch zu essen'', wird Mittwoch in die Variable \verb|day| initialisiert. In dem Konzept 
+wurden nicht nur Wochentage, sonder auch Wörter wie Heute, Morgen und Übermorgen hinzugefügt. Somit kann der Anwender auch fragen, was es zum Beispiel 
+morgen zu essen gibt. 
+Anschließend wird wieder die \verb|runWith| Methode aufgerufen mit den Parameter \verb|qiVariableMensa| und dem Wochentag, der genannt wurde.
+In der VariableExecutor Klasse wird nun die Antwort vorbereitet, die Pepper zu der Frage geben soll. Hierfür wird die \verb|getOffer| Methode in 
+der HelperCollection Klasse aufgerufen.\\
+
+\begin{lstlisting}
+HttpURLConnection con = getConnection("https://informatik.
+hs-bremerhaven.de/docker-hbv-kms-http/api/v1mensadata");
+
+BufferedReader in = new BufferedReader(new InputStreamReader(
+    con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) { 
+    response.append(inputLine); 
+}
+in.close();
+
+JSONObject myResponse = new JSONObject(response.toString());
+String tmp = myResponse.getString("offer1");
+String [] offer1 = tmp.split("\",\"", -1);
+tmp = myResponse.getString("offer2");
+String [] offer2 = tmp.split("\",\"", -1); 
+\end{lstlisting}
+
+Zuerst werden die Daten aus dem Server aufgerufen und mithilfe des \verb|BufferedReader| in das \verb|StringBuffer| Objekt \verb|response| initialisiert. 
+Anschließend wird ein JSON Objekt aus dem \verb|response| erstellt. Für uns war es leichter, die Daten in einem Array zu speichern, weshalb 
+wir zwei Arrays mit den jeweiligen Mensa Angeboten initialisiert haben.\\
+
+\begin{lstlisting}
+Calendar calendar = Calendar.getInstance();
+int curday = calendar.get(Calendar.DAY_OF_WEEK) - 2;    
+\end{lstlisting}
+
+Nun wird mit der Calendar Bibliothek von Java, der aktuelle Wochentag ermittelt und als Zahl in curday gespeichert. 
+Wäre der aktuelle Wochentag ein Montag, so würde curday mit einer 0 initialisiert. Sollte es ein Mittwoch sein, dann wäre curday eine 
+2 usw. 
+Somit können wir die Arrays \verb|offer1| und \verb|offer2| mit dem genauen Index des aktuellen Wochentags ermitteln.\\
+
+\begin{lstlisting}
+String [] daylist = {"Montag","Dienstag","Mittwoch","Donnerstag",
+                    "Freitag"};
+String [] spcdays = {"Heute", "Morgen", "Uebermorgen"};
+String answer = "";
+
+for(int i = 0; i < spcdays.length; ++i){
+    if(day.equals(spcdays[i])){
+        if((curday + i) > 5){
+            answer ="Am Wochenende ist die Mensa leider geschlossen";
+            break;
+        }
+        answer = offer1[curday + i].replaceAll("\"", "").replace(
+            "[","").replace("]","");
+        answer += " oder " + offer2[curday + i].replaceAll("\"", "")
+            .replace("[","").replace("]","");
+        break;
+    }
+}    
+\end{lstlisting}
+
+In der For-Schleife wird das Array \verb|spcdays| iteriert und mit \verb|if(day.equals(spcdays[i]))| wird anschließend überprüft, ob der Anwender das Angebot für Heute, Morgen oder Übermorgen wissen möchte. Außerdem wird 
+überprüft, ob der Anwender mit der Frage Morgen oder Übermorgen den Freitag überschreitet. Sollte der Wochentag zum Beispiel ein Freitag 
+sein und der Anwender würde fragen, was es morgen in der Mensa zu essen gibt, dann wird Pepper antworten, dass die Mensa am Wochenende geschlossen 
+ist. Sollte der Tag in der Woche sein, so wird die Antwort in der Variable \verb|answer| mit den beiden Angeboten initialisiert. \\
+
+\begin{lstlisting}
+for(int i = 0; i < daylist.length; ++i){
+    if(day.equals(daylist[i])){
+        answer = offer1[i].replaceAll("\"", "").replace("[","")
+            .replace("]","");
+        answer += " oder " + offer2[i].replaceAll("\"", "")
+            .replace("[","").replace("]","");
+        break;
+    }
+}
+\end{lstlisting}
+
+Diese For-Schleife überprüft, ob der Anwender das Mensaangebot für einen bestimmten Wochentag wissen will. Dementsprechend wird dann die 
+Antwort initialisiert.\\
+
+\begin{lstlisting}
+String offer = HelperCollection.getOffer(day);
+ma.getCurrentChatBot().setQiVariable(variableName, offer);    
+\end{lstlisting}
+
+Nachdem nun alle Antworten vorbereitet wurden, wird die Variable “qiVariableMensa” mit der Antwort initialisiert und in den Topic 
+zurückgegeben. \\
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/Metadatenstruktur_Raumfinder.png}
-    \caption{Datenstruktur: Abstrahierung der Wegrouten Informationen}
-    \label{fig:integration}
+    \centering
+    \includegraphics[width=\textwidth]{Figures/AppChapter/mensa_6.JPG}
+    \caption{Mensa Dialog}
+    \label{fig:mensadialog}
     \centering
 \end{figure}
 
-\subsubsection{Sammeln der Wegroutendaten}
 
-In der Dokumentation von 3d-Berlin wird ausschließlich beschrieben, wie die entsprechenden Request für die zu generierenden Videos zu definieren sind. Aus diesem Grund sind wir so vorgegangen, dass wir mithilfe des Netzwerkanalysetools unseres Browsers die Response der gesendeten Requests, während der Nutzung des 3D-Navigators beobachtet haben. Dabei konnten wir genau ermitteln, welche Requests notwendig sind, um weitere Daten über die Videos zu erhalten und wie diese in ihrer Struktur aufgebaut werden müssen.
+\section{Stundenplan}
+
+Der zweite Anwendungsfall ist das Anzeigen des Stundenplans für jeden Studiengang und für jedes Semester. 
+\\\\
+…
+\\
+\subsection{Anzeigen des Stundenplans in Android Studio}
+
+Nachdem die Stundenplandaten im Server bereitgestellt wurden, war der nächste Schritt das Anzeigen des Stundenplans in Android Studio. 
+Hierfür wurde ein neues Gesprächsthema in dem Haupt-Topic erstellt.\\
+
+\begin{lstlisting}
+u:({so} zeig{e} {er} {mir} {den} Stundenplan {fuer} {den} Studiengang 
+_~Studiengaenge {[im "fuer das"]} semester _~semester {sofort} {bitte})
+
+$course=$1 $semester=$2 Alles klar ^execute(VariableExecutor, 
+timetable_course_semester, $course, $semester)
+\end{lstlisting}
+
+Damit der Anwender den Stundenplan einsehen kann, erwartet Pepper zwei Wörter. Der Anwender muss in seiner Frage den Studiengang und das Semester 
+nennen. Erst dann wird der Methodenaufruf gestartet. Somit werden die drei Parameter \verb|timetable_course_semester|, 
+\verb|course| und \verb|semester| mitgegeben.\\
+
+\begin{lstlisting}
+final String timetableurl = "https://informatik.hs-bremerhaven.de/
+    docker-hbv-kms-http/api/v1/timetable?course="
+    + course_ + "&semester="
+    + semester_ + "&htmlOnly=true";
+
+ma.runOnUiThread(() -> {
+	ma.setContentView(R.layout.webtest);
+
+	WebView web = (WebView) ma.findViewById(R.id.webView);
+	WebSettings webSettings = web.getSettings();
+	webSettings.setJavaScriptEnabled(true);
+	web.setWebViewClient(new Callback());
+	web.loadUrl(url);
+});
+\end{lstlisting}
+
+Auf dem Node Server erwartet die API, die wir für den Stundenplan erstellt haben, bestimmte Parameter zu dem Studiengang und dem Semester. 
+Hierfür können wir unsere Parameter, die in der Frage ermittelt wurden, in die Variable \verb|timetableurl| einsetzen und erhalten 
+die URL zu dem richtigen Stundenplan. Dieser kann anschließend mit Hilfe des Webviewers auf dem Tablet von Pepper angezeigt werden. 
+
+\section{Routenfinder}
+
+Der dritte und letzte Anwendungsfall ist die Navigationshilfe in der Hochschule Bremerhaven. Sollte der Anwender einen bestimmten Raum oder ein 
+Gebäude suchen, soll Pepper auf seinem Tablet eine genaue Wegbeschreibung geben können. 
+\\\\
+...
+\\
+\textbf{Videos in /var/www/hbv-kms abgelegt}
+\\
+
+
+\subsection{Anzeigen des Gebäudeplans und des Raumfinders in Android Studio}
+
+Da wir die einzelnen Videodateien auf dem Hopper abgelegt haben, brauchen wir für diesen Anwendungsfall die Kommunikation mit dem Node Server nicht. 
+Die JSON Datei, die mit dem Python Script erzeugt wurde, haben wir in den /Assets Ordner in Android Studio abgelegt, um sie später im Code verwenden zu können. 
+
+Wie bei allen anderen Anwendungsfällen auch, ist der erste Schritt das Erstellen der einzelnen Gesprächsthemen. 
+Zuerst werden wir den Fall abdecken, wenn sich der Anwender den Gebäudeplan anzeigen lassen will.\\
+
+\begin{lstlisting}
+u:([zeig gib] {mir} {bitte} {den} [Gebaeudeplan Campusplan Gelaende])
+^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine 
+    Uebersicht ueber das Hochschulgelaende
+\end{lstlisting}
+
+
+\begin{lstlisting}
+String nav = params.get(1);
+if(nav.equals("Plan")) {
+    try {
+        ma.runOnUiThread(() -> {
+            ma.setContentView(R.layout.campus_plan);
+        });
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+\end{lstlisting}
+
+(vgl. Abb. \ref{fig:gplan}) Sobald der Anwender nach dem Gebäudeplan fragt, wird ein vordefiniertes XML-Layout mit einem Bild von dem 
+Gebäudeplan auf dem Tablet angezeigt. Das Bild wurde vorher heruntergeladen und in den Ordner 
+\verb|drawable| gelegt.\\
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/analysetool.png}
-    \caption{Screenshot: Google Chrome Netzwerk Analyse Tool}
-    \label{fig:integration}
+    \centering
+    \includegraphics[width=10cm]{Figures/AppChapter/rx3.JPG}
+    \caption{Gebäudeplan - Pepper}
+    \label{fig:gplan}
     \centering
 \end{figure}
 
-Auch hier haben wir uns für die Programmiersprache Python als passendes Werkzeug entschieden. Dafür haben wir innerhalb unseres Backend-Service ein weiteres Skript namens “createmetadata.py” angelegt. Das Skript beschafft sich die Informationen, welche wir unter der API 3d-Berlin finden konnten und wandelt diese in für uns brauchbare Daten um. Außerdem werden diese anschließend in der Datei “routedata.json” in Java Object Notation gespeichert. Im Folgenden gehen wir auf ein paar relevante Abschnitte des Skripts genauer ein und erläutern diese.
+Als Nächstes haben wir das Abrufen der Videodateien zu den einzelnen Räumen der Hochschule in Android 
+Studio implementiert.\\
 
-Zu Beginn werden zwei verschiedene Requests definiert. Der Erste erzeugt das Request-Objekt für den normalen Weg und der Zweite generiert das gleiche Request-Objekt als barrierefreie Route.
+\begin{lstlisting}
+concept:(rooms) [C006 C007 ... Z5150 Z5160 ]
+
+u:(["{Kannst du {mir} [sagen erzaehlen]} Wo [befindet ist] {sich} der 
+Raum _~rooms {befindet}"])
+    $room=$1 Sofort ^execute(VariableExecutor, qiVariableNav, $room)
+\end{lstlisting}
+
+Pepper muss in der Lage sein, alle Räume in der Hochschule zu kennen, um genau herausfiltern zu können, welchen Raum der Anwender sucht.
+Das Concept \verb|rooms| beinhaltet alle Räume der Hochschule und wird somit in der Frage im Topic verwendet. Sollte der Anwender 
+nach einen Raum fragen, den es nicht gibt, wird Pepper die Frage erst gar nicht verstehen und nicht antworten. 
+
+Sollte Pepper den Raum kennen, wird ein Methodenaufruf mit den Parametern \verb|qiVariableNav| und der Raumnummer 
+(\verb|room|) durchgeführt.\\
+
+\begin{lstlisting}
+u:(Zeig mir {bitte} einen _~handicapped Weg [zu in] {dem} 
+Raum _~rooms)
+    $handicap=$1 $room=$2 Alles klar ^execute(VariableExecutor, 
+    qiVariableNav, $room, $handicap)
+\end{lstlisting}
+
+Wenn der Anwender explizit nach einem barrierefreien Weg zu einem Raum fragt, wird der gleiche Methodenaufruf mit dem zusätzlichen 
+Parameter \verb|handicap| durchgeführt.\\
+
+\begin{lstlisting}
+String room = nav;
+String handicapped = "M0000";
+if(params.size() == 3) handicapped = "M0001";
+\end{lstlisting}
+
+
+In der \verb|VariableExecutor| Klasse wird als Erstes überprüft, ob der Anwender nach einem barrierefreien Weg zu dem gewünschten Raum 
+gefragt hat oder nicht. Mit der If-Bedingung wird die Länge der Parameter überprüft, die in der Methode mitgegeben wurde. 
+Wie bereits erwähnt, wird ein zusätzlicher Parameter \verb|handicap| zusammen mit den Parametern \verb|qiVariableNav|
+und \verb|room| mitgegeben, wenn nach dem barrierefreien Weg gefragt wurde. Somit muss nur die Parameterlänge verglichen 
+werden, um entscheiden zu können, welcher Weg angezeigt werden soll.\\
+
+\begin{lstlisting}
+BufferedReader reader = new BufferedReader(new InputStreamReader(
+    ma.getAssets().open("route_metadata.json")));
+
+String response = new String();
+for (String line; (line=reader.readLine())!=null; response+=line);
+
+Map jsonJavaRootObject = new Gson().fromJson(response, Map.class);
+
+String path = ((Map)((Map)(jsonJavaRootObject.get(room)))
+    .get(handicapped)).get("video_path").toString();
+\end{lstlisting}
+
+Mit der \verb|getAssets().open("route_metadata.json")| Funktion, kann die JSON Datei, die sich in dem \verb|/assets|
+Ordner befindet, geöffnet und mit dem \verb|BufferedReader| ausgelesen werden. Als Nächstes wird mit Hilfe des \verb|Gson| Frameworks, 
+ein Map Objekt erzeugt, dass alle Informationen der JSON Datei bereitstellt. In der Variable \verb|path|, wird der Wert 
+\verb|video_path| mit Hilfe der genauen Raumnummer herausgefiltert. Hier wird auch die Abfrage mitgegeben, ob der Weg 
+Barrierefrei sein soll oder nicht.\\
+
+
+\begin{lstlisting}
+String urlVideo ="https://informatik.hs-bremerhaven.de/hbv-kms/"+path;
+try{
+    ma.runOnUiThread(() -> {
+        ma.setContentView(R.layout.webtest);
+        WebView web = (WebView) ma.findViewById(R.id.webView);
+        WebSettings webSettings = web.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        web.setWebViewClient(new Callback());
+        web.loadUrl(urlVideo);
+    });
+}
+\end{lstlisting}
+
+(vgl. Abb. \ref{fig:Routenfinder}) Nachdem der genau Pfad zum Video ermittelt wurde, kann nun die URL zu dem Video erstellt und mit dem Webviewer angezeigt werden.\\
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code05.jpg}
     \centering
-\end{figure} \vspace{-3.5mm}
+    \includegraphics[width=10cm]{Figures/AppChapter/rx4.JPG}
+    \caption{Routenfinder}
+    \label{fig:Routenfinder}
+    \centering
+\end{figure}
 
-Die Funktion “getrequest()” bekommt als Übergabeparameter einen String “mode” übergeben. Dieser Parameter gibt an, um welche Variante der Route es sich handelt. Außerdem wird eine Projekt-ID “project” übergeben. Über diese ID lässt sich das von uns an die API angeforderte Projekt bestimmt. Wir haben diesen Parameter bewusst variabel implementiert, um das gesamte Skript flexibel für einen möglichen weiteren Anwendungsfall im Zusammenhang mit 3D-Navigations APIs von 3d-Berlin zu gestalten. Es werden zudem ein Start “startpoint” sowie ein Endpunkt “endpoint” an die Funktion übergeben. Diese geben an, von welchem Startpunkt aus, welches Ziel zu erreichen sein soll. Es sei dazu gesagt, dass bei jeder Route immer von demselben Startpunkt ausgehen. Dies hat einerseits den Grund, dass der notwendige Datensatz an MP4-Dateien sonst exponentiell steigen würde und wir somit nicht in der Lage während diese Speicherkapazität auf dem Hopper-Server zu gewährleisten. Ebenso setzen wir für unseren Anwendungsfall des Roboters als Hochschulassistenz voraus, dass dieser sich immer an dem gleichen Ort befindet. Es handelt sich bei dem Startpunkt um das Foyer in Haus K. Wir haben auch diesen Parameter dennoch variabel gelassen, um unsere Anwendung so flexibel wie möglich zu entwickeln.
+(vgl. Abb. \ref{fig:RoutenfinderDia}) Zusätzlich zu dem Video soll Pepper dem Anwender mit zusätzlichen Details antworten. Er gibt an, in welchem Gebäude sich der gesuchte Raum befindet, 
+wie weit dieser von seinem Standpunkt entfernt ist und wie viel Zeit benötigt wird, um diesen Raum zu erreichen.\\
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code06.jpg}
     \centering
-\end{figure} \vspace{-3.5mm}
-
-Als Nächstes wird über die Liste der Videos iteriert, um den Request für die Anfrage der Routeninformation für genau jedes Video zu erstellen.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code07.jpg}
+    \includegraphics[width=\textwidth]{Figures/AppChapter/raumfinder_1.JPG}
+    \caption{Routenfinder Dialog}
+    \label{fig:RoutenfinderDia}
     \centering
-\end{figure} \vspace{-3.5mm}
+\end{figure}
 
-Innerhalb dieser Schleife lesen wir als Erstes den Raumnamen und aus der Beschreibung des Ortes ungewollte Zeichen aus dem String heraus. Dies ist notwendig, da es sonst später in der Android-Applikation erfolgen müsste und eine überflüssige Prozessbelastung darstellen würde. Danach werden die Gleitkommazahlen der Dauer und der Distanz einer Route auf ganze Zahlen, als Integer aufgerundet. Außerdem werden die Sekunden in Minuten umgerechnet.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code08.jpg}
-    \centering
-\end{figure} \vspace{-3.5mm}
-
-Es wird nun ein temporäres JSON-Objekt für die jeweilige Wegroute erzeugt. In dieser wenden wir die zuvor geplante Struktur der Informationen an und weisen die Values den entsprechenden Key zu. Danach wird jedes Objekt an die endgültige JSON-Datei angeknüpft.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/code09.jpg}
-    \centering
-\end{figure} \vspace{-3.5mm}
-
-Wir haben auch für diese Anwendung nachträglich eine grafische Oberfläche implementiert, um das Ausführen des Programms übersichtlicher und nachhaltiger zu gestalten. Dabei haben wir die Oberfläche so gestaltet, dass wir zwei verschiedene Konsolen für die Outputs anzeigen lassen. Die Linke Ausgabe ist die des Programmablaufs. Auf der rechten Ausgabe sind die hinzugefügten JSON-Objekte aufgelistet. In der folgenden Abbildung ist ein Durchlauf des Programms zu sehen. Es gibt die Möglichkeit ein Zielverzeichnis und den namen für die zu erstellende Datei zu wählen. Werden diese beiden Eigenschaften nicht zuvor gesetzt und mit einem Klick auf die “Submit” Schaltfläche bestätigt, so bekommt die Datei den namen “routedata” und wird in das Verzeichnis “video” geschrieben. Die Abbildung unten zeigt das laufendene Programm:\vspace{-1.5mm}
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/3DNavigator/create_metadata_pic_Fertig.png}
-    \caption{Screenshot: Grafische Oberfläche des Metadata-Skripts}
-    \label{fig:integration}
-    \centering
-\end{figure}\vspace{-2.5mm}
-
-
-\section{Sonstiges}
-% timetable data

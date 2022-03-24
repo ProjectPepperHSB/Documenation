@@ -5,24 +5,19 @@
 \lhead{\chaptergrundgeruest \emph{Erste Schritte: Das Grundgerüst}}
 
 \section{Allgemein}
-Wir haben bisher kaum Berührung mit Robotern im Alltag erlebt und daher ist unsere Erfahrung im Bereicht
-der Roboterprogrammierung sehr begrenzt. Zum Glück haben uns ehemalige Masterstudierende einen schnellen
-Einstieg ermöglicht, denn diese habe eine Anwendung für das Unternehmen \grqq{}Erlebnis Bremerhaven\grqq{}
-entwickelt und uns deren Quellcode zur Verfügung gestellt.
+Wir haben bisher kaum Berührung mit Robotern im Alltag erlebt und daher ist unsere Erfahrung im Bereicht der Roboterprogrammierung sehr begrenzt. Zum Glück haben uns ehemalige Masterstudierende einen schnellen Einstieg ermöglicht, denn diese haben eine Anwendung für das Unternehmen \grqq{}Erlebnis Bremerhaven\grqq{} entwickelt und uns deren Quellcode zur Verfügung gestellt.
 
-Wir haben sehr schnell gemerkt, dass uns dies zwar eine gute Hilfe für den Anfang ist, jedoch gibt es mittlerweile
-deutlich effizientere Methoden einzelne Komponenten miteinander zu verknüpfen.\\
+Wir haben sehr schnell gemerkt, dass uns dies zwar eine gute Hilfe für den Anfang ist, jedoch gibt es mittlerweile deutlich effizientere Methoden einzelne Komponenten miteinander zu verknüpfen.\\
 
 \section{Wer ist Pepper?}
 
-Der Roboter Pepper ist ein Humanoid, der wie ein kleiner Junge aussieht und immer sehr fröhlich und vertrauensvoll wirkt. Er ist relativ klein, hat einen runden Kopf mit großen Augen und auf seiner Brust befindet sich ein Tablet. Er wurde von dem Unternehmen Softbanks Robotics entwickelt und wurde so konzipiert, dass er als Roboter-Gefährte oder persönlicher Roboter dienen kann.
+Der Roboter Pepper ist ein Humanoid, der wie ein kleiner Junge aussieht und sehr fröhlich und vertrauensvoll wirken soll. Er ist relativ klein, hat einen runden Kopf mit großen Augen und auf seiner Brust befindet sich ein Tablet. Er wurde von dem Unternehmen Softbanks Robotics entwickelt und so konzipiert, dass er als Roboter-Gefährte oder auch persönlicher Roboter dienen kann.
 
 Pepper kann sich über alle möglichen Themen unterhalten und gegebenenfalls auch Informationen oder Animationen auf seinem Tablet anzeigen. Außerdem besitzt er die Fähigkeit, sich in jede Richtung fortzubewegen und verschiedene Gesten durchzuführen. Somit wird er hauptsächlich im Tourismusbereich eingesetzt, wo er sich mit Menschen unterhalten kann.
 
-Das Besondere an ihm ist, dass er für zahlreiche Anwendungen programmiert werden kann, sodass er fast in jedem Bereich einen Nutzen findet. Zum Beispiel könnte er in Verkaufsräumen eingesetzt werden, wo er verschiedene Produkte beschreibt oder als Wegbeschreibung dient. Man könnte ihn aber auch in Bereichen wie Erziehung oder Gesundheitswesen einsetzen, wo er die Menschen animiert und auch kleinere Gegenstände wie Tabletten transportieren kann.
+Das Besondere an ihm ist, dass er für zahlreiche Anwendungen programmiert werden kann, sodass er fast in jedem Bereich einen Nutzen findet. Zum Beispiel könnte er in Verkaufsräumen eingesetzt werden, wo er verschiedene Produkte beschreibt oder als Kunden bei der Beratung unterstützt. Man kann ihn auch in Bereichen wie der Erziehung oder im Gesundheitswesen einsetzen, wo er die Menschen animiert und kleinere Gegenstände wie Tabletten transportieren kann.
 
-Pepper besitzt neben seinem Tablet auch noch zwei Kameras, die sich jeweils in seinen Augen befinden. Diese Kameras sind mit einer Gesichtserkennung ausgestattet, sodass er den Menschen vor ihm erkennen und fokussieren kann. Außerdem besitzt er Sensoren, womit er bestimmte Distanzen misst. Zum Beispiel kann er abmessen, wie weit eine Person oder ein Hindernis von ihm entfernt ist. So ist Pepper auch in der Lage zu überprüfen, ob die Person näher kommt und ein Diskurs mit ihm sucht oder sich entfernt und das Gespräch verlässt.
-An seinem Körper befinden sich weitere Sensoren, mit denen überprüft werden kann, ob Pepper an bestimmten Bereichen berührt wird oder nicht.\\
+Pepper besitzt neben seinem Tablet auch zwei Kameras, die sich jeweils in seinen Augen befinden. Diese Kameras werden durch Gesichtserkennungssoftware untersützt, sodass er den Menschen vor ihm erkennen und fokussieren kann. Außerdem besitzt er Sensoren, mit denen er Distanzen misst. Zum Beispiel kann er sehr gut einschätzen, wie weit eine Person oder ein Hindernis von ihm entfernt ist. So ist Pepper auch in der Lage zu überprüfen, ob die Person näher kommt und ein Diskurs mit ihm sucht oder sich entfernt und das Gespräch verlässt. An seinem Körper befinden sich viele weitere Sensoren, mit denen beispielsweise auch bemerkt, wenn er berührt wird.\\
 
 
 \section{Projektmanagement}
@@ -33,88 +28,84 @@ stehen wir im Kontakt, um Probleme und Schwierigkeiten schnell zu beheben.
 Damit wir gemeinsam an einer Codebasis arbeiten können, haben wir zu Anfang unseres Projektes
 die Organisation \href{https://github.com/ProjectPepperHSB}{HBV-Pepper} auf
 \href{https://github.com}{GitHub} angelegt. Jegliche Beteiligung, sowie verschiedene Versionen können dort eingesehen werden.
-Zum Ende des Projektes haben sich hier 4 Repositories von uns angesammelt, welche folgende Themen beinhalten:
+Zum Ende des Projektes haben sich hier fünf Repositories von uns angesammelt, welche folgende Themen beinhalten:
 \begin{itemize}
     \item Pepper Anwendung
-    \item Backend Serveranwendung
+    \item Node Webanwendung für das Dashboard
     \item Dokumentation
-    \item Sonstiges
+    \item Skripte und Erweiterungen
+    \item Websocket Server für ein Realtime Dashboard
 \end{itemize}
 
 Das erste Repo beinhaltet unsere lauffähige Anwendung, welche die von uns
 implementierten Anwendungsfälle, sowie sonstige Funktionalitäten für den Roboter Pepper beinhaltet.
 
-Der Backend Serveranwendung auf welchem wir in Kapitel <HIER LINK SETZEN> eingehen, ist unsere Schnittstelle, mit welcher wir
-Informationen, die Pepper durch seine Interaktionen mit der Umgebung sammelt, abfangen und speichern. Zudem Versorgen wir
-Pepper mit Informationen, Beispiel hierfür sind Informationen zum Stunden- und Mensaplan.
+Der Node Webanwendung auf welchem wir in Kapitel \ref{chapter:webapp} eingehen, ist unsere Schnittstelle, mit welcher wir Informationen, die Pepper durch seine Interaktionen mit der Umgebung sammelt, abfangen und speichern. Zudem Versorgen wir Pepper mit Informationen, Beispiel hierfür sind Daten zum Stunden- und Mensaplan.
 
-Das Repositorie zur Dokumenation beinhaltet alle zu diesem Dokument gehörenden Dateien. Da wir diese mit LaTeX anfertigen,
-lohnt es sich auch dies zu versionieren.
+Das Reposotory Dokumenation beinhaltet alle zu diesem Dokument gehörenden Dateien. Da wir diese mit \LaTeX{} anfertigen, lohnt es sich auch dies zu versionieren.
 
-Für kleine Skripte, Tests und andere zu keinem festen Thema dazugehörigen Dokumente haben wir das Repositorie
-\grqq{}Sonstiges\grqq{} angelegt.
+Für Skripte wie der Generierung von Dummy Daten oder auch zur Speicherung und Organisation von Webinhalten und Tests haben wir das Repository ``Backend-Services'' angelegt.
+
+Ein Realtime Dashboard, welches Daten nicht persistent, so wie die Node Webanwendung speichert, wird ebenfalls separat versioniert.
 
 Wir werden in diesem Dokument neben der Implementierung auch auf das Herunterladen, Installieren und Einrichten
 unserer Software eingehen, damit Studierende, die dieses Projekt weiterführen wollen, die Möglichkeit
 haben, mit einem etwas fortgeschrittenem Projekt zu starten. Darüber hinaus befindet sich in jedem Stammverzeichnis
-eine Readme, welche Anforderungen und erste Schritte aufzeigen, um einen schnellen Einstieg zu ermöglichen.\\
+eine \verb|README.md|, welche Anforderungen und erste Schritte aufzeigen, um einen schnellen Einstieg zu ermöglichen.\\
 
 \section{Persona}
-Damit wir Pepper mit allen möglichen Antworten auf alle möglichen Fragen vorbereiten können, müssen wir uns zuerst überlegen, welche Personengruppe mit Pepper sprechen wird. Auf dieser Basis können wir verschiedene Gesprächsthemen entwickeln, die für die Personengruppe interessant sein könnten.
+Damit wir Pepper mit einer Vielzahl an sinnvollen Antworten auf die verschiedensten Fragen vorbereiten können, müssen wir uns zuerst überlegen, welche Personengruppe mit Pepper sprechen wird. Auf dieser Basis können wir verschiedene Gesprächsthemen entwickeln, die für die Personengruppe interessant sein könnten.
 
 Da wir Pepper als Hochschulassiszenz einsetzten wollen, haben wir es mit folgenden Personas zu tun:
 \begin{itemize}
-    \item Student
-    \item Dozent
-    \item Angestellter der Hochschule
-    \item Besucher (Zukünftige Studenten, Interessenten)
+    \item Studenten
+    \item Dozenten
+    \item Angestellte der Hochschule
+    \item Besucher (zukünftige Studenten \& Interessenten)
 \end{itemize}
 
-Hauptsächlich soll Pepper für Studenten und insbesondere für Erstsemestler eingesetzt werden, die zum Beispiel nicht wissen, wo sich ein bestimmter Raum oder ein Gebäude befindet oder wann und wo die nächste Vorlesung stattfindet. Hierbei soll es auch die Möglichkeit geben, den kompletten Stundenplan für jeden Studiengang und jedes (zur Zeit verfügbare) Semester anzeigen zu lassen, um auf jede Situation eine Antwort parat zu haben.
+Hauptsächlich soll Pepper für Studenten eingesetzt werden, die zum Beispiel nicht wissen, wo sich ein bestimmter Raum oder ein Gebäude befindet oder wann und wo die nächste Vorlesung stattfindet. Hierbei soll es auch die Möglichkeit geben, den kompletten Stundenplan für jeden Studiengang und jedes (zur Zeit verfügbare) Semester anzeigen zu lassen, um auf jede Situation eine Antwort parat zu haben.
 
-Ein weiterer Faktor ist das Ermitteln des Altersintervalls. Studenten des höheren Semesters sind Themen wie Raumfindung oder Stundenplan eher uninteressant. Dafür könnten Themen wie der Mensaplan oder Informationen über die Hochschule und über Pepper selber interessant sein. Außerdem wird Pepper in der Lage sein, mit dem User ein kurzes Small Talk zu führen. Somit ist Pepper auch für alle Altersgruppen interessant. Diese Themen könnten für alle weitere Personas ebenfalls interessant sein. Vor allem Personen, die technikaffin sind oder das Thema Roboter einfach spannend finden, werden Pepper ebenfalls verwenden, weswegen wir für diese Personengruppe passende Gesprächsthemen und lustige Animationen vorbereiten.
+%Ein weiterer Faktor ist das Ermitteln des Altersintervalls. 
+Studenten des höheren Semesters sind Themen wie Raumfindung oder Stundenplan eher uninteressant. Dafür könnten Themen wie der Mensaplan oder Informationen über die Hochschule und über Pepper selbst interessant sein. Außerdem wird Pepper in der Lage sein, mit dem Nutzer ein kurzes Gespräch (Small Talk) zu führen. Somit ist Pepper auch für weitere Altersgruppen und Personengruppen interessant. Vor allem Personen, die technikaffin sind oder das Thema Roboter einfach spannend finden, werden Pepper ebenfalls ansprechend finden, weswegen wir für diese Personengruppe passende Gesprächsthemen und lustige Animationen vorbereiten werden.
 
 Für Dozenten und Angestellte der Hochschule sind Themen wie der Stundenplan und die Raumfindung eher uninteressant und der Mensaplan wieder interessanter. Diese beiden Personas werden Pepper sehr wahrscheinlich am wenigsten verwenden.
 
 Für Besucher sind Themen wie Informationen über Studiengänge und allgemein zur Hochschule eher interessanter als alle anderen Themen.
 
-Um genau sagen zu können, welche Personengruppe sich mit Pepper unterhalten und über welche Themen sie sprechen, müssen wir Pepper zuerst sehr oft in der Praxis einsetzten und verschiedene Daten sammeln. Dazu werden wir im Punkt “Datensammlung” näher eingehen.\\
+Um genau sagen zu können, welche Personengruppe sich mit Pepper unterhalten und über welche Themen sie sprechen, müssen wir Pepper in der Praxis einsetzten und verschiedene Daten sammeln.\\
 
 
 \section{Datensammlung}
-Sobald alle Anwendungsfälle in Pepper integriert sind und er für den Praktischen Nutzen einsatzbereit ist, haben wir uns überlegt, verschiedene Daten zu sammeln um eine Art Feedback zu erhalten und diese graphisch darzustellen.
+Sobald der Anwendungsfall Hochschule in Pepper integriert ist und er für den praktischen Test einsatzbereit ist, haben wir uns überlegt, verschiedene Daten zu sammeln um eine Art Feedback zu erhalten und diese graphisch darzustellen.
 
 Folgende Daten sollen gesammelt werden:
 \begin{itemize}
-    \item Distanz
-    \item Alter
-    \item Geschlecht
-    \item Emotion/Stimmung
+    \item Distanz und Zeit des Gespräches
+    \item Alter und Geschlecht
+    \item Emotion / Stimmung
     \item Mimic
-    \item Dialog Zeit
-    \item ...
 \end{itemize}
 
-Diese Daten sollen während des Gesprächs zwischen Pepper und dem User gesammelt werden und zu unserem Node Server gesendet werden.
-Auf dem Node Server werden diese anschließend weiter verarbeitet und vorerst in einer MySQL Datenbank abgespeichert.
+Diese Daten sollen während des Gesprächs zwischen Pepper und dem Anwender gesammelt werden und zu unserer Webanwendung gesendet werden. Dort werden diese anschließend weiter verarbeitet und in einer auf MySQL basierenden Datenbank abgespeichert.
 
-Um die Daten sammeln zu können, bietet Softbanks praktischerweiße verschiedene KI orientierte Funktionen an, wie zum Beispiel die Gesichts,- oder Alterserkennung.
+Um die Daten erheben zu können, bietet Softbanks praktischerweiße verschiedene KI orientierte Funktionen an, wie zum Beispiel die Gesichts,- oder Alterserkennung.
 
 Diese Daten sollen dafür eingesetzt werden, um Pepper in Zukunft weiter zu optimieren und folgende Fragen zu beantworten:
 \begin{itemize}
     \item War das Gespräch erfolgreich und konnte Pepper helfen?
-    \item Hatte der User freude bei der Benutzung des Roboters?
-    \item Hatte der User Schwierigkeiten, sich mit dem Pepper zu unterhalten oder verlief alles reibungslos?
+    \item Hatte der Anwender freude bei der Benutzung des Roboters?
+    \item Hatte der Anwender Schwierigkeiten, sich mit dem Pepper zu unterhalten oder verlief alles reibungslos?
     \item Welche Personengruppe hat mit Pepper am meisten gesprochen?
-    \item Wie lange verläuft ein Gespräch im Durchschnitt?
+    \item Wie lange dauert ein durchschnittliches Gespräch?
     \item Gab es Fragen, die nicht beantwortet werden konnten?
     \item Welcher Anwendungsfall wurde wie oft verwendet?
-    \item Gab es Systemfehler?
-    \item Was ist die optimale Ansprech Distanz zwischen User und Roboter?
-    \item Welches Semester und/oder Studiengang ist der User
+    \item Gab es Systemfehler oder Abstürze?
+    \item Was ist die optimale Ansprech Distanz zwischen Anwender und Pepper?
+    \item In welchem Semester und / oder Studiengang ist der Anwender?
 \end{itemize}
 
-\section{Wer ist dieser Pepper?}
+% \section{Wer ist dieser Pepper?}
 %
 % wer ist pepper, was kann er, von wem entwickelt, wie teuer, wo zu kaufen, wo wenden ihn andere an
 % welche vor und nachteile bietet er
