@@ -616,13 +616,13 @@ Bei unserer Web App handelt es sich um eine Anwendung, welche mit dem Framework 
 Node entwickelt wurde. Express zeichnet sich durch die simple Konfiguration, sowie einfache Implementierung
 verschiedenster Funktionalitäten aus. Express wird meist für Backendanwendungen verwendet, wir benutzen es jedoch auch,
 um serverseitiges Rendering zu realisieren. Dies bedeutet, dass Ansichten / Views, welche an den Client ausgeliefert werden,
-zuvor auf dem Server gerendert worden sind.
+zuvor auf dem Server gerendert worden sind.\\
 
 \subsection{Allgemein}
 Von außen ist unsere Anwendung über die URL
 \href{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http}{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http}
 erreichbar. Sollte sie lokal ausgeführt werden, muss die Domain auf Localhost geändert werden - hier ist dann auch die Angabe
-des Ports nötig. (mehr dazu in Abschnitt \ref{sec:nodechapter-installation})
+des Ports nötig. (mehr dazu in Abschnitt \ref{sec:nodechapter-installation})\\
 
 
 Unsere Anwendung besitzt jedoch nicht all zu viele Views, bis auf das zuvor gezeigte Admin Dashboard (vgl. Abschnitt \ref{sec:routes-dashboard}), sowie
@@ -712,7 +712,7 @@ einen Endpunkt sendet. Sollten Pfade angesprochen werden, die nicht verfügbar s
 zurückgegeben. Dies ist in der Datei \verb|server.js| definiert.
 
 Wir loggen unsere Fehler nicht selbst, da dies in diesem Rahmen
-etwas zu viel wäre, jedoch benutzen wir den Prozessmanager pm2, welcher für uns das Logging übernimmt.
+etwas zu viel wäre, jedoch benutzen wir den Prozessmanager pm2, welcher für uns das Logging übernimmt.\\
 
 
 \subsection{Versionen und Spezifikationen}
@@ -752,14 +752,14 @@ Deshalb haben wir uns entschieden in folgender Tabelle nur die zwei wichtigsten 
 \end{table}
 
 Unsere Anwendung ist so konszipiert, dass sie auf den Betriebssystem Linux, macOS und MS Windows läuft, sofern alle benötigten Pakete,
-Module und Tools installiert sind.
+Module und Tools installiert sind.\\
 
 \newpage
 \section{Installation und Konfiguration}
 \label{sec:nodechapter-installation}
 In Abschnitt \ref{sec:node-other-files} haben wir die Datei README.md angesprochen. Diese bietet einen schnellen Überblick über
 die benötigte Software (Node, npm und MySQL), sowie die Befehle zur Installation alle benöitgten Tools. Im Folgenden werden wir
-diese Schritte aufzeigen.
+diese Schritte aufzeigen.\\
 
 \subsection*{Installation}
 \label{sec:nodechapter-installation}
@@ -804,14 +804,14 @@ worden ist.
     NodeJS_Server4Pepper:~$ mysql -e "CREATE DATABASE pepperbackend"
     NodeJS_Server4Pepper:~$ npm run dev
 \end{lstlisting}
-
+\\
 
 \subsection*{Konfiguration}
 \label{sec:nodechapter-config}
 Diese Webanwendung bietet verschiedene Möglichkeiten der Konfiguration. Unsere ist an die Umgebung des Docker-Kontainers
 des Hochschulservers Hopper angepasst. Es lässt sich jedoch auch für andere Umgebungen anpassen, indem die zuvor erwähngen
 Konfigurationsdateien \verb|.env| und \verb|config.js| angepasst werden. So lassen sich zum Beispiel die Ports
-für die Entwicklungs- und Produktivumgebung sowie die Daten zur Authentifizierung mit der Datenbank separat einstellen.
+für die Entwicklungs- und Produktivumgebung sowie die Daten zur Authentifizierung mit der Datenbank separat einstellen.\\
 
 
 \subsection*{Sonstiges}
@@ -821,7 +821,7 @@ Auch alle anderen Tabellen werden erstellt, sofern diese noch nicht in der Daten
 Das Passwort des Admin Users wird bei der Erstellung auf dem Terminal ausgegeben. Da wir den Prozessmanager pm2 verwenden
 und dieser im Produktivmodus den Prozess im Hintergrund startet wird einem das Passwort nicht direkt ausgegeben. Daher muss
 man sich hierzu mittels \verb|pm2 log| das Logbuch anschauen, in welchem alle Ausgaben der Anwendung aufgeführt werden. Hierzu
-gehört auch das Passwort.
+gehört auch das Passwort.\\
 
 
 \section{Möglichkeiten der Erweiterung}
