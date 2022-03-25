@@ -13,7 +13,7 @@ Hier kam es uns zu Gute, dass wir Teammitglieder haben, welche sich auch mit Jup
 
 Die Client Klasse sorgt automatisch dafür, dass die Anfragen entsrechend formatiert und abgeschickt werden, sowie Fehler ohne Probleme behandelt und mitgeteilt werden. Somit bekommt der Nutzer in seinem Jupyter Notebook mitgeteilt, sofern er einen Fehler in seiner SQL Syntax hat, da wir auch diese Informationen von unserem Server an den Benutzer übermitteln. Nachfolgend ist ein solches Beispiel vorgeführt:\\
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Python]
     [ IN ]  client = Client(API_KEY, sandbox=False)
     [ OUT ] {'message': 'Connected!'}
     [ IN ]  client.sql_query("select * from users")
