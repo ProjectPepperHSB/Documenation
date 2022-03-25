@@ -5,7 +5,7 @@
 \lhead{\chaptergrundgeruest \emph{Erste Schritte: Das Grundgerüst}}
 
 \section{Allgemein}
-Wir haben bisher kaum Berührung mit Robotern im Alltag erlebt und daher ist unsere Erfahrung im Bereicht der Roboterprogrammierung sehr begrenzt. Zum Glück haben uns ehemalige Masterstudierende einen schnellen Einstieg ermöglicht, denn diese haben eine Anwendung für das Unternehmen \grqq{}Erlebnis Bremerhaven\grqq{} entwickelt und uns deren Quellcode zur Verfügung gestellt.
+Wir haben bisher kaum Berührung mit Robotern im Alltag erlebt und daher ist unsere Erfahrung im Bereicht der Roboterprogrammierung sehr begrenzt. Uns wurde von ehemaligen Masterstudierende ein schnell Einstieg ermöglicht, denn diese haben eine Anwendung für das Unternehmen ``Erlebnis Bremerhaven'' entwickelt und uns den Quellcode zur Verfügung gestellt.
 
 Wir haben sehr schnell gemerkt, dass uns dies zwar eine gute Hilfe für den Anfang ist, jedoch gibt es mittlerweile deutlich effizientere Methoden einzelne Komponenten miteinander zu verknüpfen.\\
 
@@ -21,7 +21,7 @@ Pepper besitzt neben seinem Tablet auch zwei Kameras, die sich jeweils in seinen
 
 
 \section{Projektmanagement}
-Um dieses Projekt erfolgreich durchzuführen und zielorientiert zur arbeiten, treffen wir uns wöchentlich
+Um dieses Projekt erfolgreich durchzuführen und zielorientiert zu arbeiten, treffen wir uns wöchentlich
 in der Hochschule und Besprechen unsere neuesten Ideen und Implementierungen. Auch zwischendurch
 stehen wir im Kontakt, um Probleme und Schwierigkeiten schnell zu beheben.
 
@@ -29,6 +29,7 @@ Damit wir gemeinsam an einer Codebasis arbeiten können, haben wir zu Anfang uns
 die Organisation \href{https://github.com/ProjectPepperHSB}{HBV-Pepper} auf
 \href{https://github.com}{GitHub} angelegt. Jegliche Beteiligung, sowie verschiedene Versionen können dort eingesehen werden.
 Zum Ende des Projektes haben sich hier fünf Repositories von uns angesammelt, welche folgende Themen beinhalten:
+
 \begin{itemize}
     \item Pepper Anwendung
     \item Node Webanwendung für das Dashboard
@@ -40,7 +41,7 @@ Zum Ende des Projektes haben sich hier fünf Repositories von uns angesammelt, w
 Das erste Repo beinhaltet unsere lauffähige Anwendung, welche die von uns
 implementierten Anwendungsfälle, sowie sonstige Funktionalitäten für den Roboter Pepper beinhaltet.
 
-Der Node Webanwendung auf welchem wir in Kapitel \ref{chapter:webapp} eingehen, ist unsere Schnittstelle, mit welcher wir Informationen, die Pepper durch seine Interaktionen mit der Umgebung sammelt, abfangen und speichern. Zudem Versorgen wir Pepper mit Informationen, Beispiel hierfür sind Daten zum Stunden- und Mensaplan.
+Der Node Webanwendung auf welchem wir in Kapitel \ref{chapter:webapp} eingehen, ist unsere Schnittstelle, mit welcher wir Informationen, die Pepper durch seine Interaktionen mit der Umgebung sammelt, abfangen und speichern. Zudem Versorgen wir Pepper mit Informationen, ein Beispiel hierfür sind Daten zum Stunden- und Mensaplan.
 
 Das Reposotory Dokumenation beinhaltet alle zu diesem Dokument gehörenden Dateien. Da wir diese mit \LaTeX{} anfertigen, lohnt es sich auch dies zu versionieren.
 
@@ -53,10 +54,10 @@ unserer Software eingehen, damit Studierende, die dieses Projekt weiterführen w
 haben, mit einem etwas fortgeschrittenem Projekt zu starten. Darüber hinaus befindet sich in jedem Stammverzeichnis
 eine \verb|README.md|, welche Anforderungen und erste Schritte aufzeigen, um einen schnellen Einstieg zu ermöglichen.\\
 
-\section{Persona}
+\section{Zielgruppenanalyse}
 Damit wir Pepper mit einer Vielzahl an sinnvollen Antworten auf die verschiedensten Fragen vorbereiten können, müssen wir uns zuerst überlegen, welche Personengruppe mit Pepper sprechen wird. Auf dieser Basis können wir verschiedene Gesprächsthemen entwickeln, die für die Personengruppe interessant sein könnten.
 
-Da wir Pepper als Hochschulassiszenz einsetzten wollen, haben wir es mit folgenden Personas zu tun:
+Da wir Pepper als Hochschulassiszenz einsetzten wollen, haben wir es mit folgenden Zielgruppen zu tun:
 \begin{itemize}
     \item Studenten
     \item Dozenten
@@ -69,7 +70,7 @@ Hauptsächlich soll Pepper für Studenten eingesetzt werden, die zum Beispiel ni
 %Ein weiterer Faktor ist das Ermitteln des Altersintervalls. 
 Studenten des höheren Semesters sind Themen wie Raumfindung oder Stundenplan eher uninteressant. Dafür könnten Themen wie der Mensaplan oder Informationen über die Hochschule und über Pepper selbst interessant sein. Außerdem wird Pepper in der Lage sein, mit dem Nutzer ein kurzes Gespräch (Small Talk) zu führen. Somit ist Pepper auch für weitere Altersgruppen und Personengruppen interessant. Vor allem Personen, die technikaffin sind oder das Thema Roboter einfach spannend finden, werden Pepper ebenfalls ansprechend finden, weswegen wir für diese Personengruppe passende Gesprächsthemen und lustige Animationen vorbereiten werden.
 
-Für Dozenten und Angestellte der Hochschule sind Themen wie der Stundenplan und die Raumfindung eher uninteressant und der Mensaplan wieder interessanter. Diese beiden Personas werden Pepper sehr wahrscheinlich am wenigsten verwenden.
+Für Dozenten und Angestellte der Hochschule sind Themen wie der Stundenplan und die Raumfindung eher uninteressant und der Mensaplan wieder interessanter. Diese beiden Zielgruppen werden Pepper sehr wahrscheinlich am wenigsten verwenden.
 
 Für Besucher sind Themen wie Informationen über Studiengänge und allgemein zur Hochschule eher interessanter als alle anderen Themen.
 
@@ -87,7 +88,7 @@ Folgende Daten sollen gesammelt werden:
     \item Mimic
 \end{itemize}
 
-Diese Daten sollen während des Gesprächs zwischen Pepper und dem Anwender gesammelt werden und zu unserer Webanwendung gesendet werden. Dort werden diese anschließend weiter verarbeitet und in einer auf MySQL basierenden Datenbank abgespeichert.
+Diese Daten sollen während des Gesprächs zwischen Pepper und dem Anwender gesammelt und zu unserer Webanwendung gesendet werden. Dort werden diese anschließend weiter verarbeitet und in einer auf MySQL basierenden Datenbank abgespeichert.
 
 Um die Daten erheben zu können, bietet Softbanks praktischerweiße verschiedene KI orientierte Funktionen an, wie zum Beispiel die Gesichts,- oder Alterserkennung.
 

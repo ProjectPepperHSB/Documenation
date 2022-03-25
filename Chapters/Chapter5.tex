@@ -21,7 +21,7 @@ Nachdem die Einrichtung von Android Studio und die Planung der Hochschul-Anwendu
 
 
 \subsection*{/manifests}
-In dem Ordner \verb|/manifests| befindet sich die konfigurations Datei AndroidManifest.xml. In dieser Datei können verschiedene allgemeine Einstellungen zu Pepper getroffen werden. Die wichtigsten Einstellungen sind die \verb|permissions|. Dies sind Berechtigung-Parameter, mit denen bestimmte Komponenten von Pepper oder Verbindungen erlaubt werden können. Da wir im Code sehr oft Request an den Node-Server geschickt haben oder Webseiten auf dem Tablet von Pepper angezeigt haben, mussten wir zuerst die Verbindung mit dem Internet in der AndroidManifest erlauben. Auch das Zugreifen auf den Externen Speicher von Pepper kann in dieser Datei erlaubt und konfiguriert werden. Des Weiteren können alle wichtigen Pfade zu weiteren Config Dateien und der MainActivity Klasse gesetzt werden.\\
+In dem Ordner \verb|/manifests| befindet sich die konfigurations Datei \verb|AndroidManifest.xml|. In dieser Datei können verschiedene allgemeine Einstellungen zu Pepper getroffen werden. Die wichtigsten Einstellungen sind die \verb|permissions|. Dies sind Berechtigung-Parameter, mit denen bestimmte Komponenten von Pepper oder Verbindungen erlaubt werden können. Da wir im Code sehr oft Request an den Node-Server geschickt haben oder Webseiten auf dem Tablet von Pepper angezeigt haben, mussten wir zuerst die Verbindung mit dem Internet in der AndroidManifest erlauben. Auch das Zugreifen auf den Externen Speicher von Pepper kann in dieser Datei erlaubt und konfiguriert werden. Des Weiteren können alle wichtigen Pfade zu weiteren Config Dateien und der MainActivity Klasse gesetzt werden.\\
 
 \subsection*{/java}
 In  \verb|/java| befinden sich alle unsere Java Klassen und somit der komplette Code der Pepper Anwendung. Sobald ein neues Projekt in Android Studio erstellt wird, wird die MainActivity Klasse automatisch generiert. Diese Klasse ist auch das Herzstück von Pepper, da hier der komplette Code gestartet, gesteuert und beendet wird. Hierzu werden wir im späteren Verlauf mehr erzählen. Die Verzeichnisse, welche mit ``andoirdTest'' und ``test'' beschriben sind, werden für das Testen der Applikation verwendet. Diese haben wir in unserem Projekt nicht verwendet, daher gehen wir auf diesen Bereich nicht weiter ein.\\
@@ -82,7 +82,7 @@ und bereitstellt. Diese können wie folgt zusammengefasst werden:\\
 
 Die \textit{Android Activity Lifecycle} umfasst Methoden, welche in Android Studio als Standard bereitgestellt werden. Mit der qiSDK und deren \verb|RobotLifecycleCallbacks| kommen die \verb|Robot Lifecycle| Methoden hinzu, die speziell für Pepper entiwckelt worden sind. Alle diese Methoden werden automatisch aufgerufen, sobald Pepper einen bestimmten Punkt oder eine bestimmte Situation erreicht hat. (Dies sind Callback Methoden, welche auf bestimmte Events reagieren.)
 
-Die komplette Applikation läuft auf einem Hauptprozess, der UI Thread genannt wird. Die einzigen Ausnahmen, die nicht auf diesem Thread laufen, sind die Robot Lifecycle Methoden und natürlich auch asynchrone Funktionen.
+Die komplette Applikation läuft auf einem Hauptprozess, der UI-Thread genannt wird. Die einzigen Ausnahmen, die nicht auf diesem Thread laufen, sind die Robot Lifecycle Methoden und natürlich auch asynchrone Funktionen.
 
 Im Folgenden werden die wichtigsten \verb|Lifecycle-Methoden| erläutern:\\
 
@@ -91,7 +91,7 @@ Im Folgenden werden die wichtigsten \verb|Lifecycle-Methoden| erläutern:\\
 Die \verb|onCreate| Methode ist der erste Einstiegspunkt, sobald die Pepper Anwendung gestartet wird. Sie wird auch nur einmalig ausgeführt. Damit die Callbacks der RobotLifecycleCallbacks Implementation überhaupt funktioniert, ist der erste Schritt, das registrieren der QISDK. Des Weiteren haben wir in der \verb|onCreate| Methode alle erforderlichen Initialisierungen durchgeführt, wie zum Beispiel das Hinzufügen des Ressourcenordners oder die Spracheinstellung, die Pepper's Chatbot verwenden soll.
 Mit \verb|setContentView| können wir bestimmen, was auf Pepper's Tablet angezeigt wird. Hier werden die XML-Dateien aus dem Layout Ordner geladen und in der ContentView initialisiert. \\
 
-\subsubsection{On Destroy}
+\subsubsection{onDestroy}
 
 Die \verb|onDestroy| Methode wird ausgeführt, sobald die Anwendung beendet wird. Sie wird hauptsächlich dafür verwendet, um Ressourcen wie Threads freizugeben. In unserer Anwendung müssen wir hier zusätzlich die QISDK unregistriert, damit keine weiteren Lifecycle-Aufrufe auftreten. \\
 
@@ -170,11 +170,11 @@ der Methode zur Antwort ist möglich.\\
     es entweder $qiVariableMensa.
 \end{lstlisting}
 
-Mit \verb|execute| wird der Methodenaufruf gestartet. Die Methode, die aufgerufen wird, befindet sich in der Klasse \verb|VariableExecutor|.  In dieser Klasse befindet sich eine \verb|runWith| Methode, die automatisch ausgeführt wird, wenn die \verb|execute| Funktion in dem Topic  erreicht wurde. Die einzelnen Argumente in dieser Funktion sind String Parameter, die wir der Methode \verb|runWith| mitgeben. Das Argument \verb|qiVariableMensa| wird dazu verwendet, um mittels \verb|switch case| Befehlen unterscheiden können, welche Frage getriggert wurde. Alle weiteren Argumente dienen als weitere String Parameter, die wir der Methode übergeben wollen. Sobald die Methode erreicht wurde, gibt es die Möglichkeit, die mitgegeben Parameter umzuschreiben und der Antwort in dem Topic wieder zurückzugeben. \verb|getCurrentChatBot().setQiVariable(variableName, 'Ich bin jetzt die neue qiVariable');|%das in einem listing?\\
+Mit \verb|execute| wird der Methodenaufruf gestartet. Die Methode, die aufgerufen wird, befindet sich in der Klasse \verb|VariableExecutor|.  In dieser Klasse befindet sich eine \verb|runWith| Methode, die automatisch ausgeführt wird, wenn die \verb|execute| Funktion in dem Topic  erreicht wurde. Die einzelnen Argumente in dieser Funktion sind String Parameter, die wir der Methode \verb|runWith| mitgeben. Das Argument \verb|qiVariableMensa| wird dazu verwendet, um mittels \verb|switch case| Befehlen unterscheiden können, welche Frage getriggert wurde. Alle weiteren Argumente dienen als weitere String Parameter, die wir der Methode übergeben wollen. Sobald die Methode erreicht wurde, gibt es die Möglichkeit, die mitgegeben Parameter umzuschreiben und der Antwort in dem Topic wieder zurückzugeben. \verb|getCurrentChatBot().setQiVariable(variableName,'Ich bin jetzt die neue qiVariable');|%das in einem listing?\\
 
 \subsubsection{Webview}
 
-Die Webview ist eine nützliche Funktion von Android Studio, die es erlaubt, ganze Webseiten auf dem Tablet von Pepper abzubilden. Man könnte sie ungefähr mit IFrames von HTML vergleichen. In Android Studio funktioniert die Implementierung ungefähr genau sowie die \verb|setContentView| Funktion, da sie ebenfalls auf dem Ui-Thread ausgeführt werden muss. Doch davor müssen noch ein paar wichtige Einstellungen vorgenommen werden, bis diese Funktion implementieren kann. Als Erstes muss die Verbindung mit dem Internet in der \verb|AndroidManifest.xml| erlaubt werden. Wie bereits erwähnt, müssen dafür \verb|permissions| geschrieben werden. \\
+Die Webview ist eine nützliche Funktion von Android Studio, die es erlaubt, ganze Webseiten auf dem Tablet von Pepper abzubilden. Man könnte sie ungefähr mit IFrames von HTML vergleichen. In Android Studio funktioniert die Implementierung ungefähr genau sowie die \verb|setContentView| Funktion, da sie ebenfalls auf dem UI-Thread ausgeführt werden muss. Doch davor müssen noch ein paar wichtige Einstellungen vorgenommen werden, bis diese Funktion implementieren kann. Als Erstes muss die Verbindung mit dem Internet in der \verb|AndroidManifest.xml| erlaubt werden. Wie bereits erwähnt, müssen dafür \verb|permissions| geschrieben werden. \\
 
 \begin{lstlisting}
 <uses-permission android:name="android.permission.INTERNET" />
@@ -191,7 +191,7 @@ auf dem Tablet widerspiegeln wollen, Javascript verwendet, müssen wir diese zus
 
 Nun würde sich normalerweise der Standardbrowser des Tablets öffnen, sollte der Anwender in der Webview eine Weiterleitung zu einer anderen Webseite öffnen. Um dies zu verhindern, muss die WebViewClient verändert werden, sodass ein weiterer Webview geöffnet wird, falls dieser Fall eintrifft. Dies kann wie folgt implementiert werden: \\
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Java]
 web.setVebViewClient(new Callback())
 try{
     ma.runOnUiThread(() -> {

@@ -10,11 +10,11 @@ Es sind mehrere Verzeichnisse angelegt, welche separate Schwerpunkte beinhalten,
 
 In jedem dieser kleineren Module befindet sich eine \verb|install.sh|, sowie eine \verb|reguirements.txt| Datei, welche zusammen ausgeführt werden, um die für das Skript benötigten Packages zu installieren, sofern diese noch nicht vorhanden sind.
 
-Es befindet sich auch ein Verzeichnis mit Namen ``analysis'' in diesem Repository, jedoch gehen wir darauf im Kapiel \ref{chapter:big-data} genauer ein.
+Es befindet sich auch ein Verzeichnis mit Namen \verb|analysis| in diesem Repository, jedoch gehen wir darauf im Kapiel \ref{chapter:big-data} genauer ein.\\
 
 \section{Skripte zur Generierung von Dummy Konversationen}
 \label{sec:dummy-data}
-Aufgrund der andauernden Einschränkungen der Regierung, ist es uns nicht möglich, Pepper an der Hochschule im vollem Umfang auszutesten. Somit können wir Pepper und seine Interaktionen nicht an einer großen Menge an Studierenden und Interessierten austesten. Da wir jedoch den Schwerpunkt Big Data mit in unserem Projekt einfließen lassen wollen und unsere Webanwendung, welche wir im Kapitel \ref{chapter:webapp} besprochen haben genau für das Sammeln und zur Verfügung stellen von Daten ausgelegt haben, war es für uns ganz klar, dass wir uns selbst Daten generieren müsssen.
+Aufgrund der andauernden Einschränkungen der Hygienemaßnahmen, ist es uns nicht möglich, Pepper an der Hochschule im vollem Umfang auszutesten. Somit können wir Pepper und seine Interaktionen nicht an einer großen Menge an Studierenden und Interessierten austesten. Da wir jedoch den Schwerpunkt Big Data mit in unserem Projekt einfließen lassen wollen und unsere Webanwendung, welche wir im Kapitel \ref{chapter:webapp} besprochen haben genau für das Sammeln und zur Verfügung stellen von Daten ausgelegt haben, war es für uns ganz klar, dass wir uns selbst Daten generieren müsssen.
 
 Hierfür wurde ein Skript mit dem Namen \verb|create-dummy-data.py| geschrieben, welches über die Kommandozeile ausgeführt werden kann und mehrere Parameter übergeben bekommt.\\
 
@@ -24,7 +24,7 @@ Hierfür wurde ein Skript mit dem Namen \verb|create-dummy-data.py| geschrieben,
 
 Das Flag \verb|n| gibt die Anzahl der zu generierenden Konversationen an. Das zweite Flag \verb|--prod| ist optioanl und sorgt dafür, dass die Daten, welche innerhalb des Skriptes generiert werden, an die URL der laufenden Webanwendung auf dem Hochschulserver gesendet werden. Ohne diesen Flag, werden die Datenreihen an den Localhost geschickt. Sollte dies nicht einwandfrei laufen, so ist die Webanwendung höchstwahrscheinlich nicht aktiv.
 
-Da die \verb|requests| Library in Python nur synchrone Prozesse unterstützt und dies bei 1000 Anfragen etwas Zeit in Anspruch nimmt, haben wir dies mit der Library Joblib parallelisiert, sodass 6 Prozesse gleichzeitg die Generierung der Daten, sowie das Übermitteln an die Webanwendung übernehmen. Aufgurnd der Beschränkungen des Hochschulservers Hopper ist es nicht möglich, noch mehr gleichzeitige Anfragen zu schicken. Dies ist eine Sicherheitsmaßnahme zur Abwendung von DOS Attacken.
+Da die \verb|requests| Library in Python nur synchrone Prozesse unterstützt und dies bei 1000 Anfragen etwas Zeit in Anspruch nimmt, haben wir dies mit der Library Joblib parallelisiert, sodass 6 Prozesse gleichzeitg die Generierung der Daten, sowie das Übermitteln an die Webanwendung übernehmen. Aufgurnd der Beschränkungen des Hochschulservers Hopper ist es nicht möglich, noch mehr gleichzeitige Anfragen zu schicken. Dies ist eine Sicherheitsmaßnahme zur Abwendung von DOS Attacken.\\
 
 
 \section{Skripte für die Bereitstellung des Mensaplans}
@@ -38,7 +38,7 @@ Der Campus unserer Hochschule ist ziemlich weitläufig und unübersichtlich. Daz
 Die Benutzer des Roboters sollen die Möglichkeit haben, ihn nach einem Raum oder Ort zu fragen woraufhin Pepper eine genaue Wegbeschreibung als Antwort geben soll. Dabei ist es von Vorteil, dem Nutzer eine visuelle Beschreibung zu bieten, da die nicht nur einfacher zu verstehen ist, sondern auch mögliche Sprachbarrieren ausschließt. Dafür soll das Tablett von Pepper als visuelles Kommunikationsmittel für die Wegbeschreibung dienen. Über akustische Mitteilungen soll Pepper zudem eine geschätzte Dauer des Weges, sowie die Entfernung zu dem gesuchten Ort geben. Außerdem ist es wichtig, dass Pepper auch in der Lage ist, barrierefreie Wege für den Benutzer zu beschreiben, da unsere Hochschule auch barrierefreie Wege anbietet und körperlich beeinträchtigte Menschen nicht von einem solchen System nicht ausgeschlossen werden sollen.\\
 
 \subsection{Vorhandene Ressourcen}
-Bei der Suche im Web sind die ersten Ergebnisse für eine Orientierungshilfe oder einem Campusplan, die von der Hochschule Bremerhaven unter der offiziellen Internetseite der Hochschule Bremerhaven bereitgestellten Geländepläne. Diese bestehen aus einem 2-Dimensionalen Campusplan, wie in Abbildung \ref{fig:campus-integration}) zu sehen, sowie einen 3-dimensionalen Campusplan (Abb. \ref{fig:fig:campusplan}).\\
+Bei der Suche im Web sind die ersten Ergebnisse für eine Orientierungshilfe oder einem Campusplan, die von der Hochschule Bremerhaven unter der offiziellen Internetseite der Hochschule Bremerhaven bereitgestellten Geländepläne. Diese bestehen aus einem 2-Dimensionalen Campusplan, wie in Abbildung \ref{fig:campus-integration} zu sehen, sowie einen 3-dimensionalen Campusplan (Abb. \ref{fig:campusplan}).\\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/3DNavigator/campusplan_bsp.jpg}
@@ -47,7 +47,7 @@ Bei der Suche im Web sind die ersten Ergebnisse für eine Orientierungshilfe ode
     \centering
 \end{figure}
 
-Darüber hinsaus wird, auch vom AStA Bremerhaven, ein Campusplan bereitgestellt.
+Darüber hinsaus wird, auch vom AStA Bremerhaven, ein Campusplan bereitgestellt.\\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/3DNavigator/asta_campusplan.jpg}
@@ -233,7 +233,7 @@ Zu Beginn werden zwei verschiedene Requests definiert. Der Erste erzeugt das Req
     \centering
 \end{figure} \vspace{-3.5mm}
 
-Die Funktion “getrequest()” bekommt als Übergabeparameter einen String “mode” übergeben. Dieser Parameter gibt an, um welche Variante der Route es sich handelt. Außerdem wird eine Projekt-ID “project” übergeben. Über diese ID lässt sich das von uns an die API angeforderte Projekt bestimmt. Wir haben diesen Parameter bewusst variabel implementiert, um das gesamte Skript flexibel für einen möglichen weiteren Anwendungsfall im Zusammenhang mit 3D-Navigations APIs von 3d-Berlin zu gestalten. Es werden zudem ein Start “startpoint” sowie ein Endpunkt “endpoint” an die Funktion übergeben. Diese geben an, von welchem Startpunkt aus, welches Ziel zu erreichen sein soll. Es sei dazu gesagt, dass bei jeder Route immer von demselben Startpunkt ausgehen. Dies hat einerseits den Grund, dass der notwendige Datensatz an MP4-Dateien sonst exponentiell steigen würde und wir somit nicht in der Lage während diese Speicherkapazität auf dem Hopper-Server zu gewährleisten. Ebenso setzen wir für unseren Anwendungsfall des Roboters als Hochschulassistenz voraus, dass dieser sich immer an dem gleichen Ort befindet. Es handelt sich bei dem Startpunkt um das Foyer in Haus K. Wir haben auch diesen Parameter dennoch variabel gelassen, um unsere Anwendung so flexibel wie möglich zu entwickeln.
+Die Funktion “getrequest()” bekommt als Übergabeparameter einen String “mode” übergeben. Dieser Parameter gibt an, um welche Variante der Route es sich handelt. Außerdem wird eine Projekt-ID “project” übergeben. Über diese ID lässt sich das von uns an die API angeforderte Projekt bestimmt. Wir haben diesen Parameter bewusst variabel implementiert, um das gesamte Skript flexibel für einen möglichen weiteren Anwendungsfall im Zusammenhang mit 3D-Navigations APIs von 3d-Berlin zu gestalten. Es werden zudem ein Start “startpoint” sowie ein Endpunkt ``endpoint'' an die Funktion übergeben. Diese geben an, von welchem Startpunkt aus, welches Ziel zu erreichen sein soll. Es sei dazu gesagt, dass bei jeder Route immer von demselben Startpunkt ausgehen. Dies hat einerseits den Grund, dass der notwendige Datensatz an MP4-Dateien sonst exponentiell steigen würde und wir somit nicht in der Lage während diese Speicherkapazität auf dem Hopper-Server zu gewährleisten. Ebenso setzen wir für unseren Anwendungsfall des Roboters als Hochschulassistenz voraus, dass dieser sich immer an dem gleichen Ort befindet. Es handelt sich bei dem Startpunkt um das Foyer in Haus K. Wir haben auch diesen Parameter dennoch variabel gelassen, um unsere Anwendung so flexibel wie möglich zu entwickeln.\\
 
 \begin{lstlisting}[language=Python]
     def get_request(mode, project, start_point, end_point):

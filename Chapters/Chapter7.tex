@@ -18,19 +18,18 @@ reden zu können.
     \centering
 \end{figure}
 
-Bei der Implementierung der Stundenpläne etwa, werden verschiedene Anfragen an die Hochschulserver geschickt und ausgewertet, jedoch ist auch dies in Java nicht wirklich entwicklerfreundlich. Daher sind wir auf die Idee gekommen, einen Webserver aufzusetzen, den Pepper kontaktieren kann, um weiterführende Informationen zu erhalten.
+Bei der Implementierung der Stundenpläne, werden verschiedene Anfragen an die Hochschulserver geschickt und ausgewertet, jedoch ist auch dies in Java nicht wirklich entwicklerfreundlich. Daher sind wir auf die Idee gekommen, einen Webserver aufzusetzen, den Pepper kontaktieren kann, um weiterführende Informationen zu erhalten.
 
 Genau hier war es uns von Vorteil, Erfahrungen mit Node, Datenbanken und API's gesammelt zu haben. Daher ist es ein leichtes Unterfangen gewesen, einen Express Webserver mit Hilfe der Laufzeitumgebung Node aufzusetzen, auf welchem wir vielfältige Möglichkeiten zur Implementierung von komplexen Vorgängen haben.
 
 So hat es sich ergeben, dass wir nicht nur eine Anwendung für Pepper entwickelt haben, sondern einen zweiten Schwerpunkt, welcher sich auf das Sammeln und Auswerten von Daten konzentriert, definiert haben. Diese Daten sollen natürlich von Pepper über unsere Anwendung gesammelt werden.
 
-Das Repository dieser Webanwendung ist öffentlich und unter folgender Adresse erreichbar: \href{https://github.com/ProjectPepperHSB/NodeJS\_Server4Pepper}{https://github.com/ProjectPepperHSB/NodeJS\_Server4Pepper}.
-Sollte dieser dieser Link nicht mehr funktionieren, kann sich an die Hochschule gewandt werden, denn auch dort wird unser Quellcode hitnerlegt sein.\\
+Das Repository dieser Webanwendung ist öffentlich und unter folgender Adresse erreichbar: \href{https://github.com/ProjectPepperHSB/NodeJS\_Server4Pepper}{https://github.com/ProjectPepperHSB/NodeJS\_Server4Pepper}. Sollte dieser Link nicht mehr funktionieren, kann sich an die Hochschule gewandt werden, denn auch dort wird unser Quellcode hitnerlegt sein.\\
 
 \section{Überblick: Webanwendung}
 \label{sec:nodechapter-ueberblick}
 \lhead{\nodechapter \emph{Node - Express Webanwendung: Überblick}}
-Bevor wir im Folgenden auf die Implementierung und Spezifikationen unserer Webanwendung eingehen, wollen wir hier kurz die Hauptfunktionalitäten, welche wir in drei Kategorien aufgeteilt haben, aufzeigen.
+Bevor wir im Folgenden auf die Implementierung und Spezifikationen unserer Webanwendung eingehen, wollen wir hier kurz die Hauptfunktionalitäten, welche wir in drei Kategorien aufgeteilt haben, aufzeigen.\\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/NodeChapter/WebAppComponents.png}
@@ -55,12 +54,11 @@ Das Web Interface dient dazu, den Entwicklern und Betreibern der Webanwendung, I
     \centering
 \end{figure}
 
-(Abb. \ref{fig:admindashboard1}) Sofern sich ein Administrator angemeldet hat, gelangt er in die Ansicht des Admin Dashboards. Dieses besteht aus mehreren Komponenten. Zu sehen ist, dass sich am oberen Bereich der Abbildung eine Menüleiste befindet. Diese Beinhaltet eine Verlinkung zu unseren öffentlichen GitHub Repositories, sowie weitere Dropdowns, welche bisher noch keine Funktionen besitzen. Dies ist je nach Anwendungsfall und Einsatzgebiet individuell erweiterbar. Die dargestellte Suchleiste funktioniert jedoch. Über diese können nach speziellen Identifikationsnummern einzelner Konversationen und Datenreihen gesucht werden. (vgl. Abschnitt \ref{sec:routes-dashboard-detail} f.)
+(Abb. \ref{fig:admindashboard1}) Sofern sich ein Administrator angemeldet hat, gelangt er in die Ansicht des Admin Dashboards. Dieses besteht aus mehreren Komponenten. Zu sehen ist, dass sich am oberen Bereich der Abbildung eine Menüleiste befindet. Diese Beinhaltet eine Verlinkung zu unseren öffentlichen GitHub Repositories, sowie weitere Dropdowns, welche bisher noch keine Funktionen besitzen. Dies ist je nach Anwendungsfall und Einsatzgebiet individuell erweiterbar. Über die Suchleiste kann nach speziellen Identifikationsnummern einzelner Konversationen und Datenreihen gesucht werden. (vgl. Abschnitt \ref{sec:routes-dashboard-detail} f.)
 
 Des Weiteren ist ein Liniendiagramm abgebildet. Dies zeigt die Dauer der letzten 250 Konversationen, welche von Pepper geführt und anschließend über unserer Webanwendung in die Datenbank gespeichert wurden. Dieses Diagramm ist jedoch nicht aussagekräftig, da wir zur Füllung unserer Datenbank, Skripte zur randomisierten Generierung von Konversationen erstellt und ausgeführt haben (vgl. Abschnitt \ref{sec:dummy-data}).
 
-Wir liefern immer nur die letzen 250 Konversationen aus, da Pepper, falls er denn
-mal zum Einsatz kommt, gar nicht so sehr viele Konversationen führen wird, da diese auch eine gewisse Zeit in Anspruch nehmen. Somit ist es nur sinnvoll, sich die nur letzen 250 anzeigen zu lassen, um einen aktuellen Überblick über die vergangenen Interaktionen zu erhalten. Über die Suchleiste kann dennoch jede Konversation gefunden werden.\\
+Wir liefern immer nur die letzen 250 Konversationen aus, da Pepper gar nicht so viele Konversationen führen wird, da diese auch eine gewisse Zeit in Anspruch nehmen. Somit ist es nur sinnvoll, sich die letzen 250 anzeigen zu lassen, um einen aktuellen Überblick über die vergangenen Interaktionen zu erhalten. Über die Suchleiste kann dennoch jede Konversation gefunden werden.\\
 
 
 \begin{figure}[H]
@@ -81,12 +79,12 @@ Gespärch.
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/NodeChapter/webappdetail.png}
-    \caption{Ansicht einer bestimmten Konversation}
+    \caption{Ansicht der Informationen einer Konversation}
     \label{fig:webappdetail}
     \centering
 \end{figure}
 
-(Abb. \ref{fig:webappdetail}) Jeder Konversation, die Pepper führt, wird eine Identifikationsnummer zugewisen. Dies ermöglicht die dynamische Zuordnung von Inhalten zu einem bestimmten Gespräch. Somit ist eine neben der Einsicht in die allgemeinen Informationen wie dem Alter und Geschlecht des Gespärchspartners möglich, auch Informationen über verwendete Anwendungsfälle und deren chronologischer Reihenfolge zu erhalten. Auch Phrasen, welche Pepper nicht verstanden hat, sei es aufgrund von Akzenten oder falscher Aussprache, werden der Konversation zugewiesen.
+(Abb. \ref{fig:webappdetail}) Jeder Konversation, die Pepper führt, wird eine Identifikationsnummer zugewisen. Dies ermöglicht die dynamische Zuordnung von Inhalten zu einem bestimmten Gespräch. Somit ist es möglich, Einsicht in die allgemeinen Informationen, wie dem Alter und Geschlecht des Gespärchspartners, zu erhalten. Auch Informationen über verwendete Anwendungsfälle und deren chronologischer Reihenfolge sind abrufbar. Auch Phrasen, welche Pepper nicht verstanden hat, sei es aufgrund von Akzenten oder falscher Aussprache, werden der Konversation zugewiesen.
 
 Dies alles ermöglicht es uns und dem Anwender der Software, mehr über seine Kunden und Anwender zu erfahren - oder auf die Hochschule bezogen: Die Stimmung der Studenten, sowie des Personals und Interessierten kann erfasst werden.
 
@@ -97,7 +95,7 @@ Alle Endpunkte unserer Webanwendung, die für das Admin Dashboard benötigt werd
 \label{sec:nodechapter-api}
 Die Kommunikation mit unserer Webanwendung verläuft nicht nur über das Web Interface, sondern über verschiedene Endpunkte, auch Routes genannt. Über diese können je nach Grad der Authentifizierung verschiedene Inhalte gesendet und empfangen werden.
 
-Um hier nicht zu viele Informationen aus den Bereichen der Endpunkte (\ref{sec:nodechapter-implementation-routes}) und Implementierung (\ref{sec:nodechapter-implementation}) vorweg zu nehmen, wollen wir es bei der Erwähnug und Beschreibung der wichtigsten Endpunkte belassen.
+Um hier nicht zu viele Informationen aus den Bereichen der Endpunkte (Abschnitt \ref{sec:nodechapter-implementation-routes}) und Implementierung (Abschnitt \ref{sec:nodechapter-implementation}) vorweg zu nehmen, wollen wir es bei der Erwähnug und Beschreibung der wichtigsten Endpunkte belassen.
 
 \begin{itemize}
     \item /docker-hbv-kms-http/fileserver
@@ -109,12 +107,12 @@ Um hier nicht zu viele Informationen aus den Bereichen der Endpunkte (\ref{sec:n
 
 (vgl. Abschnitt \ref{sec:api-sql-query}) Der Endpunkt \verb|/docker-hbv-kms-http/api/v1/sql| ist die Schnittstelle über welche man extern auf Daten in der
 Datenbank zugreifen kann. Hier ist es erforderlich, authentifiziert zu sein.
-Dafür muss ein Auth-Token bei jeder Abfrage übermittelt werden, welches mit dem Token, welches in unserer Vebanwendung hinterlegt ist, verglichen wird. Um nicht das Problem des öffentlichen Einsehens unseres Tokens durch Github haben, arbeiten wir mit \verb|.env| Dateien, welche während der Initialisierung der Webanwendung geladen wird. Diese \verb|.env| Datei ist nicht auf Github, jedoch existiert eine Beispieldatei mit namen \verb|.example.env|, welche das Format und die
+Dafür muss ein Auth-Token bei jeder Abfrage übermittelt werden, welches mit dem Token, das in unserer Webanwendung hinterlegt ist, verglichen wird. Um das Problem des öffentlichen Einsehens unseres Tokens durch Github zu vermeiden, arbeiten wir mit \verb|.env| Dateien, welche während der Initialisierung der Webanwendung geladen wird. Diese \verb|.env| Datei ist nicht auf Github, jedoch existiert eine Beispieldatei mit namen \verb|.example.env|, welche das Format und die
 nötigen Felder vorgibt.
 
-Der letzte oben aufgeführte Endpunkt, steht symbolisch für eine Reihe von Endpunkten, welche für die Speicherung verschiedener Informationen, die Pepper während seiner Gespräche sammelt und an unserern Server übermittelt, verantwortlich ist. Diese Endpunkte sind sowohl über GET , als auch über POST Anfragen ansprechbar und nehmen verschiedene Parameter entgegen. Bisher muss man sich für diese Endpunkte nicht authentifizieren, das heißt, dass jeder in unsere Tabellen schreiben kann, sofern er die richtigen Parameter kennt. Wir haben überlegt dies zu umgehen, indem wir Pepper ebenfalls ein Token generieren lassen, welches als zur Authentifizierung mit der Webanwendung verwendet wird, jedoch würde dies das Problem nur verlagern, da unser gesamter Quellcode öffentlich einsehbar ist. Dies kann, soweit wir wissen, nicht über Umgebungsvariablen in Andriod Studio umgangen werden.
+Der letzte oben aufgeführte Endpunkt, steht symbolisch für eine Reihe von Endpunkten, welche für die Speicherung verschiedener Informationen, die Pepper während seiner Gespräche sammelt und an unserern Server übermittelt, verantwortlich ist. Diese Endpunkte sind sowohl über GET, als auch über POST Anfragen ansprechbar und nehmen verschiedene Parameter entgegen. Bisher muss man sich für diese Endpunkte nicht authentifizieren, das heißt, dass jeder in unsere Tabellen schreiben kann, sofern er die richtigen Parameter kennt. Wir haben überlegt dies zu umgehen, indem wir Pepper ebenfalls ein Token generieren lassen, welches als zur Authentifizierung mit der Webanwendung verwendet wird, jedoch würde dies das Problem nur verlagern, da unser gesamter Quellcode öffentlich einsehbar ist. Dies kann, soweit wir wissen, nicht über Umgebungsvariablen in Andriod Studio umgangen werden.
 
-Es gibt natürlich noch viele weitere Endpunkte in unserer Webanwendung, wie zum Beispiel den zur Abfrage von Stunden- oder Mensaplänen. Diese bekommen auch Parameter übergeben, woraufhin diese mit Hilfe verschiedener Methoden die gewünschten Informationen bereitstellen (vgl. Abschnitt \ref{sec:nodechapter-implementation-routes}).\\
+Es gibt natürlich noch viele weitere Endpunkte in unserer Webanwendung, wie zum Beispiel den, zur Abfrage von Stunden- oder Mensaplänen. Dieser bekommt Parameter übergeben, woraufhin mit Hilfe verschiedener Methoden die gewünschten Informationen bereitgestellt werden (vgl. Abschnitt \ref{sec:nodechapter-implementation-routes}).\\
 
 \subsection{Datenbank}
 \label{sec:nodechapter-database}
@@ -256,7 +254,7 @@ keine
 
 \subsection{API Endpunkte / Routes}
 \label{sec:api-routes}
-Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit ``api' in der URI hiterglegt. Anschließend ist die Versionsnummer des Endpunktes anzugeben. Bisher gibt es nur die Version 1.
+Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|api| in der URI hiterglegt. Anschließend ist die Versionsnummer des Endpunktes anzugeben. Bisher gibt es nur die Version 1.
 
 \subsubsection{Speicherung von Emotionsdaten}
 \label{sec:api-saveEmotionData}
@@ -336,7 +334,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit ``api' 
 
 \subsubsection{Speicherung von zusätzlichen Daten}
 \label{sec:api-saveAttributeData}
-\textbf{Beschreibung:} Dieser Endpunkt ermöglicht die Speicherung von weiteren, variablen und nicht vordefinierten Informationen.
+\textbf{Beschreibung:} Dieser Endpunkt ermöglicht die Speicherung von weiteren Variablen und nicht vordefinierten Informationen.
 
 \textbf{Methode:} POST
 
@@ -360,7 +358,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit ``api' 
 
 \subsubsection{Abfrage von Daten aus der DB mittels SQL Query String}
 \label{sec:api-sql-query}
-\textbf{Beschreibung:} Endpunkt zur Interaktion mit der Datenbank. Ein API-Token wird benötigt. SQL Befehle können übermittelt werden. Aus sicherheitsgründen werden Anfragen, welche folgende Wörter beinhalen, abgelehnt: \verb|CREATE|, \verb|DROP|, \verb|DELETE|, \verb|SHOW|, \verb|USERS|, \verb|INSERT|, \verb|INTO|. Dies gilt für Groß-und Kleinschreibung. Bei erfolgreicher Abfrage wird das Ergebnis des SQL-Statements als JSON zurückgeliefert.
+\textbf{Beschreibung:} Endpunkt zur Interaktion mit der Datenbank. Ein API-Token wird benötigt. SQL Befehle können übermittelt werden. Aus Sicherheitsgründen werden Anfragen, welche folgende Wörter beinhalen, abgelehnt: \verb|CREATE|, \verb|DROP|, \verb|DELETE|, \verb|SHOW|, \verb|USERS|, \verb|INSERT|, \verb|INTO|. Dies gilt für Groß-und Kleinschreibung. Bei erfolgreicher Abfrage wird das Ergebnis des SQL-Statements als JSON zurückgeliefert.
 
 \textbf{Methode:} POST
 
@@ -494,7 +492,7 @@ abzurufen.
 
 \subsection{Responses und Status Codes}
 \label{sec:nodechapter-implementation-responses}
-Alle An- und Abfragen an unsere Webanwendung liefern verschiedene Antworten / Responses zurück. In der nachfolgenden Tabelle sind die geläufigsten dieser aufgelistet. Da gewisse Error-Handling-Mechanismen automatisch eine entsprecheende Antwort liefern, kann es zu abweichenden Beschreibungen und weiteren Status Codes kommen.
+Alle An- und Abfragen an unsere Webanwendung liefern verschiedene Antworten / Responses zurück. In der nachfolgenden Tabelle sind die Geläufigsten aufgelistet. Da gewisse Error-Handling-Mechanismen automatisch eine entsprecheende Antwort liefern, kann es zu abweichenden Beschreibungen und weiteren Status Codes kommen.
 \begin{table}[H]
     \caption{Status Codes und deren Bedeutung }
     \label{tab:responsecodes}
@@ -523,7 +521,7 @@ Alle An- und Abfragen an unsere Webanwendung liefern verschiedene Antworten / Re
 \section{Implementierung}
 \label{sec:nodechapter-implementation}
 \lhead{\nodechapter \emph{Node - Express Webanwendung: Implementierung}}
-Bei unserer Web App handelt es sich um eine Anwendung, welche mit dem Framework Express für die Laufzeitumgebung Node entwickelt wurde. Express zeichnet sich durch die simple Konfiguration, sowie einfache Implementierung verschiedenster Funktionalitäten aus. Express wird meist für Backendanwendungen verwendet, wir benutzen es jedoch auch, um serverseitiges Rendering zu realisieren. Dies bedeutet, dass Ansichten / Views, welche an den Client ausgeliefert werden, zuvor auf dem Server gerendert worden sind.\\
+Bei unserer Web App handelt es sich um eine Anwendung, welche mit dem Framework Express für die Laufzeitumgebung Node entwickelt wurde. Express zeichnet sich durch die simple Konfiguration, sowie einfache Implementierung verschiedenster Funktionalitäten aus. Express wird meist für Backendanwendungen verwendet, wir benutzen es jedoch auch, um serverseitiges Rendering zu realisieren. Dies bedeutet, dass Ansichten / Views, welche an den Client ausgeliefert werden, zuvor auf dem Server generiert worden sind.\\
 
 \subsection{Allgemein}
 Von außen ist unsere Anwendung über die URL
@@ -544,7 +542,7 @@ Abbildung \ref{fig:webhierarchie} zeigt den Inhalt des Root-Verzeichnisses unser
 Der Einstiegspunkt unserer Webanwendung ist das Skript \verb|server.js|. Dieses beinhaltet die Einbindung aller benötigten Dateien und Skripte, sowie die Anwendung der in den Konfigurationsdateien festgelegten Einstellungen.
 
 \subsubsection*{/node\_modules, /package-lock.json und /package.json}
-Da wir Node als Laufzeitumgebung gewählt haben, ist es uns möglich den Node Package Manager (npm) zur Installation verschiedener Module anzuwenden. Alle installierten Module sind in dem Verzeichnis \verb|node_modules| zu finden. Deren Spezifikationen sind in den Konfigurationsdateien \verb|package.json|, sowie \verb|package-lock.json| festgehalten. package-lock.json ist eine automatisch generierte Datei, welche Node verwendet um Dependencies und Versionen festzuhalten. Aufgrund dieser Konfigurationsdateien ist es nicht nötig, alle im Verzeichnis \verb|node_modules| befindlichen Erweiterungen in das jeweilige GitHub Repository zu laden, denn diese können, nach einer neuen Initialisierung über den Befehl \verb|npm init| anhand der Definitionen in \verb|package-lock.json|, automatisch nachinstalliert werden.
+Da wir Node als Laufzeitumgebung gewählt haben, ist es uns möglich den Node Package Manager (npm) zur Installation verschiedener Module anzuwenden. Alle installierten Module sind in dem Verzeichnis \verb|node_modules| zu finden. Deren Spezifikationen sind in den Konfigurationsdateien \verb|package.json|, sowie \verb|package-lock.json| festgehalten. \verb|package-lock.json| ist eine automatisch generierte Datei, welche Node verwendet, um Dependencies und Versionen festzuhalten. Aufgrund dieser Konfigurationsdateien ist es nicht nötig, alle im Verzeichnis \verb|node_modules| befindlichen Erweiterungen in das jeweilige GitHub Repository zu laden, denn diese können, nach einer neuen Initialisierung über den Befehl \verb|npm init| anhand der Definitionen in \verb|package-lock.json|, automatisch nachinstalliert werden.
 
 \subsubsection*{/views}
 In diesem Verzeichnis befinden sich Templates der Seiten, welche vom Server gerendert und an den Client ausgeliefert werden.
@@ -553,10 +551,10 @@ In diesem Verzeichnis befinden sich Templates der Seiten, welche vom Server gere
 Der Ordner \verb|routes| beinhaltet die verschiedene Skripte, welche die  nterschiedlichen Endpunkte unserer Webanwendung definieren. Innerhalb dieser Skritpe werden auch die Ansichten aus dem \verb|views|-Verzeichnis gerendert und an den Client geschickt. Hier sind alle in Abschnitt \ref{sec:nodechapter-implementation-routes} behandelten Endpunkte definiert. Die jeweiligen Routes implementieren die jeweiligen Funktionalitäten, sind über Requests ansprechbar und interagieren ggf. mit der Datenbank und anderen Services.
 
 \subsubsection*{/static}
-Hier finden sich statische Dateien, hierzu gehören Bilder und unabhängige Skripte, sowie Stylesheets. Diese werden über unsere Route \verb|docker-hbv-kms-http/fileserver| ausgeliefert (vgl. Abschnitt \ref{sec:nodechapter-api}).
+Hier befinden sich statische Dateien, dazu gehören Bilder und unabhängige Skripte, sowie Stylesheets. Diese werden über unsere Route \verb|docker-hbv-kms-http/fileserver| ausgeliefert (vgl. Abschnitt \ref{sec:nodechapter-api}).
 
 \subsubsection*{/middleware}
-Bei Middlewares handelt es sich um Skripte, welche Abläufe beinhalten, die zwischen anderen Prozessen statt finden. Hierzu gehört bei uns die Authentifizierung von Nutzern, indem das sich dort befindliche Skript \verb|auth.js| eingebunden wird, während ein Nutzer einen beschränkten Endpunkt anspricht. Dies sorgt dafür, dass nur ausgewählte Benutzer bestimmte Endpunkte erfolreich ansprechen können. Alle anderen bekommen die Mitteilung, dass sie nicht die nötigen Berechtigunen besitzen.
+Bei Middlewares handelt es sich um Skripte, welche Abläufe beinhalten, die zwischen anderen Prozessen statt finden. Hierzu gehört bei uns die Authentifizierung von Nutzern, indem das sich dort befindliche Skript \verb|auth.js| eingebunden wird, während ein Nutzer einen beschränkten Endpunkt anspricht. Dies sorgt dafür, dass nur ausgewählte Benutzer bestimmte Endpunkte erfolgreich ansprechen können. Alle anderen bekommen die Mitteilung, dass sie nicht die nötigen Berechtigungen besitzen.
 
 \subsubsection*{/lib}
 Im Ordner \verb|lib| (aka Libraries) befinden sich alle von uns für die Webanwendung verwendeten Skripte, für welche wir keine genaue Unterkategorie finden konnten. Hierbei handelt es sich um Skripte, welche Anfragen synchron und asynchron durchführen können, sowie Funktionen zur Generierung und Validierung von Passwörtern und deren Hashes.
@@ -570,12 +568,12 @@ Im Hauptverzeichnis befinden sich weitere Dateien, wie die README.md, welche ein
 
 Des weiteren befindet sich ein Skript zum Aktivieren des Docker-Kontainers und ein Deploy-Skript, welches für die Aktivierung des Dockers, das Übertragen der Daten in das entsprechende Verzeichnis, sowie für den Start der Webanwendung sorgt.
 
-Im Repository ist auch die Datei \verb|.example.env| zu finden, welche ein Beispiel dafür bietet, wie die \verb|.env| Datei aussehen muss. Diese .env Datei legt Umgebungsvariablen fest, sowie beinhaltet es sensible Daten, wie die Informationen zum Login in die Datenbank, sowie den API-Key zur Nutzung der API über externe Programme / Skripte (vgl. Abschnitt \ref{sec:api-sql-query}). Auch die Festlegung des Ports findet dort statt.\\
+Im Repository ist auch die Datei \verb|.example.env| zu finden, welche ein Beispiel dafür bietet, wie die \verb|.env| Datei aussehen muss. Diese .env Datei legt Umgebungsvariablen fest und beinhaltet sensible Daten, wie die Informationen zum Login in die Datenbank, sowie den API-Key zur Nutzung der API über externe Programme / Skripte (vgl. Abschnitt \ref{sec:api-sql-query}). Auch die Festlegung des Ports findet dort statt.\\
 
 
 \subsection{Error-Handling}
 \label{sec:nodechapter-error-handling}
-Auch das Behandeln und Abwenden von Fehlern gehört zu einer guten Webanwendung dazu. Hierbei haben wir alle Endpunkte damit bedacht, entsprechende Fehlermeldungen bzw. Antworten an den Client zu senden. Tabelle \ref{tab:responsecodes} zeigt unter anderem auch die geläufigsten Fehlermeldungen. Diese werden beispielsweise dann zurückgegeben, wenn ein Nutzer auf einen Bereich zugreift, für welchen er nicht die entsprecheende Berechtigung vorwesein kann, oder fehlerhafte bzw. ungültigte Informationen an einen Endpunkt sendet. Sollten Pfade angesprochen werden, die nicht verfügbar sind, wird der Status Code 404 zurückgegeben. Dies ist in der Datei \verb|server.js| definiert.
+Auch das Behandeln und Abwenden von Fehlern gehört zu einer guten Webanwendung dazu. Hierbei haben wir alle Endpunkte damit bedacht, entsprechende Fehlermeldungen bzw. Antworten an den Client zu senden. Tabelle \ref{tab:responsecodes} zeigt unter anderem auch die geläufigsten Fehlermeldungen. Diese werden beispielsweise dann zurückgegeben, wenn ein Nutzer auf einen Bereich zugreift, für welchen er nicht die entsprechende Berechtigung vorwesein kann oder fehlerhafte bzw. ungültigte Informationen an einen Endpunkt sendet. Sollten Pfade angesprochen werden, die nicht verfügbar sind, wird der Status Code 404 zurückgegeben. Dies ist in der Datei \verb|server.js| definiert.
 
 Wir loggen unsere Fehler nicht selbst, da dies in diesem Rahmen etwas zu viel wäre, jedoch benutzen wir den Prozessmanager \verb|pm2|, welcher für uns das Logging übernimmt.\\
 
@@ -610,14 +608,12 @@ Es gibt sehr viele weitere Module, welche wir mittels npm installiert haben. Da 
     \end{tabular}
 \end{table}
 
-Unsere Anwendung ist so konszipiert, dass sie auf den Betriebssystemen Ubuntu, macOS12+ und MS Windows 7+ läuft, sofern alle benötigten Pakete, Module, Tools und Sprachen installiert sind.\\
+Unsere Anwendung ist so konzipiert, dass sie auf den Betriebssystemen Ubuntu, macOS12+ und MS Windows 7+ läuft, sofern alle benötigten Pakete, Module, Tools und Sprachen installiert sind.\\
 
 \newpage
 \section{Installation und Konfiguration}
 \label{sec:nodechapter-installation}
-In Abschnitt \ref{sec:node-other-files} haben wir die Datei README.md angesprochen. Diese bietet einen schnellen Überblick über
-die benötigte Software (Node, npm und MySQL), sowie die Befehle zur Installation alle benöitgten Tools. Im Folgenden werden wir
-diese Schritte aufzeigen.
+In Abschnitt \ref{sec:node-other-files} haben wir die Datei README.md angesprochen. Diese bietet einen schnellen Überblick über die benötigte Software (Node, npm und MySQL), sowie die Befehle zur Installation aller benöitgten Tools. Im Folgenden werden wir diese Schritte aufzeigen.
 
 \subsection*{Installation}
 \label{sec:nodechapter-installation}
@@ -632,14 +628,11 @@ Für diese Anwendung ist es erforderlich, eine MySQL Instanz im Hintergrund lauf
 
 Sofern diese Schritte erledigt sind, kann die Anwendung gestartet werden. Möchte man dies auf seinem lokalen Rechner über den localhost laufen lassen, so lässt sich die Anwendung mittels \verb|npm run dev| auf der Kommandozeile im Root Verzeichnis der Anwendung starten. Dieser Befehl ``dev'' ist in der Datei \verb|package.json| festgelegt und startet die Anwendung im Entwicklermodus.
 
-Möchte man die Anwendung auf einem Server öffentlich erreichbar starten, so muss man sich mit den gegebenen Portkonfigurationen
-des Servers auseinander setzen. Sollte alles stimmen, so kann die Anwendung mit \verb|npm run prod| gestartet werden.
+Möchte man die Anwendung auf einem Server öffentlich erreichbar starten, so muss man sich mit den gegebenen Portkonfigurationen des Servers auseinander setzen. Sollte alles stimmen, so kann die Anwendung mit \verb|npm run prod| gestartet werden.
 
-Der Unterschied liegt darin, dass man auf seinem lokalen Rechner oft keine verschlüsselten Datenbanken hat und andere Ports benutzt.
-Daher gilt hier eine strikte Trennung von Entwicklungs- und Produktivumgebung.
+Der Unterschied liegt darin, dass man auf seinem lokalen Rechner oft keine verschlüsselten Datenbanken hat und andere Ports benutzt. Daher gilt hier eine strikte Trennung von Entwicklungs- und Produktivumgebung.
 
-Es befindet sich ebenfalls ein Skript \verb|deploy.sh| im Stammverzeichnis der Anwendung, welches die Anwendung auf den Hochschulserver
-an den richtigen Ort kopiert, abhängigkeiten installiert und den Server startet. Dies muss je nach Umgebung, Benutzer und Server
+Es befindet sich ebenfalls ein Skript \verb|deploy.sh| im Stammverzeichnis der Anwendung, welches die App auf den Hochschulserver an den richtigen Ort kopiert, Abhängigkeiten installiert und den Server startet. Dies muss je nach Umgebung, Benutzer und Server
 angepasst werden.
 
 Nachfolgend noch einmal die Schritte zur Installation und Start der Anwendung, wobei zu beachten ist,
@@ -663,8 +656,7 @@ des Hochschulservers Hopper angepasst. Es lässt sich jedoch auch für andere Um
 
 \subsection*{Sonstiges}
 \label{sec:nodechapter-install-other}
-Der Admin Account, welcher Zugriff auf das Admin Dashboard hat, wir beim initialen Start der Webanwendung automatisch angelegt. Auch alle anderen Tabellen werden erstellt, sofern diese noch nicht in der Datenbank ``pepperbackend'' hinterlegt sind. Das Passwort des Admin Users wird bei der Erstellung auf dem Terminal ausgegeben. Da wir den Prozessmanager pm2 verwenden und dieser im Produktivmodus den Prozess im Hintergrund startet wird einem das Passwort nicht direkt ausgegeben. Daher muss man sich hierzu mittels \verb|pm2 log| das Logbuch anschauen, in welchem alle Ausgaben der Anwendung aufgeführt werden. Hierzu
-gehört auch das Passwort.\\
+Der Admin Account, welcher Zugriff auf das Admin Dashboard hat, welcher beim initialen Start der Webanwendung automatisch angelegt. Auch alle anderen Tabellen werden erstellt, sofern diese noch nicht in der Datenbank ``pepperbackend'' hinterlegt sind. Das Passwort des Admin Users wird bei der Erstellung auf dem Terminal ausgegeben. Da wir den Prozessmanager pm2 verwenden und dieser im Produktivmodus den Prozess im Hintergrund startet wird einem das Passwort nicht direkt ausgegeben. Daher muss man sich hierzu mittels \verb|pm2 log| das Logbuch anschauen, in welchem alle Ausgaben der Anwendung aufgeführt werden. Hierzu gehört auch das Passwort.\\
 
 
 \section{Möglichkeiten der Erweiterung}

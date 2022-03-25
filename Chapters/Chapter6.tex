@@ -78,7 +78,7 @@ mergeImgs([cropped_img, cropped_img2])
 
 Im nächsten Schritt wird mit der Funktion \verb|convert_from_path| das PDF in ein Bildformat konvertiert und in die Variable \verb|img| installiert. Hierfür wird das Framework \verb|pdf2image| verwendet, das vorab mit \verb|pip| installiert werden muss. 
 
-Nun ist das Bild jedoch im Hochformat und kann sehr schlecht auf dem Tablet von Pepper angezeigt werden. (vgl. Abb. \ref{fig:Mensaplan}) Somit haben wir das Bild in zwei Teile geschnitten und im Querformat zusammengefügt. Um das Bild zu schneiden, haben wir das Framework \verb|PIL| verwendet. Nun kann genau angegeben werden, wie das Bild geschnitten werden soll. In der Variable \verb|area| haben wir jeweils immer vordefiniert, wie weit das Bild in welcher Richtung ausgeschnitten werden soll. Die Reihenfolge der Richtungen lautet wie folgt: 
+Nun ist das Bild jedoch im Hochformat und kann sehr schlecht auf dem Tablet von Pepper angezeigt werden. Somit haben wir das Bild in zwei Teile geschnitten und im Querformat zusammengefügt (vgl. Abb. \ref{fig:Mensaplan}). Um das Bild zu schneiden, haben wir das Framework \verb|PIL| verwendet. Nun kann genau angegeben werden, wie das Bild geschnitten werden soll. In der Variable \verb|area| haben wir jeweils immer vordefiniert, wie weit das Bild in welcher Richtung ausgeschnitten werden soll. Die Reihenfolge der Richtungen lautet wie folgt: 
 (rechts oben links unten) (0, 200, 4134, 2800)
 
 Zuerst haben wir den oberen Teil des Mensaplans ausgeschnitten, der die einzelnen Angebote enthält und anschließend die Legende, die sich im unteren Bereich der PDF befindet. 
@@ -120,7 +120,7 @@ Anschließend wir ein neues \verb|img_merge| Objekt erzeugt, das mit der minimal
 
 \subsection{Weiterleitung zum NodeJS Server}
 
-Das Script (vgl. \ref{sec:pyMensa}) befindet sich auf dem Hopper und wird mit \verb|crontab| jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.\\
+Das Script (vgl. Abschnitt \ref{sec:pyMensa}) befindet sich auf dem Hopper und wird mit \verb|crontab| jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.\\
 
 \begin{lstlisting}[language=Bash]
     # m h dom mon dow command

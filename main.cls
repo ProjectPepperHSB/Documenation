@@ -229,7 +229,7 @@
   \thispagestyle{empty}
   \begin{center}
     \setlength{\parskip}{0pt}
-    {\huge{ \bf Abstrakt} \par}
+    {\huge{ \bf Zusammenfassung} \par}
    \end{center}
 }
 {
