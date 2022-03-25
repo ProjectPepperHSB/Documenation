@@ -5,7 +5,7 @@
 \lhead{\chapterpepperapplication \emph{Implementierung der Pepper App}}
 
 
-Nachdem die Einrichtung von Android Studio und die Planung der Hochschul-Anwendungen für Pepper  abgeschlossen waren, ging es nun darum, Pepper auf unseren Anwendungsfällen zu programmieren. Der  erste Schritt war es, sich mit der Programmstruktur von Pepper vertraut zu machen. Da wir den  kompletten Code für die Touristik App der Masterstudenten als Referenz verwenden konnten, haben wir  uns schnell ein Bild von der Struktur machen können.\\
+Nachdem die Einrichtung von Android Studio und die Planung der Hochschul-Anwendungen für Pepper abgeschlossen waren, ging es nun darum, unsere Anwendungsfälle zu implementieren. Der  erste Schritt war es, sich mit der Programmstruktur von Pepper vertraut zu machen. Da wir den  kompletten Code für die Touristik App der Masterstudenten als Referenz verwenden konnten, haben wir  uns schnell ein Bild von der Struktur machen können.\\
 
 \section{Das Grundgerüst}
  
@@ -213,7 +213,7 @@ private class Callback extends WebViewClient {
     }
 }
 \end{lstlisting}
-Wir hatten längere Zeit das Problem, dass der Webviewer nicht auf dem Emulator funktioniert hat. Sobald dieser im Code erreicht wurde, kam eine Fehlermeldung, dass die GPU zu leistungsschwach wäre, um diese Aktion durchzuführen. In der älteren Version von Android Studio hat der Webviewer 
+Wir haben längere Zeit Schwierigkeiten, den WebViewer auf dem Emulator zum Laufen zu bringen. Sobald dieser im Code erreicht wurde, kam eine Fehlermeldung, dass die GPU zu leistungsschwach wäre, um diese Aktion durchzuführen. In der älteren Version von Android Studio hat der WebViewer 
 jedoch noch funktioniert. Mit der jetzigen Version ist es zurzeit nicht möglich, die Webview auf dem Emulator auszuführen und muss deshalb auf einen richtigen Pepper getestet werden.\\
 
 \subsubsection{HumanAwareness}
@@ -235,8 +235,8 @@ Diese Eigenschaften sind von Softbanks fest vorgegeben und können nicht erweite
 
 \subsubsection{No Interaction Timer}
 
-Nachdem Pepper bereits mehrere Interaktionsmöglichkeiten und Screens auf seinem Tablet besaß, hatten wir das Problem, dass wir nicht mehr von irgendeinem Screen zum Hauptmenü wechseln konnten. Wenn ein Anwender sich zum Beispiel den Mensaplan auf dem Tablet anzeigen lässt, wäre er nicht mehr in das Hauptmenü zurückgekommen. 
+Nachdem Pepper bereits mehrere Interaktionsmöglichkeiten und Ansichten auf seinem Tablet besaß, hatten wir das Problem, dass wir nicht mehr von einem beliebigen View zum Hauptmenü wechseln konnten. Wenn ein Anwender sich zum Beispiel den Mensaplan auf dem Tablet anzeigen lässt, wäre er nicht mehr in das Hauptmenü zurückgekommen. 
 
-Aus diesem Grund haben wir Pepper beigebracht, ins Hauptmenü zu wechseln, sobald der Anwender ``Zurück'' sagt. Nun konnte zu jeder Zeit während des Gesprächs in das Hauptmenü gewechselt werden. Sollte der Anwender jedoch das Gespräch mit Pepper verlassen, während er sich nicht im Hauptmenü befindet, so würde der nächste Anwender den Screen sehen, der zuletzt verwendet wurde. 
-Um dieses Problem zu lösen, haben wir eine Klasse geschrieben, die den Screen automatisch zurücksetzt.
+Aus diesem Grund haben wir Pepper beigebracht, ins Hauptmenü zu wechseln, sobald der Anwender ``Zurück'' sagt. Nun konnte zu jeder Zeit während des Gesprächs in das Hauptmenü gewechselt werden. Sollte der Anwender jedoch das Gespräch mit Pepper verlassen, während er sich nicht im Hauptmenü befindet, so würde der nächste Anwender die Ansicht sehen, der zuletzt verwendet wurde. 
+Um dies zu vermeiden, haben wir eine Klasse geschrieben, welche die View automatisch zurücksetzt.
 Sollte über eine vordefinierte Zeit keine Interaktion mit Pepper stattgefunden haben, so wird automatisch zum Hauptmenü gewechselt.

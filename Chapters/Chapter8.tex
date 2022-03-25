@@ -29,6 +29,163 @@ Da die \verb|requests| Library in Python nur synchrone Prozesse unterstützt und
 
 \section{Skripte für die Bereitstellung des Mensaplans}
 
+Der Anwendungsfall für die Mensa ist in zwei Teile aufgeteilt. Der erste Teil ist das Anzeigen des Mensaplans auf dem Tablet von Pepper. Sollte der Anwender explizit nach dem Mensaplan fragen, muss Pepper in der Lage sein, eine Übersicht des Mensaplans der aktuellen Woche anzuzeigen. 
+Der zweite Teil ist das verbale Beschreiben der Mensaangebote. Hierbei soll Pepper für jeden Wochentag erzählen können, welche Angebote in der Mensa zurzeit zur Verfügung stehen. Die Mensa der Hochschule Bremerhaven bietet jeden Wochentag immer zwei Angebote an. Das zweite Angebot ist dabei immer vegetarisch. Pepper muss dementsprechend in der Lage sein, beide Angebote beschreiben zu können. 
+
+Um die verschiedenen Daten über die Mensa Angebote abrufen zu können, verwenden wir unseren Server, der diese Daten bereitstellt. Der Server bekommt diese Daten aus einem externen Python Script.\\
+
+\subsection{Script um Mensadaten aufzurufen}
+\label{sec:pyMensa}
+
+Um die Daten auf dem Server anzeigen zu lassen, wird ein Python Script verwendet, dass sich diese Daten aus der offiziellen Hochschule Bremerhaven Mensa Webseite zieht. 
+
+Webseite: \url{https://www.stw-bremen.de/de/cafeteria/bremerhaven}
+
+Auf dieser Webseite befinden sich die aktuellen Angebote für die nächsten fünf Tage in einer Tabelle und den aktuellen- sowie nächsten Wochenplan im PDF-Format. Mit dem Script werden die einzelnen Daten aus der Webseite gelesen und als JSON gespeichert. Das Lesen der Daten aus der Webseite wird mit Hilfe des Frameworks \verb|BeautifulSoup| durchgeführt. Dieses Framework erlaubt es, XML- und HTML-Dokumente zu \verb|parsen|.\\
+
+\begin{lstlisting}[language=Python]
+menulist = soup.select('tbody')
+
+menu, offer1, offer2 = {}, [], []
+day: [str] = [
+    'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'
+]
+\end{lstlisting}
+
+Die Mensa Angebote befinden sich auf der Webseite in einer Tabelle, weshalb wir auf alle \verb|tbody|-Elemente mit der Funktion \verb|soup.select| zugreifen. Diese werden als Array in die Variable \verb|menulist| initialisiert. Anschließend werden die Variablen deklariert, aus denen später der JSON string entstehen soll. \\
+
+\begin{lstlisting}[language=Python]
+for i in range(10):
+    tmp = (str(menulist[i]).split('description">',1)[1]).rsplit
+    ("</td><td",2)[0]
+    tmp = tmp.replace('\n',').replace('\r',').replace('a1',')
+    .replace('amp;',')
+    tmp = re.sub('<sup>.*?</sup>', |, tmp)
+    if(i%2==0): offer1.append(tmp)
+    else: offer2.append(tmp)
+    menu'"day'], menu['offer1'], menu['offer2'] = day, offer1, offer2
+
+with open(folder_location+"mensadata.json", "w+") as f:
+    json.dump(menu, f, ensure_ascii=False)
+\end{lstlisting}
+
+Da sich die Daten in den \verb|tbody|-Elementen schwer lesen lassen, werden diese mit mehreren \verb|split| und \verb|replace| Funktionen in lesbare Mensa Angebote umgeformt und in den einzelnen Variablen eingefügt. Die If-Bedingung wird verwendet, um das erste- und zweite Angebot voneinander zu trennen. Anschließend wird das \verb|menu| Objekt mit den keys \verb|day|, \verb|offer1| und \verb|offer2| und den Values der jeweiligen Arrays initialisiert.
+Zum Schluss wird das \verb|menu| Objekt in JSON mit der \verb|json.dump| Funktion umgewandelt.
+
+Um den aktuellen Wochenplan im Script herunterzuladen und weiterzuverarbeiten, wird die Programmbibliothek Poppler vorausgesetzt. Poppler wird in Unix-ähnlichen Betriebssystemen dazu verwendet, PDF-Dateien anzuzeigen.\\
+
+\begin{lstlisting}[language=Python]
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+menucard = ((str(soup.select("a[href$='/print']")[0])
+.rsplit(' target',1)[0]).split('href=',1)[1])
+.replace('"',|)
+urllib.request.urlretrieve(menucard, f'{folder_location}Mensaplan.pdf')
+\end{lstlisting}
+
+Mit den ersten beiden Zeilen des Codes wird der komplette HTML-Inhalt der Webseite in die Variable \verb|soup| initialisiert. Da wir die URL des aktuellen Wochenplans benötigen, muss dieser aus dem HTML Code gelesen werden. Der Standort dieser URL ist im HTML Code fest verankert, weshalb wir mit Hilfe von \verb|soup.select|, die URL herausfiltern und mit mehreren \verb|split| und \verb|replace| Funktionen zu einer gültigen URL umformen können. Dieser Zwischenschritt ist nötig, da sich die URL jede Woche ändert. Anschließend wird die URL aufgerufen und als \verb|Mensaplan.pdf| abgespeichert.\\
+
+\begin{lstlisting}[language=Python]
+img = convert_from_path(f'{folder_location}Mensaplan.pdf', 500)[0]
+
+area = (0, 200, 4134, 2800) # R T L B
+cropped_img = img.crop(area)
+
+area = (0, 5200, 4134, 5800)
+cropped_img2 = img.crop(area)
+mergeImgs([cropped_img, cropped_img2])
+.save(folder_location+'images/mensaplan.png', 'JPEG')
+\end{lstlisting}
+
+Im nächsten Schritt wird mit der Funktion \verb|convert_from_path| das PDF in ein Bildformat konvertiert und in die Variable \verb|img| installiert. Hierfür wird das Framework \verb|pdf2image| verwendet, das vorab mit \verb|pip| installiert werden muss. 
+
+Nun ist das Bild jedoch im Hochformat und kann sehr schlecht auf dem Tablet von Pepper angezeigt werden. Somit haben wir das Bild in zwei Teile geschnitten und im Querformat zusammengefügt (vgl. Abb. \ref{fig:Mensaplan}). Um das Bild zu schneiden, haben wir das Framework \verb|PIL| verwendet. Nun kann genau angegeben werden, wie das Bild geschnitten werden soll. In der Variable \verb|area| haben wir jeweils immer vordefiniert, wie weit das Bild in welcher Richtung ausgeschnitten werden soll. Die Reihenfolge der Richtungen lautet wie folgt: 
+(rechts oben links unten) (0, 200, 4134, 2800)
+
+Zuerst haben wir den oberen Teil des Mensaplans ausgeschnitten, der die einzelnen Angebote enthält und anschließend die Legende, die sich im unteren Bereich der PDF befindet. 
+
+Nun müssen beide Bilder zusammengefügt werden. Dies wurde in der Methode \verb|mergeImgs| durchgeführt.\\
+
+
+\begin{lstlisting}[language=Python]
+def mergeImgs(imgs):
+    min_img_width = min(i.width for i in imgs)
+    
+    total_height = 0
+    for i, img in enumerate(imgs):
+    
+    if(img.width > min_img_width):
+        imgs[i] = img.resize((min_img_width, int(img.height / 
+        img.width * min_img_width)), Image.ANTIALIAS)
+    total_height += imgs[i].height
+    
+    img_merge = Image.new(imgs[0].mode, (min_img_width, total_height))
+    y = 0
+    for img in imgs:
+        img_merge.paste(img, (0, y))
+    
+        y += img.height
+    return img_merge
+\end{lstlisting}
+
+In dieser Funktion wird zuerst die Breite und Höhe des neu zusammengefügten Bildes ermittelt. Sollten die beiden Bilder eine unterschiedliche Breite besitzen, wird das breiteste Bild verkleinert. Dies geschieht in der For-Schleife, wo jedes einzelne Bild überprüft wird. 
+Anschließend wir ein neues \verb|img_merge| Objekt erzeugt, das mit der minimalsten Breite und addierten Höhe der beiden Bilder initialisiert wird. Zum Schluss werden die beiden Bilder in das Objekt eingefügt und heruntergeladen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{Figures/AppChapter/mensa_3.png}
+    \caption{Mensaplan - cropped}
+    \label{fig:Mensaplan}
+    \centering
+\end{figure}
+
+\subsection{Weiterleitung zum NodeJS Server}
+
+Das Script (vgl. Abschnitt \ref{sec:pyMensa}) befindet sich auf dem Hopper und wird mit \verb|crontab| jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.\\
+
+\begin{lstlisting}[language=Bash]
+    # m h dom mon dow command
+    0 0 * * 1 /usr/bin/python3 ~/getMensaPlan.py
+\end{lstlisting}
+
+Das erzeugte JSON Objekt und das zugeschnittene Bild des Mensaplans werden anschließend in den \verb|static| Ordner vom Node Server eingefügt.
+
+\subsection{Bereitstellen der Mensadaten auf dem Server}
+
+Mit dem folgenden Code werden die Daten aus den jeweiligen “/static” Ordnern an die Webseite gesendet:\\
+
+\begin{lstlisting}[language=Java]
+router.get('/docker-hbv-kms-http/api/v1/mensadata', (req, res) => {
+    const filePath = `${__dirname}/../static/data/mensadata.json`;
+    const jsonData = JSON.parse(fs.readFileSync(filePath, 'latin1'));
+    res.send(jsonData);
+});
+
+router.get('/docker-hbv-kms-http/api/v1/mensadata/img', (req, res) => {
+    const filePath = `${__dirname}/../static/images/mensaplan.png`;
+    const img = fs.readFileSync(filePath);
+    res.writeHead(200, {
+        'Content-Type': 'image/png'
+    });
+    res.end(img, 'binary');
+});    
+\end{lstlisting}
+
+(vgl. Abb. \ref{fig:mensaapi}) In folgendem Pfad befindet sich nun unser JSON Objekt, mit allen Mensaangeboten der aktuellen Woche.\\
+\url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata}
+\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{Figures/AppChapter/mensa_5.JPG}
+    \caption{Mensadaten - API}
+    \label{fig:mensaapi}
+    \centering
+\end{figure}
+
+Der aktuelle Wochenplan ist in png-Format unter folgendem Link erreichbar:\\
+\url{https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img}\\
+
+
 \newpage
 \section{Skripte für die Bereitstellung des 3D-Navigators}
 
