@@ -126,13 +126,13 @@ Eine Applikation, die aus vielen umfangreiche Themen besteht, zieht den größte
 
 Wie bereits erwähnt, wird der Chatbot in der \verb|onRobotFocusGained| Methode aufgerufen. Sobald Pepper eine Person fokussiert, wird der Chatbot als asynchrone Instanz bereitgestellt. Bei der Initialisierung stellen wir zuerst die Sprache, die Pepper beim Sprechen verwenden soll, auf Deutsch und geben anschließend alle Topic Dateien an, die Pepper verwenden soll. In unserer Applikation verwenden wir hauptsächlich die Topics \verb|background| und \verb|concepts|. Das \verb|concepts| Topic dient als Erweiterung für das \verb|background| Topic, da hier mehrere Wörter zu einem Klasse zusammengefasst werden.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Konzept - Beispiel}]
 concept:(hallo)[hey hallo moin na "guten Tag"]
 \end{lstlisting}
 
 Diese können anschließend in dem background Topic wie folgt verwendet werden:\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Beispiel}]
 u:(~hallo {Pepper}) 	Hey, schoen dich zu sehen
 \end{lstlisting}
 
@@ -141,14 +141,14 @@ Nun kann Pepper mehrere Variationen von Begrüßungen verstehen.
 In den Topics gibt es viele weitere hilfreiche Funktionen, die es zum Beispiel ermöglichen, die aktuelle Uhrzeit oder das Datum als Antwort 
 mitzugeben. \\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Datum}]
 u:(~welche-uhrzeit) ^currentTime
 u:(~datum) Heute ist der ^currentDate
 \end{lstlisting}
 
 Es ist ebenfalls möglich, dass Peppers eine zufällige Antwort zu einer bestimmten Frage gibt. Diese kann wie folgt definiert werden:\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Zufallsantwort}]
     u:([Erzaehl Sag] {mir} {ein} Witz) ^rand[
         "Kommt ein Pferd in die Bar. Fragt der Barkeeper, Hey warum 
         so ein langes Gesicht"
@@ -164,7 +164,7 @@ Der größte Vorteil an den Topics ist das Aufrufen einer Methode zu einer besti
 Hierbei können einzelne Wörter, die Pepper in der Frage erkannt hat, als Variable mitgeben werden aber auch das übergeben einer Variable von 
 der Methode zur Antwort ist möglich.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Methodenaufruf}]
     u:({was} {gibt{s}} {es} {zu} essen {am} _[~week]) $day=$1 
     ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt 
     es entweder $qiVariableMensa.
@@ -176,7 +176,7 @@ Mit \verb|execute| wird der Methodenaufruf gestartet. Die Methode, die aufgerufe
 
 Die Webview ist eine nützliche Funktion von Android Studio, die es erlaubt, ganze Webseiten auf dem Tablet von Pepper abzubilden. Man könnte sie ungefähr mit IFrames von HTML vergleichen. In Android Studio funktioniert die Implementierung ungefähr genau sowie die \verb|setContentView| Funktion, da sie ebenfalls auf dem UI-Thread ausgeführt werden muss. Doch davor müssen noch ein paar wichtige Einstellungen vorgenommen werden, bis diese Funktion implementieren kann. Als Erstes muss die Verbindung mit dem Internet in der \verb|AndroidManifest.xml| erlaubt werden. Wie bereits erwähnt, müssen dafür \verb|permissions| geschrieben werden. \\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Internetzugriff erlauben}]
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission
 .ACCESS_NETWORK_STATE" />
@@ -191,7 +191,7 @@ auf dem Tablet widerspiegeln wollen, Javascript verwendet, müssen wir diese zus
 
 Nun würde sich normalerweise der Standardbrowser des Tablets öffnen, sollte der Anwender in der Webview eine Weiterleitung zu einer anderen Webseite öffnen. Um dies zu verhindern, muss die WebViewClient verändert werden, sodass ein weiterer Webview geöffnet wird, falls dieser Fall eintrifft. Dies kann wie folgt implementiert werden: \\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Webview Grundgerüst}]
 web.setVebViewClient(new Callback())
 try{
     ma.runOnUiThread(() -> {

@@ -12,7 +12,7 @@ Im Folgenden werden wir auf die Implementierung und Weiterverarbeitung unserer A
 
 Pepper soll in der Lage sein, mit Hilfe von Sprache, den Mensaplan auf sein Tablet anzuzeigen und Informationen über die verschiedenen Angebote jedes Wochentags zu geben. Um sich den Mensaplan anzeigen zu lassen, haben wir zuerst ein neues Gesprächsthema in unserem Haupt-Topic erstellt. \\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Mensaplan}]
 u:(["Ich hab{e} hunger" "Zeig {mir} {den} Mensaplan"] ) 
 ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine 
 Uebersicht ueber den Mensaplan
@@ -21,7 +21,7 @@ Uebersicht ueber den Mensaplan
 Sobald der Anwender nach dem Mensaplan fragt, wird die \verb|runWith| Methode mit den Parametern \verb|qiVariableMensa|
 und \verb|Plan| in der \verb|VariableExecutor| Klasse aufgerufen.\\
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Übergabe der Parameter in runWith}]
 case('qiVariableMensa'):
 String day = params.get(1);
 if(day.equals('Plan')){
@@ -35,7 +35,7 @@ case \verb|qiVariableMensa| gesucht. Da wir einen zweiten Mensaanwendungsfall be
 Wir haben uns anschließend für eine andere Lösung entschieden, wo das Bild in Android Studio als Bitmap vom Node Server heruntergeladen wird. Eine Bitmap ist eine Zahlenmatrix von einem Bild, wo jeder Pixel die jeweiligen Farbinformationen enthält.\\
 
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Bitmap im ContentView anzeigen}]
 String url_str = "https://informatik.hs-bremerhaven.de/
 docker-hbv-kms-http/api/v1/mensadata/img";
 InputStream srt = new URL(url_str).openStream();
@@ -64,7 +64,7 @@ Nun kann Pepper auf die Frage ``Zeig mir den Mensaplan'' ein Bild von dem aktuel
 
 Als Nächstes wird ein weiteres Gesprächsthema erstellt, dass Pepper erlaubt, auch verbal Informationen über die Mensa Angebote zu geben.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Mensadaten}]
 concept:(week) [Montag Dienstag Mittwoch Donnerstag 
 Freitag Heute Morgen Uebermorgen]
 
@@ -80,7 +80,7 @@ es entweder $qiVariableMensa
 Hier wird die Variable \verb|day| mit dem Wochentag in  \verb|_[~week]| initialisiert, dass in der Frage genannt wurde. Wenn der Anwender zum Beispiel fragt: ``Was gibt es am Mittwoch zu essen'', wird Mittwoch in die Variable \verb|day| initialisiert. In dem Konzept wurden nicht nur Wochentage, sonder auch Wöter wie Heute, Morgen und Übermorgen hinzugefügt. Somit kann der Anwender auch fragen, was es zum Beispiel morgen zu essen gibt. Anschließend wird wieder die \verb|runWith| Methode aufgerufen mit den Parameter \verb|qiVariableMensa| und dem Wochentag, der genannt wurde. In der VariableExecutor Klasse wird nun die Antwort vorbereitet, die Pepper zu der Frage geben soll. Hierfür wird die \verb|getOffer| Methode in 
 der HelperCollection Klasse aufgerufen.\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Auslesen der Mensa-API}]
 HttpURLConnection con = getConnection("https://informatik.
 hs-bremerhaven.de/docker-hbv-kms-http/api/v1mensadata");
 
@@ -100,14 +100,14 @@ String [] offer2 = tmp.split("\",\"", -1);
 
 Zuerst werden die Daten aus dem Server aufgerufen und mithilfe des \verb|BufferedReader| in das \verb|StringBuffer| Objekt \verb|response| initialisiert. Anschließend wird ein JSON Objekt aus dem \verb|response| erstellt. Für uns war es leichter, die Daten in einem Array zu speichern, weshalb wir zwei Arrays mit den jeweiligen Mensa Angeboten initialisiert haben.\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Kalenderfunktion in Java}]
 Calendar calendar = Calendar.getInstance();
 int curday = calendar.get(Calendar.DAY_OF_WEEK) - 2;    
 \end{lstlisting}
 
 Nun wird mit der Calendar Bibliothek von Java, der aktuelle Wochentag ermittelt und als Zahl in curday gespeichert. Wäre der aktuelle Wochentag ein Montag, so würde curday mit einer 0 initialisiert. Sollte es ein Mittwoch sein, dann wäre curday eine 2 usw. Somit können wir die Arrays \verb|offer1| und \verb|offer2| mit dem genauen Index des aktuellen Wochentags ermitteln.\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Ermittlung der Mensadaten für heute, morgen und übermorgen}]
 String [] daylist = {
     "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"
 };
@@ -136,7 +136,7 @@ In der For-Schleife wird das Array \verb|spcdays| iteriert und mit \verb|if(day.
 sein und der Anwender würde fragen, was es morgen in der Mensa zu essen gibt, dann wird Pepper antworten, dass die Mensa am Wochenende geschlossen 
 ist. Sollte der Tag in der Woche sein, so wird die Antwort in der Variable \verb|answer| mit den beiden Angeboten initialisiert. \\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Ermittlung der Mensadaten für bestimmte Wochentage}]
 for(int i = 0; i < daylist.length; ++i){
     if(day.equals(daylist[i])){
         answer = offer1[i].replaceAll("\"", "").replace("[","")
@@ -174,7 +174,7 @@ Die Bereitstellung der Stundenplandaten im Node Server wurde bereits im Abschnit
 \\
 Hierfür wurde ein neues Gesprächsthema in dem Haupt-Topic erstellt.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Stundenplan}]
 u:({so} zeig{e} {er} {mir} {den} Stundenplan {fuer} {den} Studiengang 
 _~Studiengaenge {[im "fuer das"]} semester _~semester {sofort} {bitte})
 
@@ -186,7 +186,7 @@ Damit der Anwender den Stundenplan einsehen kann, erwartet Pepper zwei Wörter. 
 nennen. Erst dann wird der Methodenaufruf gestartet. Somit werden die drei Parameter \verb|timetable_course_semester|, 
 \verb|course| und \verb|semester| mitgegeben.\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Studiengang und Semester ermittlung}]
 final String timetableurl = "https://informatik.hs-bremerhaven.de/
     docker-hbv-kms-http/api/v1/timetable?course="
     + course_ + "&semester="
@@ -218,14 +218,14 @@ Um auf die einzelnen Informationen der Raumdaten zugreifen zu können, wurde ein
 Wie bei allen anderen Anwendungsfällen auch, ist der erste Schritt das Erstellen der einzelnen Gesprächsthemen. 
 Zuerst werden wir den Fall abdecken, wenn sich der Anwender den Gebäudeplan anzeigen lassen will.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Raumfinder}]
 u:([zeig gib] {mir} {bitte} {den} [Gebaeudeplan Campusplan Gelaende])
 ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine 
     Uebersicht ueber das Hochschulgelaende
 \end{lstlisting}
 
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Anzeigen des Gebäudeplans}]
 String nav = params.get(1);
 if(nav.equals("Plan")) {
     try {
@@ -252,7 +252,7 @@ Gebäudeplan auf dem Tablet angezeigt. Das Bild wurde vorher heruntergeladen und
 
 Als Nächstes haben wir das Abrufen der Videodateien zu den einzelnen Räumen der Hochschule in Android Studio implementiert.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Konzept für jeden Raum inder Hochschule Bremerhaven}]
 concept:(rooms) [C006 C007 ... Z5150 Z5160 ]
 
 u:(["{Kannst du {mir} [sagen erzaehlen]} Wo [befindet ist] {sich} der 
@@ -264,7 +264,7 @@ Pepper muss in der Lage sein, alle Räume in der Hochschule zu kennen, um genau 
 
 Sollte Pepper den Raum kennen, wird ein Methodenaufruf mit den Parametern \verb|qiVariableNav| und der Raumnummer (\verb|room|) durchgeführt.\\
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Topic - Barrierefrei}]
 u:(Zeig mir {bitte} einen _~handicapped Weg [zu in] {dem} 
 Raum _~rooms)
     $handicap=$1 $room=$2 Alles klar ^execute(VariableExecutor, 
@@ -273,7 +273,7 @@ Raum _~rooms)
 
 Wenn der Anwender explizit nach einem barrierefreien Weg zu einem Raum fragt, wird der gleiche Methodenaufruf mit dem zusätzlichen Parameter \verb|handicap| durchgeführt.\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Optioanle Barrierefreiheit}]
 String room = nav;
 String handicapped = "M0000";
 if(params.size() == 3) handicapped = "M0001";
@@ -282,7 +282,7 @@ if(params.size() == 3) handicapped = "M0001";
 
 In der \verb|VariableExecutor| Klasse wird als Erstes überprüft, ob der Anwender nach einem barrierefreien Weg zu dem gewünschten Raum gefragt hat oder nicht. Mit der If-Bedingung wird die Länge der Parameter überprüft, die in der Methode mitgegeben wurde. Wie bereits erwähnt, wird ein zusätzlicher Parameter \verb|handicap| zusammen mit den Parametern \verb|qiVariableNav| und \verb|room| mitgegeben, wenn nach dem barrierefreien Weg gefragt wurde. Somit muss nur die Parameterlänge verglichen werden, um entscheiden zu können, welcher Weg angezeigt werden soll.\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={Auslesen der Routenfinder Daten}]
 BufferedReader reader = new BufferedReader(new InputStreamReader(
     ma.getAssets().open("route_metadata.json")));
 
@@ -298,8 +298,8 @@ Mit der \verb|getAssets().open("route_metadata.json")| Funktion, kann die JSON D
 \verb|video_path| mit Hilfe der genauen Raumnummer herausgefiltert. Hier wird auch die Abfrage mitgegeben, ob der Weg Barrierefrei sein soll oder nicht.\\
 
 
-\begin{lstlisting}[language=Java]
-String urlVideo ="https://informatik.hs-bremerhaven.de/hbv-kms/"+path;
+\begin{lstlisting}[language=Java, caption={Darstellung der Wegbeschreibung auf Peppers Tablet}]
+String urlVideo = "https://informatik.hs-bremerhaven.de/hbv-kms/" + path;
 try{
     ma.runOnUiThread(() -> {
         ma.setContentView(R.layout.webtest);
