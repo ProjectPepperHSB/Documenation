@@ -300,12 +300,12 @@
 }\end{spacing}
 }
 
-\renewcommand\lstlistingname{Auflistungsverzeichnis}
-\renewcommand\lstlistlistingname{Auflistungsverzeichnis}
+\renewcommand\lstlistingname{Quellcode}
+\renewcommand\lstlistlistingname{Quellcodeverzeichnis}
 
 \renewcommand\lstlistoflistings{
-\btypeout{Auflistungsverzeichnis}
-\addtotoc{Auflistungsverzeichnis}
+\btypeout{Quellcode}
+\addtotoc{Quellcodeverzeichnis}
 \begin{spacing}{1}{
     \setlength{\parskip}{1pt}
     \if@twocolumn
