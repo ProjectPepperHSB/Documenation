@@ -331,7 +331,7 @@ In der Dokumentation von 3D-Berlin wird ausschließlich beschrieben, wie die ent
 
 Auch hier haben wir uns für die Programmiersprache Python entschieden. Dafür haben wir innerhalb unseres Backends ein weiteres Skript, \verb|createmetadata.py|,angelegt. Das Skript beschafft sich die Informationen, welche wir unter der API 3D-Berlin finden konnten und wandelt diese in für uns brauchbare Daten um. Außerdem werden diese anschließend in der Datei \verb|routedata.json| gespeichert. Im Folgenden gehen wir auf ein paar relevante Abschnitte des Skripts genauer ein und erläutern diese.
 
-Zu Beginn werden zwei verschiedene Requests definiert. Der Erste erzeugt das Request-Objekt für den normalen Weg und der Zweite generiert das gleiche Request-Objekt als barrierefreie Route.
+Zu Beginn werden zwei verschiedene Requests definiert. Der Erste erzeugt das Request-Objekt für den normalen Weg und der Zweite generiert das gleiche Request-Objekt als barrierefreie Route.\\
 
 \begin{lstlisting}[language=Python, caption={Definieren der Anfragen}]
         r_M0 = get_request(mode='M0000',
@@ -345,7 +345,7 @@ Zu Beginn werden zwei verschiedene Requests definiert. Der Erste erzeugt das Req
 
 \end{lstlisting}
 
-Die Funktion “getrequest()” bekommt als Übergabeparameter einen String “mode” übergeben. Dieser Parameter gibt an, um welche Variante der Route es sich handelt. Außerdem wird eine Projekt-ID “project” übergeben. Über diese ID lässt sich das von uns an die API angeforderte Projekt bestimmt. Wir haben diesen Parameter bewusst variabel implementiert, um das gesamte Skript flexibel für einen möglichen weiteren Anwendungsfall im Zusammenhang mit 3D-Navigations APIs von 3d-Berlin zu gestalten. Es werden zudem ein Start “startpoint” sowie ein Endpunkt ``endpoint'' an die Funktion übergeben. Diese geben an, von welchem Startpunkt aus, welches Ziel zu erreichen sein soll. Es sei dazu gesagt, dass bei jeder Route immer von demselben Startpunkt ausgehen. Dies hat einerseits den Grund, dass der notwendige Datensatz an MP4-Dateien sonst exponentiell steigen würde und wir somit nicht in der Lage während diese Speicherkapazität auf dem Hopper-Server zu gewährleisten. Ebenso setzen wir für unseren Anwendungsfall des Roboters als Hochschulassistenz voraus, dass dieser sich immer an dem gleichen Ort befindet. Es handelt sich bei dem Startpunkt um das Foyer in Haus K. Wir haben auch diesen Parameter dennoch variabel gelassen, um unsere Anwendung so flexibel wie möglich zu entwickeln.\\
+Die Funktion \verb|getrequest| bekommt als Übergabeparameter einen String “mode” übergeben. Dieser Parameter gibt an, um welche Variante der Route es sich handelt. Außerdem wird eine Projekt-ID “project” übergeben. Über diese ID lässt sich das von uns an die API angeforderte Projekt bestimmt. Wir haben diesen Parameter bewusst variabel implementiert, um das gesamte Skript flexibel für einen möglichen weiteren Anwendungsfall im Zusammenhang mit 3D-Navigations APIs von 3d-Berlin zu gestalten. Es werden zudem ein Start “startpoint” sowie ein Endpunkt ``endpoint'' an die Funktion übergeben. Diese geben an, von welchem Startpunkt aus, welches Ziel zu erreichen sein soll. Es sei dazu gesagt, dass bei jeder Route immer von demselben Startpunkt ausgehen. Dies hat einerseits den Grund, dass der notwendige Datensatz an MP4-Dateien sonst exponentiell steigen würde und wir somit nicht in der Lage während diese Speicherkapazität auf dem Hopper-Server zu gewährleisten. Ebenso setzen wir für unseren Anwendungsfall des Roboters als Hochschulassistenz voraus, dass dieser sich immer an dem gleichen Ort befindet. Es handelt sich bei dem Startpunkt um das Foyer in Haus K. Wir haben auch diesen Parameter dennoch variabel gelassen, um unsere Anwendung so flexibel wie möglich zu entwickeln.\\
 
 \begin{lstlisting}[language=Python, caption={Aufbau der Request-Funktion}]
     def get_request(mode, project, start_point, end_point):
@@ -383,7 +383,7 @@ Innerhalb dieser Schleife lesen wir als Erstes den Raumnamen und aus der Beschre
 Es wird nun ein temporäres JSON-Objekt für die jeweilige Wegroute erzeugt. In dieser wenden wir die zuvor geplante Struktur der Informationen an und weisen die Values den entsprechenden Key zu. Danach wird jedes Objekt an die endgültige JSON-Datei angeknüpft.
 
 Wir haben auch für diese Anwendung nachträglich eine grafische Oberfläche implementiert, um das Ausführen des Programms übersichtlicher und nachhaltiger zu gestalten. Dabei haben wir die Oberfläche so gestaltet, dass wir zwei verschiedene Konsolen für die Outputs anzeigen lassen. Die Linke Ausgabe ist die des Programmablaufs. Auf der rechten Ausgabe sind die hinzugefügten JSON-Objekte aufgelistet. In der folgenden Abbildung ist ein Durchlauf des Programms zu sehen. Es gibt die Möglichkeit ein Zielverzeichnis und den namen für die zu erstellende Datei zu wählen. Werden diese beiden Eigenschaften nicht zuvor gesetzt und mit einem Klick auf die ``Submit'' Schaltfläche bestätigt, so bekommt die Datei den namen ``routedata'' und wird in das Verzeichnis \verb|video| geschrieben. Die Abbildung unten zeigt das laufendene Programm:\vspace{-1.5mm}
-
+\\
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/3DNavigator/create_metadata_pic_Fertig.png}
     \caption{Screenshot: Grafische Oberfläche des Metadata-Skripts}

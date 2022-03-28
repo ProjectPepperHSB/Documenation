@@ -280,6 +280,7 @@
     \cleardoublepage
 }\end{spacing}
 }
+
 \renewcommand\listoftables{
 \btypeout{List of Tables}
 \addtotoc{Tabellenverzeichnis}
@@ -298,155 +299,27 @@
     \cleardoublepage
 }\end{spacing}
 }
-\newcommand\listsymbolname{Abbreviations}
-\usepackage{longtable}
-\newcommand\listofsymbols[2]{
-\btypeout{\listsymbolname}
-\addtotoc{\listsymbolname}
-    \chapter*{\listsymbolname
+
+\renewcommand\lstlistingname{Auflistungsverzeichnis}
+\renewcommand\lstlistlistingname{Auflistungsverzeichnis}
+
+\renewcommand\lstlistoflistings{
+\btypeout{Auflistungsverzeichnis}
+\addtotoc{Auflistungsverzeichnis}
+\begin{spacing}{1}{
+    \setlength{\parskip}{1pt}
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\lstlistlistingname
       \@mkboth{
-          \MakeUppercase\listsymbolname}{\MakeUppercase\listsymbolname}}
-\begin{longtable}[c]{#1}#2\end{longtable}\par
+          \MakeUppercase\lstlistlistingname}{\MakeUppercase\lstlistlistingname}}
+    \@starttoc{lol}
+    \if@restonecol\twocolumn\fi
     \cleardoublepage
-}
-\newcommand\listconstants{Physical Constants}
-\usepackage{longtable}
-\newcommand\listofconstants[2]{
-\btypeout{\listconstants}
-\addtotoc{\listconstants}
-    \chapter*{\listconstants
-      \@mkboth{
-          \MakeUppercase\listconstants}{\MakeUppercase\listconstants}}
-\begin{longtable}[c]{#1}#2\end{longtable}\par
-    \cleardoublepage
-}
-\newcommand\listnomenclature{Symbols}
-\usepackage{longtable}
-\newcommand\listofnomenclature[2]{
-\btypeout{\listnomenclature}
-\addtotoc{\listnomenclature}
-    \chapter*{\listnomenclature
-      \@mkboth{
-          \MakeUppercase\listnomenclature}{\MakeUppercase\listnomenclature}}
-\begin{longtable}[c]{#1}#2\end{longtable}\par
-    \cleardoublepage
-}
-\newcommand\acknowledgements[1]{
-\btypeout{Acknowledgments}
-\addtotoc{Acknowledgments}
-\thispagestyle{plain}
-\vspace{0.5in}
-\begin{center}{\huge{\bf Acknowledgments} \par}\end{center}
-{\normalsize #1}
-\vfil\vfil\null
-
-}
-
-\newcommand\CertificationBSc[1]{
-\btypeout{Certification}
-%\addtotoc{Declaration of Authorship}
-\thispagestyle{plain}
-\null\vfil
-%\vskip 60\p@
-\begin{center}{\huge \bf \@title \par}\end{center}
-\vskip 60\p@
-\begin{center}
-Vorgelegt bei der Fakultät für angewandte Wissenschaften,\\ der Hochschule Bremerhaven \\
-in teilweiser Erfüllung der Anforderungen für den Grad des 
-\LARGE{Bachelor of Science} \\ \Large{in} \\ \LARGE{\bf Wirtschaftsinformatik}
-\end{center}
-{\normalsize #1}
-\vfil\vfil\null
-\bigskip
-\bigskip
-
-\begin{table}[h]
-\centering
-\begin{tabular}{ccccc}
-\rule[0em]{15em}{1.0pt} & ~~~~~~~~~~~~~~ & \rule[0em]{15em}{1.0pt} \\
-Internal Examiner & ~~~~~~~~~~~~~~ & External Examiner
-\end{tabular}
-\end{table}
-
-\vfill
-
-\begin{table}[h]
-\centering
-\begin{tabular}{ccccc}
- & \rule[0em]{15em}{1.0pt} &  \\
- & Director &  \\
- & Undergraduate Studies &  
-\end{tabular}
-\end{table}
-
-\vfill
-
-\begin{center}
-\bigskip
-
-{\Large \deptname \par}
-{\Large \textbf{\univname}\par}
-
-\end{center}
-%\cleardoublepage
-}
-
-\newcommand\CertificationMSc[1]{
-\btypeout{Certification}
-%\addtotoc{Declaration of Authorship}
-\thispagestyle{empty}
-\null\vfil
-%\vskip 60\p@
-\begin{center}{\huge \bf \@title \par}\end{center}
-\vskip 60\p@
-\begin{center}
-Vorgelegt bei der Fakultät für angewandte Wissenschaften,\\ der Hochschule Bremerhaven \\
-in teilweiser Erfüllung der Anforderungen für den Grad des 
-\LARGE{Bachelor of Science} \\ \Large{in} \\ \LARGE{\bf Wirtschaftsinformatik}\end{center}
-{\normalsize #1}
-\vfil\vfil\null
-\bigskip
-\bigskip
-
-\begin{table}[h]
-\centering
-\begin{tabular}{ccccc}
-\rule[0em]{15em}{1.0pt} & ~~~~~~~~~~~~~~ & \rule[0em]{15em}{1.0pt} \\
-Internal Examiner & ~~~~~~~~~~~~~~ & External Examiner
-\end{tabular}
-\end{table}
-
-\vfill
-
-\begin{table}[h]
-\centering
-\begin{tabular}{ccccc}
-\rule[0em]{15em}{1.0pt} & ~~~~~~~~~~~~~~ & \rule[0em]{15em}{1.0pt} \\
-%dsvfsdjvgf
-\end{tabular}
-\end{table}
-
-\vfill
-
-\begin{center}
-	
-\bigskip
-
-{\Large \deptname \par}
-{\Large \textbf{\univname}\par}
-
-\end{center}
-%\cleardoublepage
-}
-
-\newcommand\dedicatory[1]{
-\btypeout{Dedicatory}
-\thispagestyle{plain}
-\null\vfil
-\vskip 60\p@
-\begin{center}{\Large \sl #1}\end{center}
-\vfil\null
-\cleardoublepage
+}\end{spacing}
 }
 
 \renewcommand\backmatter{

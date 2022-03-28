@@ -62,7 +62,8 @@ In \verb|/values| befinden sich alle XML-Dateien, die Werte für die verschieden
 \subsubsection*{/res/xml}
 \verb|/xml| wurde manuell erstellt und beinhaltet hauptsächlich weitere XML-Dateien, die für Konfigurationen verwendet wurden. Hierauf werden wir im späteren Verlauf näher drauf eingehen. 
 
-\subsection*{/gradle}
+\newpage
+\section{Gradle}
 Im unteren Bereich befinden sich alle wichtigen Gradle Konfigurationsdateien. Gradle ist ein Build-Toolkit, um den Build-Prozess von Android Studio zu automatisieren und zu verwalten. Sobald der Code ausgeführt wird, werden zuerst alle Gradle Einstellungen ermittelt, Bibliotheken und Frameworks installiert und anschließend wird der Code kompiliert. Gradle erstellt anschließend eine APK (Android App Bundles), womit die Androidanwendung erstellt und gestartet werden kann. (Quelle: \cite{Gradle})
 In der \verb|/build.gradle| Datei können benutzerdefinierte Build-Konfigurationen definiert werden. Hier kann zum Beispiel die Versionen der Pepper SDK verwaltet werden und außerdem können externe Frameworks, die nicht in der Standardbibliothek von Java enthalten sind, implementiert werden.\\
 
@@ -74,7 +75,8 @@ Die \verb|MainActivity| ist die Hauptklasse unserer Anwendung, da hier alle Proz
 und bereitstellt. Diese können wie folgt zusammengefasst werden:\\
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{Figures/AppChapter/4_1_3.png}
+    \centering
+    \includegraphics[width=14cm]{Figures/AppChapter/4_1_3.png}
     \caption{Android Activity-Lifecycle (Quelle: \cite{AALife})}
     \label{fig:AAL}
     \centering

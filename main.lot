@@ -1,27 +1,27 @@
 \babel@toc {german}{}\relax 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {1.1}{\ignorespaces Kapitel und Fragestellung\relax }}{2}{table.caption.10}%
-\contentsline {table}{\numberline {1.2}{\ignorespaces Github Repositories\relax }}{2}{table.caption.11}%
+\contentsline {table}{\numberline {1.1}{\ignorespaces Kapitel und Fragestellung\relax }}{2}{table.caption.11}%
+\contentsline {table}{\numberline {1.2}{\ignorespaces Github Repositories\relax }}{2}{table.caption.12}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Hard- und Softwarespezifikationen\relax }}{13}{table.caption.30}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Hard- und Softwarespezifikationen\relax }}{13}{table.caption.31}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {7.1}{\ignorespaces Parameter /docker-hbv-kms-http/dashboard/view\relax }}{44}{table.caption.278}%
-\contentsline {table}{\numberline {7.2}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/getData\relax }}{44}{table.caption.280}%
-\contentsline {table}{\numberline {7.3}{\ignorespaces Parameter /docker-hbv-kms-http/login\relax }}{44}{table.caption.282}%
-\contentsline {table}{\numberline {7.4}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveEmotionData\relax }}{45}{table.caption.286}%
-\contentsline {table}{\numberline {7.5}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveUseCaseData\relax }}{46}{table.caption.288}%
-\contentsline {table}{\numberline {7.6}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases\relax }}{46}{table.caption.290}%
-\contentsline {table}{\numberline {7.7}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveAttributeData\relax }}{46}{table.caption.292}%
-\contentsline {table}{\numberline {7.8}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/sql\relax }}{47}{table.caption.294}%
-\contentsline {table}{\numberline {7.9}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/timetable\relax }}{47}{table.caption.296}%
-\contentsline {table}{\numberline {7.10}{\ignorespaces Parameter /docker-hbv-kms-http/fileserver\relax }}{48}{table.caption.300}%
-\contentsline {table}{\numberline {7.11}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/crypto\relax }}{49}{table.caption.302}%
-\contentsline {table}{\numberline {7.12}{\ignorespaces Status Codes und deren Bedeutung\relax }}{49}{table.caption.305}%
-\contentsline {table}{\numberline {7.13}{\ignorespaces Hard- und Softwarespezifikationen der Webanwendung\relax }}{53}{table.caption.311}%
+\contentsline {table}{\numberline {7.1}{\ignorespaces Parameter /docker-hbv-kms-http/dashboard/view\relax }}{43}{table.caption.277}%
+\contentsline {table}{\numberline {7.2}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/getData\relax }}{43}{table.caption.279}%
+\contentsline {table}{\numberline {7.3}{\ignorespaces Parameter /docker-hbv-kms-http/login\relax }}{43}{table.caption.281}%
+\contentsline {table}{\numberline {7.4}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveEmotionData\relax }}{44}{table.caption.285}%
+\contentsline {table}{\numberline {7.5}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveUseCaseData\relax }}{45}{table.caption.287}%
+\contentsline {table}{\numberline {7.6}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases\relax }}{45}{table.caption.289}%
+\contentsline {table}{\numberline {7.7}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/saveAttributeData\relax }}{45}{table.caption.291}%
+\contentsline {table}{\numberline {7.8}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/sql\relax }}{46}{table.caption.293}%
+\contentsline {table}{\numberline {7.9}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/timetable\relax }}{46}{table.caption.295}%
+\contentsline {table}{\numberline {7.10}{\ignorespaces Parameter /docker-hbv-kms-http/fileserver\relax }}{47}{table.caption.299}%
+\contentsline {table}{\numberline {7.11}{\ignorespaces Parameter /docker-hbv-kms-http/api/v1/crypto\relax }}{48}{table.caption.301}%
+\contentsline {table}{\numberline {7.12}{\ignorespaces Status Codes und deren Bedeutung\relax }}{48}{table.caption.304}%
+\contentsline {table}{\numberline {7.13}{\ignorespaces Hard- und Softwarespezifikationen der Webanwendung\relax }}{52}{table.caption.310}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

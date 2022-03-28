@@ -111,6 +111,7 @@ Nun wird mit der Calendar Bibliothek von Java, der aktuelle Wochentag ermittelt 
 String [] daylist = {
     "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"
 };
+
 String [] spcdays = {"Heute", "Morgen", "Uebermorgen"};
 String answer = "";
 
@@ -120,9 +121,11 @@ for(int i = 0; i < spcdays.length; ++i){
             answer ="Am Wochenende ist die Mensa leider geschlossen";
             break;
         }
+        
         answer = offer1[curday + i].replaceAll("\"", "").replace(
             "[","").replace("]",""
         );
+
         answer += " oder " + offer2[curday + i].replaceAll("\"", "")
             .replace("[","").replace("]",""
         );
@@ -229,12 +232,8 @@ u:([zeig gib] {mir} {bitte} {den} [Gebaeudeplan Campusplan Gelaende])
 String nav = params.get(1);
 if(nav.equals("Plan")) {
     try {
-        ma.runOnUiThread(() -> {
-            ma.setContentView(R.layout.campus_plan);
-        });
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+        ma.runOnUiThread(() -> { ma.setContentView(R.layout.campus_plan); });
+    } catch (Exception e) { e.printStackTrace(); }
 }
 \end{lstlisting}
 
@@ -263,7 +262,7 @@ Raum _~rooms {befindet}"])
 Pepper muss in der Lage sein, alle Räume in der Hochschule zu kennen, um genau herausfiltern zu können, welchen Raum der Anwender sucht. Das Concept \verb|rooms| beinhaltet alle Räume der Hochschule und wird somit in der Frage im Topic verwendet. Sollte der Anwender nach einen Raum fragen, den es nicht gibt, wird Pepper die Frage erst gar nicht verstehen und nicht antworten. 
 
 Sollte Pepper den Raum kennen, wird ein Methodenaufruf mit den Parametern \verb|qiVariableNav| und der Raumnummer (\verb|room|) durchgeführt.\\
-
+\newpage
 \begin{lstlisting}[caption={Topic - Barrierefrei}]
 u:(Zeig mir {bitte} einen _~handicapped Weg [zu in] {dem} 
 Raum _~rooms)
@@ -285,10 +284,8 @@ In der \verb|VariableExecutor| Klasse wird als Erstes überprüft, ob der Anwend
 \begin{lstlisting}[language=Java, caption={Auslesen der Routenfinder Daten}]
 BufferedReader reader = new BufferedReader(new InputStreamReader(
     ma.getAssets().open("route_metadata.json")));
-
 String response = new String();
 for (String line; (line=reader.readLine())!=null; response+=line);
-
 Map jsonJavaRootObject = new Gson().fromJson(response, Map.class);
 String path = ((Map)((Map)(jsonJavaRootObject.get(room)))
     .get(handicapped)).get("video_path").toString();
@@ -296,7 +293,6 @@ String path = ((Map)((Map)(jsonJavaRootObject.get(room)))
 
 Mit der \verb|getAssets().open("route_metadata.json")| Funktion, kann die JSON Datei, die sich in dem \verb|/assets| Ordner befindet, geöffnet und mit dem \verb|BufferedReader| ausgelesen werden. Als Nächstes wird mit Hilfe des \verb|Gson| Frameworks, ein Map Objekt erzeugt, dass alle Informationen der JSON Datei bereitstellt. In der Variable \verb|path|, wird der Wert 
 \verb|video_path| mit Hilfe der genauen Raumnummer herausgefiltert. Hier wird auch die Abfrage mitgegeben, ob der Weg Barrierefrei sein soll oder nicht.\\
-
 
 \begin{lstlisting}[language=Java, caption={Darstellung der Wegbeschreibung auf Peppers Tablet}]
 String urlVideo = "https://informatik.hs-bremerhaven.de/hbv-kms/" + path;
