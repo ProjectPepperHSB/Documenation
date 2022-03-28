@@ -9,8 +9,19 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {7.1}{\ignorespaces Status Codes und deren Bedeutung \relax }}{49}{table.caption.305}%
-\contentsline {table}{\numberline {7.2}{\ignorespaces Hard- und Softwarespezifikationen der Webanwendung\relax }}{53}{table.caption.311}%
+\contentsline {table}{\numberline {7.1}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/dashboard/view\relax }}{45}{table.caption.278}%
+\contentsline {table}{\numberline {7.2}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/getData\relax }}{45}{table.caption.280}%
+\contentsline {table}{\numberline {7.3}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/login\relax }}{45}{table.caption.282}%
+\contentsline {table}{\numberline {7.4}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveEmotionData\relax }}{46}{table.caption.286}%
+\contentsline {table}{\numberline {7.5}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveUseCaseData\relax }}{47}{table.caption.288}%
+\contentsline {table}{\numberline {7.6}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases\relax }}{47}{table.caption.290}%
+\contentsline {table}{\numberline {7.7}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveAttributeData\relax }}{48}{table.caption.292}%
+\contentsline {table}{\numberline {7.8}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/sql\relax }}{48}{table.caption.294}%
+\contentsline {table}{\numberline {7.9}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/timetable\relax }}{49}{table.caption.296}%
+\contentsline {table}{\numberline {7.10}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/fileserver\relax }}{49}{table.caption.300}%
+\contentsline {table}{\numberline {7.11}{\ignorespaces Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/crypto\relax }}{50}{table.caption.302}%
+\contentsline {table}{\numberline {7.12}{\ignorespaces Status Codes und deren Bedeutung\relax }}{50}{table.caption.305}%
+\contentsline {table}{\numberline {7.13}{\ignorespaces Hard- und Softwarespezifikationen der Webanwendung\relax }}{54}{table.caption.311}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

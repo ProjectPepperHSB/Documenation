@@ -177,6 +177,7 @@ keine
 \textbf{Parameter:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/dashboard/view}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/dashboard/view}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -199,6 +200,7 @@ keine
 \textbf{Parameter:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/getData}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/getData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -223,10 +225,11 @@ keine
 \textbf{Parameter POST:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/login}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/login}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
-        Param           & Typ    & Beschreibung \\                                                             \\
+        Param           & Typ    & Beschreibung \\
         \midrule
         username\_input & String & Benutzername \\
         password\_input & String & Passwort     \\
@@ -266,6 +269,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|a
 
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/saveEmotionData}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveEmotionData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -296,6 +300,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|a
 
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/saveUseCaseData}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveUseCaseData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -319,6 +324,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|a
 
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveNotUnderstandPhrases}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -342,6 +348,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|a
 
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/saveAttributeData}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/saveAttributeData}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -367,6 +374,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|a
 \textbf{Parameter:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/sql}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/sql}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -391,6 +399,7 @@ Alle Endpunkte, welche nicht über ein GUI angesprochen werden, sind mit \verb|a
 \textbf{Parameter:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/timetable}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/timetable}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -442,6 +451,7 @@ abzurufen.
 \textbf{Parameter:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/fileserver}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/fileserver}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -465,6 +475,7 @@ abzurufen.
 \textbf{Parameter:}
 \begin{table}[H]
     \label{table:/docker-hbv-kms-http/api/v1/crypto}
+    \caption{Parameter für den Endpunkt /docker-hbv-kms-http/api/v1/crypto}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{80pt}p{200pt}}
         \toprule
@@ -494,7 +505,7 @@ abzurufen.
 \label{sec:nodechapter-implementation-responses}
 Alle An- und Abfragen an unsere Webanwendung liefern verschiedene Antworten / Responses zurück. In der nachfolgenden Tabelle sind die Geläufigsten aufgelistet. Da gewisse Error-Handling-Mechanismen automatisch eine entsprecheende Antwort liefern, kann es zu abweichenden Beschreibungen und weiteren Status Codes kommen.
 \begin{table}[H]
-    \caption{Status Codes und deren Bedeutung }
+    \caption{Status Codes und deren Bedeutung}
     \label{tab:responsecodes}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{p{100pt}p{280pt}}
@@ -639,7 +650,7 @@ Nachfolgend noch einmal die Schritte zur Installation und Start der Anwendung, w
 dass die Konfigurationsdateien \verb|.env| und \verb|config.js| angepasst werden müssen, sobald das Projekt heruntergeladen
 worden ist.\\
 
-\begin{lstlisting}[language=Bash, basicstyle=\footnotesize,xleftmargin=-.1in]
+\begin{lstlisting}[language=Bash, basicstyle=\footnotesize,xleftmargin=-.1in,caption={Installation und Starten der Webanwendung}]
     ~$ git clone https://github.com/ProjectPepperHSB/NodeJS_Server4Pepper.git 
     ~$ cd NodeJS_Server4Pepper
     NodeJS_Server4Pepper:~$ npm install

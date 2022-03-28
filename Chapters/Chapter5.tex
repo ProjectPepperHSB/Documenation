@@ -44,7 +44,7 @@ Der \verb|/layout| Ordner beinhaltet alle XML-Dateien, die für die Graphische D
 Studio bietet hier ebenfalls eine GUI mit verschiedenen Komponenten zur Auswahl und eine Echtzeit Darstellung des Layouts.
 
 \subsubsection*{/res/mipmap}
-In \verb|/mipmap| (MIP = multum in parvo = vieles im Kleinen) befinden sich vorberechnete und optimierte Bildfolgen, die die Darstellungsqualität von Texturen verbessern, wenn diese kleiner als in der ursprünglichen Größe dargestellt werden. (vgl. Abb. \ref{fig:MipMap}) Dadurch, dass Texturen mithilfe der MipMaps verkleinert dargestellt werden, benötigt das Anzeigen von Bildern auf dem Tablet weniger Rechenzeit (mehr: \cite{MipMaps}).\\
+In \verb|/mipmap| (MIP = multum in parvo = vieles im Kleinen) befinden sich vorberechnete und optimierte Bildfolgen, die die Darstellungsqualität von Texturen verbessern, wenn diese kleiner als in der ursprünglichen Größe dargestellt werden. (vgl. Abb. \ref{fig:MipMap}) Dadurch, dass Texturen mithilfe der MipMaps verkleinert dargestellt werden, benötigt das Anzeigen von Bildern auf dem Tablet weniger Rechenzeit (mehr: \cite{MipMaps}).
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/AppChapter/4_1_2.png}
@@ -60,9 +60,9 @@ Der \verb|/raw| Ordner beinhaltet alle Topic Dateien der Anwendung und werden im
 In \verb|/values| befinden sich alle XML-Dateien, die Werte für die verschiedenen Ressourcen bereitstellen. Dies sind zum Beispiel Werte wie Farben, Stilen oder Dimensionen.
 
 \subsubsection*{/res/xml}
-\verb|/xml| wurde manuell erstellt und beinhaltet hauptsächlich weitere XML-Dateien, die für Konfigurationen verwendet wurden. Hierauf werden wir im späteren Verlauf näher drauf eingehen. \\
+\verb|/xml| wurde manuell erstellt und beinhaltet hauptsächlich weitere XML-Dateien, die für Konfigurationen verwendet wurden. Hierauf werden wir im späteren Verlauf näher drauf eingehen. 
 
-\subsection*{gradle}
+\subsection*{/gradle}
 Im unteren Bereich befinden sich alle wichtigen Gradle Konfigurationsdateien. Gradle ist ein Build-Toolkit, um den Build-Prozess von Android Studio zu automatisieren und zu verwalten. Sobald der Code ausgeführt wird, werden zuerst alle Gradle Einstellungen ermittelt, Bibliotheken und Frameworks installiert und anschließend wird der Code kompiliert. Gradle erstellt anschließend eine APK (Android App Bundles), womit die Androidanwendung erstellt und gestartet werden kann. (Quelle: \cite{Gradle})
 In der \verb|/build.gradle| Datei können benutzerdefinierte Build-Konfigurationen definiert werden. Hier kann zum Beispiel die Versionen der Pepper SDK verwaltet werden und außerdem können externe Frameworks, die nicht in der Standardbibliothek von Java enthalten sind, implementiert werden.\\
 
@@ -84,7 +84,7 @@ Die \textit{Android Activity Lifecycle} umfasst Methoden, welche in Android Stud
 
 Die komplette Applikation läuft auf einem Hauptprozess, der UI-Thread genannt wird. Die einzigen Ausnahmen, die nicht auf diesem Thread laufen, sind die Robot Lifecycle Methoden und natürlich auch asynchrone Funktionen.
 
-Im Folgenden werden die wichtigsten \verb|Lifecycle-Methoden| erläutern:\\
+Nachfolgennd werden die wichtigsten \verb|Lifecycle-Methoden| erläutert.
 
 \subsubsection{onCreate}
 
@@ -95,11 +95,11 @@ Mit \verb|setContentView| können wir bestimmen, was auf Pepper's Tablet angezei
 
 Die \verb|onDestroy| Methode wird ausgeführt, sobald die Anwendung beendet wird. Sie wird hauptsächlich dafür verwendet, um Ressourcen wie Threads freizugeben. In unserer Anwendung müssen wir hier zusätzlich die QISDK unregistriert, damit keine weiteren Lifecycle-Aufrufe auftreten. \\
 
-\subsubsection{Focus Gained}
+\subsubsection{onFocusGained}
 
 Die \verb|onRobotFocusGained| Methode ist ein Lifecycle exklusiv für Pepper. Diese wird aufgerufen, sobald Pepper eine Person im Fokus hat. Pepper richtet anschließend sein Kopf zu dieser Person und hält stets Blickkontakt. Selbst wenn die Person sich bewegt, verfolgt Pepper diese Person solange mit seinem Kopf, bis er den Fokus verliert. In dieser Methode werden alle Komponenten initialisiert, die zur Interaktion mit dem Anwender verwendet werden. Hierfür wird die Variable \verb|QiContext| übergeben, die es erlaubt, bestimmte Aktionen durchzuführen, Ressourcen bereitzustellen und verschiedene Dienste abzurufen. Hauptsächlich wird hier der Chatbot mithilfe des \verb|QiContext| bereitgestellt, sodass Pepper direkt mit dem Anwender verbal interagieren kann. Da der Chatbot stetig ausgeführt wird, während der Anwender mit Pepper spricht, wird dieser asynchron ausgeführt, um den Thread dieser Methode nicht zu unterbrechen. Zu dem Thema Chatbot werden wir im späteren Verlauf mehr erzählen. \\
 
-\subsubsection{Focus Lost}
+\subsubsection{onFocusLost}
 Sollte Pepper seinen Fokus zu dem Anwender verlieren, wird die \verb|onRobotFocusLost| Methode aufgerufen. Diese Methode wird hauptsächlich dazu verwendet, um die initialisierten Komponenten aus der \verb|onRobotFocusGained| Methode wieder zu beenden (Quelle: \cite{Robot_lifecycle}).\\
 
 \subsection{Weitere Funktionen}
