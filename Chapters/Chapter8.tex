@@ -326,7 +326,7 @@ Mit Hilfe dieses Datenmodells, konnten wir ein passendes Datenformat für unsere
 \end{figure}
 
 \subsubsection{Sammeln der Wegroutendaten}
-
+\label{sec:jsonget}
 In der Dokumentation von 3D-Berlin wird ausschließlich beschrieben, wie die entsprechenden Anfragen für die geforderten Videos zu definieren sind. Aus diesem Grund sind wir so vorgegangen, dass wir mithilfe des Netzwerkanalysetools unseres Browsers die Antworten der gesendeten Anfragen, während der Nutzung des 3D-Navigators beobachtet haben. Dabei konnten wir genau ermitteln, welche Anfragen notwendig sind, um weitere Daten über die Videos zu erhalten und wie diese in ihrer Struktur aufgebaut werden müssen.
 
 Auch hier haben wir uns für die Programmiersprache Python entschieden. Dafür haben wir innerhalb unseres Backends ein weiteres Skript, \verb|createmetadata.py|,angelegt. Das Skript beschafft sich die Informationen, welche wir unter der API 3D-Berlin finden konnten und wandelt diese in für uns brauchbare Daten um. Außerdem werden diese anschließend in der Datei \verb|routedata.json| gespeichert. Im Folgenden gehen wir auf ein paar relevante Abschnitte des Skripts genauer ein und erläutern diese.

@@ -212,10 +212,8 @@ die URL zu dem richtigen Stundenplan. Dieser kann anschließend mit Hilfe des We
 Der dritte und letzte Anwendungsfall ist die Navigationshilfe in der Hochschule Bremerhaven. Sollte der Anwender einen bestimmten Raum oder ein Gebäude suchen, soll Pepper auf seinem Tablet eine genaue Wegbeschreibung geben können. 
 \\
 Da wir die einzelnen Videodateien auf dem Hopper abgelegt haben, brauchen wir für diesen Anwendungsfall die Kommunikation mit dem Node Server nicht. 
-\\\\
-\textcolor{red}{\textbf{Referenze zur Erstellung der JSON Datei}}
-\\\\
-Die JSON Datei, die mit dem Python Script erzeugt wurde, haben wir in den /Assets Ordner in Android Studio abgelegt, um sie später im Code verwenden zu können. 
+
+Um auf die einzelnen Informationen der Raumdaten zugreifen zu können, wurde eine externe JSON Datei erzeugt, der diese beinhaltet. Die Erstellung dieser Datei wird im Abschnitt \ref{sec:jsonget} näher erläutert. Die Datei wurde im /Assets Ordner in Android Studio abgelegt, um sie später im Code verwenden zu können. 
 
 Wie bei allen anderen Anwendungsfällen auch, ist der erste Schritt das Erstellen der einzelnen Gesprächsthemen. 
 Zuerst werden wir den Fall abdecken, wenn sich der Anwender den Gebäudeplan anzeigen lassen will.\\
