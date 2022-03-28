@@ -18,7 +18,7 @@ Aufgrund der andauernden Einschränkungen der Hygienemaßnahmen, ist es uns nich
 
 Hierfür wurde ein Skript mit dem Namen \verb|create-dummy-data.py| geschrieben, welches über die Kommandozeile ausgeführt werden kann und mehrere Parameter übergeben bekommt.\\
 
-\begin{lstlisting}[language=Bash]
+\begin{lstlisting}[language=Bash, caption={Ausführung des Dummy Scripts}]
     ~$ python3 create-dummy-data.py -n 1000 --prod
 \end{lstlisting}
 
@@ -43,7 +43,7 @@ Webseite: \url{https://www.stw-bremen.de/de/cafeteria/bremerhaven}
 
 Auf dieser Webseite befinden sich die aktuellen Angebote für die nächsten fünf Tage in einer Tabelle und den aktuellen- sowie nächsten Wochenplan im PDF-Format. Mit dem Script werden die einzelnen Daten aus der Webseite gelesen und als JSON gespeichert. Das Lesen der Daten aus der Webseite wird mit Hilfe des Frameworks \verb|BeautifulSoup| durchgeführt. Dieses Framework erlaubt es, XML- und HTML-Dokumente zu \verb|parsen|.\\
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Zugriff auf tbody Elemente}]
 menulist = soup.select('tbody')
 
 menu, offer1, offer2 = {}, [], []
@@ -54,18 +54,18 @@ day: [str] = [
 
 Die Mensa Angebote befinden sich auf der Webseite in einer Tabelle, weshalb wir auf alle \verb|tbody|-Elemente mit der Funktion \verb|soup.select| zugreifen. Diese werden als Array in die Variable \verb|menulist| initialisiert. Anschließend werden die Variablen deklariert, aus denen später der JSON string entstehen soll. \\
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Umformung des tbody-Elements zu lesbaren Mensaangeboten}]
 for i in range(10):
     tmp = (str(menulist[i]).split('description">',1)[1]).rsplit
     ("</td><td",2)[0]
-    tmp = tmp.replace('\n',').replace('\r',').replace('a1',')
-    .replace('amp;',')
+    tmp = tmp.replace('\n','').replace('\r','').replace('a1','')
+    .replace('amp;','')
     tmp = re.sub('<sup>.*?</sup>', |, tmp)
     if(i%2==0): offer1.append(tmp)
     else: offer2.append(tmp)
-    menu'"day'], menu['offer1'], menu['offer2'] = day, offer1, offer2
+    menu['day'], menu['offer1'], menu['offer2'] = day, offer1, offer2
 
-with open(folder_location+"mensadata.json", "w+") as f:
+with open(f'{folder_location}mensadata.json', 'w+') as f:
     json.dump(menu, f, ensure_ascii=False)
 \end{lstlisting}
 
@@ -74,7 +74,7 @@ Zum Schluss wird das \verb|menu| Objekt in JSON mit der \verb|json.dump| Funktio
 
 Um den aktuellen Wochenplan im Script herunterzuladen und weiterzuverarbeiten, wird die Programmbibliothek Poppler vorausgesetzt. Poppler wird in Unix-ähnlichen Betriebssystemen dazu verwendet, PDF-Dateien anzuzeigen.\\
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={HTML-Inhalt auslesen}]
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 menucard = ((str(soup.select("a[href$='/print']")[0])
@@ -85,7 +85,7 @@ urllib.request.urlretrieve(menucard, f'{folder_location}Mensaplan.pdf')
 
 Mit den ersten beiden Zeilen des Codes wird der komplette HTML-Inhalt der Webseite in die Variable \verb|soup| initialisiert. Da wir die URL des aktuellen Wochenplans benötigen, muss dieser aus dem HTML Code gelesen werden. Der Standort dieser URL ist im HTML Code fest verankert, weshalb wir mit Hilfe von \verb|soup.select|, die URL herausfiltern und mit mehreren \verb|split| und \verb|replace| Funktionen zu einer gültigen URL umformen können. Dieser Zwischenschritt ist nötig, da sich die URL jede Woche ändert. Anschließend wird die URL aufgerufen und als \verb|Mensaplan.pdf| abgespeichert.\\
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Ausschneiden von Bilddateien}]
 img = convert_from_path(f'{folder_location}Mensaplan.pdf', 500)[0]
 
 area = (0, 200, 4134, 2800) # R T L B
@@ -107,7 +107,7 @@ Zuerst haben wir den oberen Teil des Mensaplans ausgeschnitten, der die einzelne
 Nun müssen beide Bilder zusammengefügt werden. Dies wurde in der Methode \verb|mergeImgs| durchgeführt.\\
 
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, caption={Zusammenfügen von Bilddateien}]
 def mergeImgs(imgs):
     min_img_width = min(i.width for i in imgs)
     
@@ -143,7 +143,7 @@ Anschließend wir ein neues \verb|img_merge| Objekt erzeugt, das mit der minimal
 
 Das Script (vgl. Abschnitt \ref{sec:pyMensa}) befindet sich auf dem Hopper und wird mit \verb|crontab| jeden Montag einmal ausgeführt. Es ist wichtig, dass das Script nur jeden Montag ausgeführt wird, da die Mensa Angebote nur für die nächsten fünf Tage zur Verfügung kann. Sollte das Script zum Beispiel an einem Mittwoch ausgeführt werden, so würden die Tage Montag und Dienstag fehlen.\\
 
-\begin{lstlisting}[language=Bash]
+\begin{lstlisting}[language=Bash, caption={Cronjob - getMensaPlan.py}]
     # m h dom mon dow command
     0 0 * * 1 /usr/bin/python3 ~/getMensaPlan.py
 \end{lstlisting}
@@ -154,7 +154,7 @@ Das erzeugte JSON Objekt und das zugeschnittene Bild des Mensaplans werden ansch
 
 Mit dem folgenden Code werden die Daten aus den jeweiligen “/static” Ordnern an die Webseite gesendet:\\
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[language=Java, caption={NodeJS - Erstellung der Mensa-API}]
 router.get('/docker-hbv-kms-http/api/v1/mensadata', (req, res) => {
     const filePath = `${__dirname}/../static/data/mensadata.json`;
     const jsonData = JSON.parse(fs.readFileSync(filePath, 'latin1'));
@@ -264,7 +264,7 @@ Bei dem Format der Videos haben wir uns für \verb|mp4| entschieden. Diese Video
 Zunächst haben wir uns einen Überblick darüber verschafft, welche Daten wir mithilfe der 3D-Berlin API erhalten können. Als geeignetes Werkzeug für das automatisierte Arbeiten mit Requests haben wir uns für die Programmiersprache Python entschieden. Python bietet uns die Möglichkeit, schnell und zielorientiert, ein effizientes Skript zu entwickeln, um die benötigten Daten nicht nur auszulesen, sondern auch zu formatieren und sie später direkt in unsere gewünschte Datenstruktur einzubinden. Das Pythonskript \verb|createvideodata.py| ist Teil unserer Backend Anwendungen und dient dazu, die erforderlichen Anfragen für den Download der Videos zu konstruieren. Anschließend werden diese ausgeführt und mit dem richtigen Dateinamen zu versehen. Ein paar relevante Ausschnitte des Skripts möchten wir im Folgenden erläutern.
 Um genau zu wissen, welche Wegrouten wir erzeugen können, rufen wir zunächst eine Liste der Video-IDs ab. Wir bekommen diese in Form einer JSON-Datei als Antwort zurück und initialisieren die Variable ``videos'' mit ihr.
 Ist ein Request erfolgreich ausgeführt wurden, so speichern wir die erhaltene MP4-Datei zwischen und schreiben sie in das vorab gewählte Verzeichnis für die Videos.\\
-\begin{lstlisting}[language=Python, caption={speichern der Videodaten}]
+\begin{lstlisting}[language=Python, caption={Speichern der Videodaten}]
     open(f'{directory}/{video_name}', 'wb').write(response_object.content)
 \end{lstlisting}
 % \begin{figure}[H]
@@ -333,7 +333,7 @@ Auch hier haben wir uns für die Programmiersprache Python entschieden. Dafür h
 
 Zu Beginn werden zwei verschiedene Requests definiert. Der Erste erzeugt das Request-Objekt für den normalen Weg und der Zweite generiert das gleiche Request-Objekt als barrierefreie Route.
 
-\begin{lstlisting}[language=Python, caption={definieren der Anfragen}]
+\begin{lstlisting}[language=Python, caption={Definieren der Anfragen}]
         r_M0 = get_request(mode='M0000',
                            project=project,
                            startpoint=startpoint,
@@ -360,7 +360,7 @@ Die Funktion “getrequest()” bekommt als Übergabeparameter einen String “m
 Als Nächstes wird über die Liste der Videos iteriert, um den Request für die Anfrage der Routeninformation für genau jedes Video zu erstellen.
 Innerhalb dieser Schleife lesen wir als Erstes den Raumnamen und aus der Beschreibung des Ortes ungewollte Zeichen aus dem String heraus. Dies ist notwendig, da es sonst später in der Android-Applikation erfolgen müsste und eine überflüssige Prozessbelastung darstellen würde. Danach werden die Gleitkommazahlen der Dauer und der Distanz einer Route auf ganze Zahlen, als Integer aufgerundet. Außerdem werden die Sekunden in Minuten umgerechnet.\\
 
-\begin{lstlisting}[language=Python, caption={erstellen der JSON-Datei mit den Wegrouteninformationen}]
+\begin{lstlisting}[language=Python, caption={Erstellen der JSON-Datei mit den Wegrouteninformationen}]
     new_json_struct.update(
         {
             f'{room_name}: {

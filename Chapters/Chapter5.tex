@@ -44,11 +44,11 @@ Der \verb|/layout| Ordner beinhaltet alle XML-Dateien, die für die Graphische D
 Studio bietet hier ebenfalls eine GUI mit verschiedenen Komponenten zur Auswahl und eine Echtzeit Darstellung des Layouts.
 
 \subsubsection*{/res/mipmap}
-In \verb|/mipmap| (MIP = multum in parvo = vieles im Kleinen) befinden sich vorberechnete und optimierte Bildfolgen, die die Darstellungsqualität von Texturen verbessern, wenn diese kleiner als in der ursprünglichen Größe dargestellt werden. (vgl. Abb. \ref{fig:MipMap}) Dadurch, dass Texturen mithilfe der MipMaps verkleinert dargestellt werden, benötigt das Anzeigen von Bildern auf dem Tablet weniger Rechenzeit (mehr: \cite{MipMaps}).
+In \verb|/mipmap| (MIP = multum in parvo = vieles im Kleinen) befinden sich vorberechnete und optimierte Bildfolgen, die die Darstellungsqualität von Texturen verbessern, wenn diese kleiner als in der ursprünglichen Größe dargestellt werden. (vgl. Abb. \ref{fig:MipMap}) Dadurch, dass Texturen mithilfe der MipMaps verkleinert dargestellt werden, benötigt das Anzeigen von Bildern auf dem Tablet weniger Rechenzeit (Quelle: \cite{MipMaps}).\\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/AppChapter/4_1_2.png}
-    \caption{MipMapping \cite{mimappng}}
+    \caption{MipMapping (Quelle: \cite{mimappng})}
     \label{fig:MipMap}
     \centering
 \end{figure}
@@ -75,7 +75,7 @@ und bereitstellt. Diese können wie folgt zusammengefasst werden:\\
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{Figures/AppChapter/4_1_3.png}
-    \caption{Android Activity-Lifecycle \cite{AALife}}
+    \caption{Android Activity-Lifecycle (Quelle: \cite{AALife})}
     \label{fig:AAL}
     \centering
 \end{figure}
@@ -124,7 +124,7 @@ Eine Applikation, die aus vielen umfangreiche Themen besteht, zieht den größte
 
 \subsubsection{Chatbot und Topics}
 
-Wie bereits erwähnt, wird der Chatbot in der \verb|onRobotFocusGained| Methode aufgerufen. Sobald Pepper eine Person fokussiert, wird der Chatbot als asynchrone Instanz bereitgestellt. Bei der Initialisierung stellen wir zuerst die Sprache, die Pepper beim Sprechen verwenden soll, auf Deutsch und geben anschließend alle Topic Dateien an, die Pepper verwenden soll. In unserer Applikation verwenden wir hauptsächlich die Topics \verb|background| und \verb|concepts|. Das \verb|concepts| Topic dient als Erweiterung für das \verb|background| Topic, da hier mehrere Wörter zu einem Klasse zusammengefasst werden.\\
+Wie bereits erwähnt, wird der Chatbot in der \verb|onRobotFocusGained| Methode aufgerufen. Sobald Pepper eine Person fokussiert, wird der Chatbot als asynchrone Instanz bereitgestellt. Bei der Initialisierung stellen wir zuerst die Sprache, die Pepper beim Sprechen verwenden soll, auf Deutsch und geben anschließend alle Topic Dateien an, die Pepper verwenden soll. In unserer Applikation verwenden wir hauptsächlich die Topics \verb|background| und \verb|concepts|. Das \verb|concepts| Topic dient als Erweiterung für das \verb|background| Topic, da hier mehrere Wörter zu einem Klasse zusammengefasst werden.\\ 
 
 \begin{lstlisting}[caption={Konzept - Beispiel}]
 concept:(hallo)[hey hallo moin na "guten Tag"]
