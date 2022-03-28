@@ -21,27 +21,27 @@ Nachdem die Einrichtung von Android Studio und die Planung der Hochschul-Anwendu
 
 
 \subsection*{/manifests}
-In dem Ordner \verb|/manifests| befindet sich die konfigurations Datei \verb|AndroidManifest.xml|. In dieser Datei können verschiedene allgemeine Einstellungen zu Pepper getroffen werden. Die wichtigsten Einstellungen sind die \verb|permissions|. Dies sind Berechtigung-Parameter, mit denen bestimmte Komponenten von Pepper oder Verbindungen erlaubt werden können. Da wir im Code sehr oft Request an den Node-Server geschickt haben oder Webseiten auf dem Tablet von Pepper angezeigt haben, mussten wir zuerst die Verbindung mit dem Internet in der AndroidManifest erlauben. Auch das Zugreifen auf den Externen Speicher von Pepper kann in dieser Datei erlaubt und konfiguriert werden. Des Weiteren können alle wichtigen Pfade zu weiteren Config Dateien und der MainActivity Klasse gesetzt werden.\\
+In dem Ordner \verb|/manifests| befindet sich die konfigurations Datei \verb|AndroidManifest.xml|. In dieser Datei können verschiedene allgemeine Einstellungen zu Pepper getroffen werden. Die wichtigsten Einstellungen sind die \verb|permissions|. Dies sind Berechtigung-Parameter, mit denen bestimmte Komponenten von Pepper oder Verbindungen erlaubt werden können. Da wir im Code sehr oft Request an den Node-Server geschickt haben oder Webseiten auf dem Tablet von Pepper angezeigt haben, mussten wir zuerst die Verbindung mit dem Internet in der AndroidManifest erlauben. Auch das Zugreifen auf den Externen Speicher von Pepper kann in dieser Datei erlaubt und konfiguriert werden. Des Weiteren können alle wichtigen Pfade zu weiteren Config Dateien und der MainActivity Klasse gesetzt werden.
 
 \subsection*{/java}
-In  \verb|/java| befinden sich alle unsere Java Klassen und somit der komplette Code der Pepper Anwendung. Sobald ein neues Projekt in Android Studio erstellt wird, wird die MainActivity Klasse automatisch generiert. Diese Klasse ist auch das Herzstück von Pepper, da hier der komplette Code gestartet, gesteuert und beendet wird. Hierzu werden wir im späteren Verlauf mehr erzählen. Die Verzeichnisse, welche mit ``andoirdTest'' und ``test'' beschriben sind, werden für das Testen der Applikation verwendet. Diese haben wir in unserem Projekt nicht verwendet, daher gehen wir auf diesen Bereich nicht weiter ein.\\
+In  \verb|/java| befinden sich alle unsere Java Klassen und somit der komplette Code der Pepper Anwendung. Sobald ein neues Projekt in Android Studio erstellt wird, wird die MainActivity Klasse automatisch generiert. Diese Klasse ist auch das Herzstück von Pepper, da hier der komplette Code gestartet, gesteuert und beendet wird. Hierzu werden wir im späteren Verlauf mehr erzählen. Die Verzeichnisse, welche mit ``andoirdTest'' und ``test'' beschriben sind, werden für das Testen der Applikation verwendet. Diese haben wir in unserem Projekt nicht verwendet, daher gehen wir auf diesen Bereich nicht weiter ein.
 
 \subsection*{/assets}
-In \verb|/assets| können verschiedene Daten abgelegt werden, auf die im Code zu jeder Zeit zugegriffen werden kann. Zum Beispiel können JSON Dateien abgelegt und im Code gelesen und verändert werden.\\
+In \verb|/assets| können verschiedene Daten abgelegt werden, auf die im Code zu jeder Zeit zugegriffen werden kann. Zum Beispiel können JSON Dateien abgelegt und im Code gelesen und verändert werden.
 
-\subsection*{ressourcen}
-In \verb|/res| finden sich die Ressourcen der Anwendung. Diese sind wie folgt gegliedert:\\
+\subsection*{/res}
+In \verb|/res| finden sich die Ressourcen der Anwendung. Diese sind wie folgt gegliedert:
 
 \subsubsection*{/res/Anim}
 In dem ersten Unterordner \verb|/anim| befinden sich die Animationen von Pepper. Er besitzt die Möglichkeit, jedes Gelenk zu bewegen, um wie ein Mensch zu wirken. Die Pepper SDK besitzt eine eigene GUI, um Peppers Bewegungen zu konfigurieren und neue Animationen zu erstellen. In dem Editor befindet sich bereits eine große Auswahl an vordefinierten Bewegungen. In unsere Applikation haben wir bis auf die vordefinierte 
-``idle Animation''  (Standardbewegung, wenn Pepper untätig ist) keine weiteren Animationen verwendet. \\
+``idle Animation''  (Standardbewegung, wenn Pepper untätig ist) keine weiteren Animationen verwendet.
 
 \subsubsection*{/res/drawable}
-In dem \verb|/drawable| Ordner befinden sich alle Bilder, die auf dem Tablet angezeigt werden können.\\
+In dem \verb|/drawable| Ordner befinden sich alle Bilder, die auf dem Tablet angezeigt werden können.
 
 \subsubsection*{/res/layout}
 Der \verb|/layout| Ordner beinhaltet alle XML-Dateien, die für die Graphische Darstellung auf dem Tablet verwendet werden. Android 
-Studio bietet hier ebenfalls eine GUI mit verschiedenen Komponenten zur Auswahl und eine Echtzeit Darstellung des Layouts. \\
+Studio bietet hier ebenfalls eine GUI mit verschiedenen Komponenten zur Auswahl und eine Echtzeit Darstellung des Layouts.
 
 \subsubsection*{/res/mipmap}
 In \verb|/mipmap| (MIP = multum in parvo = vieles im Kleinen) befinden sich vorberechnete und optimierte Bildfolgen, die die Darstellungsqualität von Texturen verbessern, wenn diese kleiner als in der ursprünglichen Größe dargestellt werden. (vgl. Abb. \ref{fig:MipMap}) Dadurch, dass Texturen mithilfe der MipMaps verkleinert dargestellt werden, benötigt das Anzeigen von Bildern auf dem Tablet weniger Rechenzeit (mehr: \cite{MipMaps}).\\
@@ -54,10 +54,10 @@ In \verb|/mipmap| (MIP = multum in parvo = vieles im Kleinen) befinden sich vorb
 \end{figure}
 
 \subsubsection*{/res/raw}
-Der \verb|/raw| Ordner beinhaltet alle Topic Dateien der Anwendung und werden im Chatbot zur verbalen Interaktion mit dem Anwender verwendet. In den Topics können Gesprächsthemen vordefiniert und mit verschiedenen Funktionen verbunden werden. Die Syntax eines Topics ist relativ simpel gehalten und selbsterklärend, sodass es uns nicht schwer fiel, viele verschiedene Gesprächsthemen für unsere Anwendung zu entwickeln. \\
+Der \verb|/raw| Ordner beinhaltet alle Topic Dateien der Anwendung und werden im Chatbot zur verbalen Interaktion mit dem Anwender verwendet. In den Topics können Gesprächsthemen vordefiniert und mit verschiedenen Funktionen verbunden werden. Die Syntax eines Topics ist relativ simpel gehalten und selbsterklärend, sodass es uns nicht schwer fiel, viele verschiedene Gesprächsthemen für unsere Anwendung zu entwickeln.
 
 \subsubsection*{/res/values}
-In \verb|/values| befinden sich alle XML-Dateien, die Werte für die verschiedenen Ressourcen bereitstellen. Dies sind zum Beispiel Werte wie Farben, Stilen oder Dimensionen.\\
+In \verb|/values| befinden sich alle XML-Dateien, die Werte für die verschiedenen Ressourcen bereitstellen. Dies sind zum Beispiel Werte wie Farben, Stilen oder Dimensionen.
 
 \subsubsection*{/res/xml}
 \verb|/xml| wurde manuell erstellt und beinhaltet hauptsächlich weitere XML-Dateien, die für Konfigurationen verwendet wurden. Hierauf werden wir im späteren Verlauf näher drauf eingehen. \\

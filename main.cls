@@ -150,8 +150,8 @@
 \authors     {}
 \university  {Hochschule Bremerhaven}
 \UNIVERSITY  {HOCHSCHULE BREMERHAVEN}
-\department  {{Technik für Wirtschaftsinformatik}}
-\DEPARTMENT  {{TECHNIK FÜR WIRTSCHAFTSINFORMATIK}}
+\department  {{}}
+\DEPARTMENT  {{}}
 
 \group       {{}}
 \GROUP       {{}}
@@ -201,6 +201,7 @@
 %		{\rule{35em}{1.5pt}}
       {\Large \deptname \par}
       {\Large\textbf{\univname}\par}
+      {\Large Eingereicht am: 28. März 2022 \par}
 %      \bigskip
             
 %      {\Large \@date \par}
