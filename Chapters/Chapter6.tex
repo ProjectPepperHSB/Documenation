@@ -1,14 +1,14 @@
-\newcommand{\chapterpepperusecase}{Kapitel 6. }
+\newcommand{\chapterpepperusecase}{Kapitel 6.}
 
 \chapter{Implementierung: Anwendungsfälle}
 \label{sec:Pepper_Anwendungsfaelle}
 \lhead{\chapterpepperusecase \emph{Implementierung der Anwendungsfälle}}
 
 %Im Folgenden werden wir auf die Implementierung unserer Anwendungsfälle eingehen. Hierbei gehen wir zuerst auf die Planung und anschließend auf die Bereitstellung der Daten in unserem Server und in externe Scripts ein. Anschließend erläutern wir die Implementation und Weiterverarbeitung der einzelnen Anwendungsfälle in Android Studio.\\
-Im Folgenden werden wir auf die Implementierung und Weiterverarbeitung unserer Anwendungsfälle in Android Studio eingehen.\\
+% Im Folgenden werden wir auf die Implementierung und Weiterverarbeitung unserer Anwendungsfälle in Android Studio eingehen.\\
 
 
-\section{Anzeigen der Mensadaten in Android Studio}
+\section{Implementierung der Mensadaten in Android Studio}
 
 Pepper soll in der Lage sein, mit Hilfe von Sprache, den Mensaplan auf sein Tablet anzuzeigen und Informationen über die verschiedenen Angebote jedes Wochentags zu geben. Um sich den Mensaplan anzeigen zu lassen, haben wir zuerst ein neues Gesprächsthema in unserem Haupt-Topic erstellt. \\
 
@@ -170,7 +170,6 @@ zurückgegeben. \\
     \centering
 \end{figure}
 
-
 \section{Anzeigen des Stundenplans in Android Studio}
 Der zweite Anwendungsfall ist das Anzeigen des Stundenplans für jeden Studiengang und für jedes Semester. \\
 Die Bereitstellung der Stundenplandaten im Node Server wurde bereits im Abschnitt \ref{sec:api-timetable} erläutert. Nun war es und möglich, auf diese Daten in Android Studio, über ein GET Request, zuzugreifen und weiterzuverarbeiten. Das Ziel ist es, den Stundenplan über die WebView anzeigen zu lassen. 
@@ -207,7 +206,6 @@ ma.runOnUiThread(() -> {
 \end{lstlisting}
 
 Auf dem Node Server erwartet die API, die wir für den Stundenplan erstellt haben, bestimmte Parameter zu dem Studiengang und dem Semester. Hierfür können wir unsere Parameter, die in der Frage ermittelt wurden, in die Variable \verb|timetableurl| einsetzen und erhalten die URL zu dem richtigen Stundenplan. Dieser kann anschließend mit Hilfe des Webviewers auf dem Tablet von Pepper angezeigt werden. \\
-
 
 \section{Anzeigen des Gebäudeplans und des Raumfinders in Android Studio}
 
